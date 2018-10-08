@@ -1,3 +1,0 @@
-hola joaco
-public void main(){
-println("this is a text");}
