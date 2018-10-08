@@ -1,7 +1,6 @@
 package Clases;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Reclamo {
@@ -14,23 +13,17 @@ public abstract class Reclamo {
 		this.descripcion = descripcion;
 		this.tipo = Tipos.Cantidad;
 		this.estado = Estados.Registrado;
-		this.historial = new ArrayList<ActualizacionEstado>();
 	}
 	int numeroReclamo ;
 	LocalDate fecha;
 	String descripcion;
 	Enum <Estados> estado;
 	Enum <Tipos> tipo;
-	
-
 	List <ActualizacionEstado> historial;
 	
 	
 	//ACA COMIENZAN LOS SETTERS GETTERS
 	
-	public List<ActualizacionEstado> getHistorial() {
-		return historial;
-	}
 	public int getNumeroReclamo() {
 		return numeroReclamo;
 	}

@@ -21,16 +21,11 @@ public abstract class Reclamo {
 	String descripcion;
 	Enum <Estados> estado;
 	Enum <Tipos> tipo;
-	
-
 	List <ActualizacionEstado> historial;
 	
 	
 	//ACA COMIENZAN LOS SETTERS GETTERS
 	
-	public List<ActualizacionEstado> getHistorial() {
-		return historial;
-	}
 	public int getNumeroReclamo() {
 		return numeroReclamo;
 	}
