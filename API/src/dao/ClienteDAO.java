@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import Clases.Cliente;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 
@@ -37,17 +38,84 @@ public class ClienteDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = "insert into clientes values ('" + cliente.getNombre() +"','" + cliente.getDomicilio() + "'," + cliente.getTelefono() + ",'" + cliente.getDni() + "');";
+		String SQL = "INSERT INTO clientes values ('" + cliente.getNombre() +"','" + cliente.getDomicilio() + "','" + cliente.getTelefono() + "','" + cliente.getDni() + "');";
+		try{
+			stmt.execute(SQL);
+		} catch (SQLException e1) {
+			System.out.println(e1.getMessage());
+			throw new AccesoException("Error de escritura");
+	}	}
+		
+	public void borrarCliente(int dniCuit, String nombre) throws ConexionException, AccesoException{
+			Connection con = null;  
+			Statement stmt = null;  
+			ResultSet rs = null;
+			try {    
+				con = ConnectionFactory.getInstancia().getConection();
+			}
+			catch (ClassNotFoundException | SQLException e) {
+				throw new ConexionException("No esta disponible el acceso al Servidor");
+			}
+			
+			try {
+				stmt = con.createStatement();
+			} catch (SQLException e1) {
+				throw new AccesoException("Error de acceso");
+			}
+			String SQL = ("DELETE FROM clientes WHERE nombre = ('" + nombre +"') AND dniCuit = ('" + dniCuit +"');");
+			try{
+				stmt.execute(SQL);
+			} catch (SQLException e1) {
+				System.out.println(e1.getMessage());
+				throw new AccesoException("Error de escritura");
+			}
+	}
+	public void modificarCliente(Cliente cliente, String nombreAnterior, int dniCuitAnterior) throws ConexionException, AccesoException{
+		Connection con = null;  
+		Statement stmt = null;  
+		ResultSet rs = null;
+		try {    
+			con = ConnectionFactory.getInstancia().getConection();
+		}
+		catch (ClassNotFoundException | SQLException e) {
+			throw new ConexionException("No esta disponible el acceso al Servidor");
+		}
+		
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e1) {
+			throw new AccesoException("Error de acceso");
+		}
+		String SQL = ("UPDATE clientes SET nombre =('" + nombre +"'), mail=('" + mail +"'), domicilio = ('" + domicilio +"'), dniCuit=('" + dniCuit +"'), telefono = ('" + telefono +"') WHERE nombre = ('" + nombreAnterior +"') AND dniCuit = ('" + dniCuitAnterior +"');");
 		try{
 			stmt.execute(SQL);
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
 			throw new AccesoException("Error de escritura");
 		}
-		
 	}
-	
+	public void buscarCliente(int dniCuit) throws ConexionException, AccesoException{
+		Connection con = null;  
+		Statement stmt = null;  
+		ResultSet rs = null;
+		try {    
+			con = ConnectionFactory.getInstancia().getConection();
+		}
+		catch (ClassNotFoundException | SQLException e) {
+			throw new ConexionException("No esta disponible el acceso al Servidor");
+		}
 		
-
-	
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e1) {
+			throw new AccesoException("Error de acceso");
+		}
+		String SQL = ("SELECT FROM clientes WHERE dniCuit =('" + dniCuit +"');");
+		try{
+			stmt.execute(SQL);
+		} catch (SQLException e1) {
+			System.out.println(e1.getMessage());
+			throw new AccesoException("Error de escritura");
+		}
+	}
 }
