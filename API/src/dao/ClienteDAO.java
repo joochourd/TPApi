@@ -38,7 +38,7 @@ public class ClienteDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = "INSERT INTO clientes values ('" + cliente.getNombre() +"','" + cliente.getDomicilio() + "','" + cliente.getTelefono() + "','" + cliente.getDni() + "');";
+		String SQL = "INSERT INTO clientes values ('" + cliente.getNombre() +"','" + cliente.getDomicilio() + "','" + cliente.getTelefono() + "','" + cliente.getDniCuit() + "');";
 		try{
 			stmt.execute(SQL);
 		} catch (SQLException e1) {
@@ -86,7 +86,7 @@ public class ClienteDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("UPDATE clientes SET nombre =('" + nombre +"'), mail=('" + mail +"'), domicilio = ('" + domicilio +"'), dniCuit=('" + dniCuit +"'), telefono = ('" + telefono +"') WHERE nombre = ('" + nombreAnterior +"') AND dniCuit = ('" + dniCuitAnterior +"');");
+		String SQL = ("UPDATE clientes SET nombre =('" + cliente.getNombre() +"'), mail=('" + cliente.getMail() +"'), domicilio = ('" + cliente.getDomicilio() +"'), dniCuit=('" + cliente.getDniCuit() +"'), telefono = ('" + cliente.getTelefono() +"') WHERE nombre = ('" + nombreAnterior +"') AND dniCuit = ('" + dniCuitAnterior +"');");
 		try{
 			stmt.execute(SQL);
 		} catch (SQLException e1) {

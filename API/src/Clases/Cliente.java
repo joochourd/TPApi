@@ -1,6 +1,8 @@
 package Clases;
 
 import dao.ClienteDAO;
+import excepciones.AccesoException;
+import excepciones.ConexionException;
 
 public class Cliente {
 	
@@ -10,6 +12,16 @@ public class Cliente {
 	private String telefono;
 	private String mail;
 	private int dniCuit;
+	
+	public Cliente (int dniCuit, String nombre, String domicilio, String telefono, String mail){
+		
+		this.dniCuit = dniCuit;
+		this.nombre = nombre;
+		this.domicilio = domicilio;
+		this.telefono = telefono;
+		this.mail = mail;
+		
+	}
 	
 	public void modificarCliente(int dniCuit, String nombre, String domicilio, String telefono, String mail){
 		if(this.dniCuit != dniCuit) this.dniCuit = dniCuit;
@@ -57,6 +69,11 @@ public class Cliente {
 
 	public void setDniCuit(int dniCuit) {
 		this.dniCuit = dniCuit;
+	}
+	
+	public void guardate() throws ConexionException, AccesoException{
+		ClienteDAO cliente = new ClienteDAO();
+		cliente.grabarCliente(this);
 	}
 
 }
