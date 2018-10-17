@@ -1,0 +1,21 @@
+Aclaraciones:
+*Los numero identificadores de producto y reclamo los genera la BD
+
+
+Dudas:
+*Se busca un producto de a uno por codigo o titulo, antes habia List<String> titulo
+*Ver como devolver porducto y cliente
+*Preguntar si .guardate va en el constructor o en al crear el objeto
+*Modificar factura creo que no es necesario o no se tendria que poder
+*Donde se usa un ResultSet rs en clases DAO
+*Clase Sistema. public List <String> reclamoCantProdFalta(List<int> cantidad, String tituloProd){}.¿Que es o para que esta?
+*Problemas con Observer
+
+
+Para SQL:
+/*Identidad para SQL*/
+Start at 1 and increment by 1
+CREATE TABLE IDENTITY_TEST1 
+(
+ID INT IDENTITY(1,1) PRIMARY KEY,
+

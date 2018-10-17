@@ -1,4 +1,4 @@
-package Clases;
+package clases;
 
 import java.util.Date;
 import java.util.List;
@@ -19,7 +19,7 @@ public class Sistema {
 		Cliente cliente = buscarCliente(dniCuit);
 		if (cliente == null){ //primero verifica que el cliente no exista
 			cliente = new Cliente(dniCuit, nombre, domicilio, telefono, mail);
-			cliente.guardate;
+			cliente.guardate();
 		}
 		
 	}
@@ -41,16 +41,22 @@ public class Sistema {
 		Producto producto = buscarProducto();
 		producto.modificarProducto(titulo, descripcion, precio);
 		ProductoDAO pDao = new ProductoDAO();
-		pDao.modificarProducto(producto,);
+		pDao.modificarProducto(producto);
 	}
 	
 	public void bajaProducto(int codigoPublicacion){
 		ProductoDAO pDao = new ProductoDAO();
 		pDao.borrarProducto(codigoPublicacion);
 	}
-	public Producto buscarProducto(List<String> tituloProd){}//ver parametros
+	public Producto buscarProducto(String tituloProd, int codigo){// Ver como devolver un producto
+		ProductoDAO pDao = new ProductoDAO();
+		pDao.buscarProducto(tituloProd, codigo);
+		return;
+	}
 	
-	public Reclamo iniciarReclamo(int dniCuit){}
+	public Reclamo iniciarReclamo(int dniCuit){
+		
+	}
 	
 	public List <String> reclamoCantProdFalta(List<int> cantidad, String tituloProd){}	
 	

@@ -5,8 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import Clases.Cliente;
-import Clases.Producto;
+import clases.Producto;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 
@@ -39,7 +38,7 @@ public class ProductoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = "INSERT INTO productos values ('" + producto.getCodigoPublicacion() +"','" + producto.getTitulo() + "','" + producto.getDescripcion() + "','" + producto.getPrecio() + "');";
+		String SQL = "INSERT INTO productos values ('" + producto.getTitulo() + "','" + producto.getDescripcion() + "','" + producto.getPrecio() + "');";
 		try{
 			stmt.execute(SQL);
 		} catch (SQLException e1) {
@@ -71,7 +70,7 @@ public class ProductoDAO {
 				throw new AccesoException("Error de escritura");
 			}
 	}
-	public void modificarProducto(Producto producto, ) throws ConexionException, AccesoException{
+	public void modificarProducto(Producto producto) throws ConexionException, AccesoException{
 		Connection con = null;  
 		Statement stmt = null;  
 		ResultSet rs = null;
@@ -87,7 +86,7 @@ public class ProductoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("UPDATE productos SET titulo =('" + producto.getTitulo() +"'), descripcion=('" + producto.getDescripcion() +"'), precio = ('" + producto.getPrecio() +"') WHERE x = ('" + x +"') AND x = ('" + x +"');");//x no tiene valor alguno. Ahi debe ir un valor
+		String SQL = ("UPDATE productos SET titulo =('" + producto.getTitulo() +"'), descripcion=('" + producto.getDescripcion() +"'), precio = ('" + producto.getPrecio() +"') WHERE codigo = ('" + producto.getCodigoPublicacion() +"');");
 		try{
 			stmt.execute(SQL);
 		} catch (SQLException e1) {
@@ -95,7 +94,8 @@ public class ProductoDAO {
 			throw new AccesoException("Error de escritura");
 		}
 	}
-	public void buscarProducto(int ) throws ConexionException, AccesoException{
+	
+	public void buscarProducto(String tituloProd, int codigo ) throws ConexionException, AccesoException{
 		Connection con = null;  
 		Statement stmt = null;  
 		ResultSet rs = null;
@@ -111,7 +111,7 @@ public class ProductoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("SELECT FROM productos WHERE x =('" + x +"');");
+		String SQL = ("SELECT * FROM productos WHERE titulo =('" + tituloProd +"') or codigo = ('" + codigo +"');");
 		try{
 			stmt.execute(SQL);
 		} catch (SQLException e1) {

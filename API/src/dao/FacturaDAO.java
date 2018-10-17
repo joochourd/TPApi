@@ -5,24 +5,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import clases.Cliente;
+import clases.Factura;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 
-public class ClienteDAO {
+public class FacturaDAO {
 	
-	private static ClienteDAO instancia;
+private static FacturaDAO instancia;
 	
-	//private ClienteDAO(){}
 		
-	public static ClienteDAO getInstancia(){
+	public static FacturaDAO getInstancia(){
 		if(instancia == null){
-			instancia = new ClienteDAO();
+			instancia = new FacturaDAO();
 		}
 		return instancia;
 	}
 	
-	public void grabarCliente(Cliente cliente) throws ConexionException, AccesoException{
+	public void grabarFactura(Factura factura) throws ConexionException, AccesoException{
 		Connection con = null;  
 		Statement stmt = null;  
 		ResultSet rs = null;
@@ -38,7 +37,7 @@ public class ClienteDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = "INSERT INTO clientes values ('" + cliente.getNombre() +"','" + cliente.getDomicilio() + "','" + cliente.getTelefono() + "','" + cliente.getDniCuit() + "');";
+		String SQL = "INSERT INTO facturas values ('" + factura.getNro() +"','" + factura.getTipo() + "','" + factura.getFecha() + "','" + factura.getTotal() + "');";
 		try{
 			stmt.execute(SQL);
 		} catch (SQLException e1) {
@@ -46,7 +45,7 @@ public class ClienteDAO {
 			throw new AccesoException("Error de escritura");
 	}	}
 		
-	public void borrarCliente(int dniCuit, String nombre) throws ConexionException, AccesoException{
+	public void borrarFactura(int nro) throws ConexionException, AccesoException{
 			Connection con = null;  
 			Statement stmt = null;  
 			ResultSet rs = null;
@@ -62,7 +61,7 @@ public class ClienteDAO {
 			} catch (SQLException e1) {
 				throw new AccesoException("Error de acceso");
 			}
-			String SQL = ("DELETE FROM clientes WHERE nombre = ('" + nombre +"') AND dniCuit = ('" + dniCuit +"');");
+			String SQL = ("DELETE FROM facturas WHERE numero = ('" + nro +"');");
 			try{
 				stmt.execute(SQL);
 			} catch (SQLException e1) {
@@ -70,7 +69,7 @@ public class ClienteDAO {
 				throw new AccesoException("Error de escritura");
 			}
 	}
-	public void modificarCliente(Cliente cliente, String nombreAnterior, int dniCuitAnterior) throws ConexionException, AccesoException{
+	/*public void modificarFactura(Factura factura) throws ConexionException, AccesoException{
 		Connection con = null;  
 		Statement stmt = null;  
 		ResultSet rs = null;
@@ -86,15 +85,15 @@ public class ClienteDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("UPDATE clientes SET nombre =('" + cliente.getNombre() +"'), mail=('" + cliente.getMail() +"'), domicilio = ('" + cliente.getDomicilio() +"'), dniCuit=('" + cliente.getDniCuit() +"'), telefono = ('" + cliente.getTelefono() +"') WHERE nombre = ('" + nombreAnterior +"') AND dniCuit = ('" + dniCuitAnterior +"');");
+		String SQL = ("UPDATE facturas SET numero =('" + factura.getNro() +"'), tipo=('" + factura.getTipo() +"'), fecha = ('" + factura.getFecha() +"'), total = ('" + factura.getTotal() +"') WHERE numero = ('" + factura.getNro() +"');");
 		try{
 			stmt.execute(SQL);
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
 			throw new AccesoException("Error de escritura");
 		}
-	}
-	public void buscarCliente(int dniCuit) throws ConexionException, AccesoException{
+	}*/
+	public void buscarFactura(int nro) throws ConexionException, AccesoException{
 		Connection con = null;  
 		Statement stmt = null;  
 		ResultSet rs = null;
@@ -110,7 +109,7 @@ public class ClienteDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("SELECT * FROM clientes WHERE dniCuit =('" + dniCuit +"');");
+		String SQL = ("SELECT * FROM facturas WHERE numero =('" + nro +"');");
 		try{
 			stmt.execute(SQL);
 		} catch (SQLException e1) {
@@ -118,4 +117,5 @@ public class ClienteDAO {
 			throw new AccesoException("Error de escritura");
 		}
 	}
+
 }

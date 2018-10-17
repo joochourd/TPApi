@@ -1,22 +1,22 @@
-package Clases;
+package clases;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Reclamo {
+import observador.ObservableReclamo;
+
+public abstract class Reclamo extends ObservableReclamo {
 	
-	public static int numeroReclamoEstatico;
 	public Reclamo(int numeroReclamo, LocalDate fecha, String descripcion, Enum<Tipos> tipo) {
 		super();
-		this.numeroReclamo = ++numeroReclamoEstatico;
 		this.fecha = fecha;
 		this.descripcion = descripcion;
 		this.tipo = Tipos.Cantidad;
 		this.estado = Estados.Registrado;
 		this.historial = new ArrayList<ActualizacionEstado>();
 	}
-	int numeroReclamo ;
+	int numeroReclamo ; 
 	LocalDate fecha;
 	String descripcion;
 	Enum <Estados> estado;
@@ -54,6 +54,7 @@ public abstract class Reclamo {
 	}
 	public void setEstado(Enum<Estados> estado) {
 		this.estado = estado;
+		this.updateObserver(estado);
 	}
 	public Enum<Tipos> getTipo() {
 		return tipo;

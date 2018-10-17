@@ -1,13 +1,11 @@
-package Clases;
+package clases;
 
-import dao.ClienteDAO;
 import dao.ProductoDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 
 public class Producto {
 	
-	private static int codSiguiente = 1;
 	private int codigoPublicacion;
 	private String titulo;
 	private String descripcion;
@@ -18,7 +16,6 @@ public class Producto {
 		this.titulo = titulo;
 		this.descripcion = descripcion;
 		this.precio = precio;
-		this.codigoPublicacion = codSiguiente++;
 	}
 	
 	public void modificarProducto (String titulo, String descripcion, float precio){
@@ -40,7 +37,7 @@ public class Producto {
 		return codigoPublicacion;
 	}
 
-	public void setCodigoPublicacion(int codigoPublicacion) {
+	public void setCodigoPublicacion(int codigoPublicacion) {//Ver si tiene que ir
 		this.codigoPublicacion = codigoPublicacion;
 	}
 
