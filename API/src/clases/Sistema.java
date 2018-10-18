@@ -54,15 +54,13 @@ public class Sistema {
 		return;
 	}
 	
-	public Reclamo iniciarReclamo(int dniCuit){
-		
-	}
+	
 	
 	public List <String> reclamoCantProdFalta(List<int> cantidad, String tituloProd){}	
 	
-	public Reclamo registrarReclamoZona(String zona){}
+	public Reclamo registrarReclamoZona(String zona, int dniCuit){}
 	
-	public Reclamo registrarReclamoFacturacion(Date fecha, int nroFactura){}	
+	public Reclamo registrarReclamoFacturacion(Date fecha, int nroFactura, int dniCuit){}	
 	
 	public void administrarReclamoCantProdFaltante(){}
 	
@@ -72,10 +70,10 @@ public class Sistema {
 	
 	public void realizarConsulta(){}
 	
-	public void login(String usuario, String contraseña){}
+	public void login(String usuario, String contraseÃ±a){}
 	
 	public List<Reclamo> getReclamos(Cliente cliente){}
 	
-	public void registrarReclamoCompuesto(){}
-	
+	public void registrarReclamoCompuesto(int dniCuit){}
+	// ver si dni es string o int
 }	
