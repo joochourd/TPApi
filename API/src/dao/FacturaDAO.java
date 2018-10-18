@@ -24,7 +24,6 @@ private static FacturaDAO instancia;
 	public void grabarFactura(Factura factura) throws ConexionException, AccesoException{
 		Connection con = null;  
 		Statement stmt = null;  
-		ResultSet rs = null;
 		try {    
 			con = ConnectionFactory.getInstancia().getConection();
 		}
@@ -48,7 +47,6 @@ private static FacturaDAO instancia;
 	public void borrarFactura(int nro) throws ConexionException, AccesoException{
 			Connection con = null;  
 			Statement stmt = null;  
-			ResultSet rs = null;
 			try {    
 				con = ConnectionFactory.getInstancia().getConection();
 			}
@@ -72,7 +70,6 @@ private static FacturaDAO instancia;
 	/*public void modificarFactura(Factura factura) throws ConexionException, AccesoException{
 		Connection con = null;  
 		Statement stmt = null;  
-		ResultSet rs = null;
 		try {    
 			con = ConnectionFactory.getInstancia().getConection();
 		}
@@ -111,10 +108,13 @@ private static FacturaDAO instancia;
 		}
 		String SQL = ("SELECT * FROM facturas WHERE numero =('" + nro +"');");
 		try{
-			stmt.execute(SQL);
+			rs = stmt.executeQuery(SQL);
+			while (rs.next()) {
+				
+			}
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
-			throw new AccesoException("Error de escritura");
+			throw new AccesoException("");//Rellenar msj
 		}
 	}
 

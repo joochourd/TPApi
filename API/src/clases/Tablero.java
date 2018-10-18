@@ -1,17 +1,17 @@
 package clases;
 
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
-public class Tablero implements Observer {
+import observador.ObservableTablero;
+
+
+public class Tablero  extends ObservableTablero {
 	private List <Reclamo> reclamos;
 
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
+/*Agregar restrincciones de roles*/
+	public void crearReclamoZona{}
+	public void crearReclamoFacturacion{}
+	public void crearReclamoCantYProdYFalta{}
+	public void crearReclamoCompuesto{}
+	
 }

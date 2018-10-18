@@ -25,7 +25,6 @@ public class ProductoDAO {
 	public void grabarProducto(Producto producto) throws ConexionException, AccesoException{
 		Connection con = null;  
 		Statement stmt = null;  
-		ResultSet rs = null;
 		try {    
 			con = ConnectionFactory.getInstancia().getConection();
 		}
@@ -49,7 +48,6 @@ public class ProductoDAO {
 	public void borrarProducto(int codigoPublicacion) throws ConexionException, AccesoException{
 			Connection con = null;  
 			Statement stmt = null;  
-			ResultSet rs = null;
 			try {    
 				con = ConnectionFactory.getInstancia().getConection();
 			}
@@ -73,7 +71,6 @@ public class ProductoDAO {
 	public void modificarProducto(Producto producto) throws ConexionException, AccesoException{
 		Connection con = null;  
 		Statement stmt = null;  
-		ResultSet rs = null;
 		try {    
 			con = ConnectionFactory.getInstancia().getConection();
 		}
@@ -113,10 +110,13 @@ public class ProductoDAO {
 		}
 		String SQL = ("SELECT * FROM productos WHERE titulo =('" + tituloProd +"') or codigo = ('" + codigo +"');");
 		try{
-			stmt.execute(SQL);
+			rs = stmt.executeQuery(SQL);
+			while (rs.next()) {
+				
+			}
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
-			throw new AccesoException("Error de escritura");
+			throw new AccesoException("");//Rellenar msj
 		}
 	}
 

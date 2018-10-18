@@ -1,5 +1,7 @@
 package clases;
 
+import java.util.List;
+
 import dao.ClienteDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
@@ -12,6 +14,7 @@ public class Cliente {
 	private String telefono;
 	private String mail;
 	private int dniCuit;
+
 	
 	public Cliente (int dniCuit, String nombre, String domicilio, String telefono, String mail){
 		
@@ -75,5 +78,6 @@ public class Cliente {
 		ClienteDAO cliente = new ClienteDAO();
 		cliente.grabarCliente(this);
 	}
+	
 
 }

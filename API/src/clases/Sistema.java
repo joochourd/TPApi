@@ -25,12 +25,11 @@ public class Sistema {
 	}
 	public void bajaCliente(int dniCuit, String nombre){
 		ClienteDAO cDao= new ClienteDAO();
-		cDao.borrarCliente(dniCuit, nombre);
+		return cDao.borrarCliente(dniCuit, nombre);
 	}
 	public Cliente buscarCliente (int dniCuit){ // Ver como devolver un cliente
 		ClienteDAO cDao = new ClienteDAO();
-		cDao.buscarCliente(dniCuit);
-		return  ;
+		return cDao.buscarCliente(dniCuit);
 	}
 	public Producto altaProducto(String titulo, String descripcion, float precio){
 		Producto prod = new Producto(titulo, descripcion, precio);
@@ -50,8 +49,7 @@ public class Sistema {
 	}
 	public Producto buscarProducto(String tituloProd, int codigo){// Ver como devolver un producto
 		ProductoDAO pDao = new ProductoDAO();
-		pDao.buscarProducto(tituloProd, codigo);
-		return;
+		return pDao.buscarProducto(tituloProd, codigo);
 	}
 	
 	
@@ -61,6 +59,9 @@ public class Sistema {
 	public Reclamo registrarReclamoZona(String zona, int dniCuit){}
 	
 	public Reclamo registrarReclamoFacturacion(Date fecha, int nroFactura, int dniCuit){}	
+	
+	public void registrarReclamoCompuesto(int dniCuit){}
+	// ver si dni es string o int
 	
 	public void administrarReclamoCantProdFaltante(){}
 	
@@ -72,8 +73,8 @@ public class Sistema {
 	
 	public void login(String usuario, String contraseña){}
 	
-	public List<Reclamo> getReclamos(Cliente cliente){}
+	public List<Reclamo> getReclamos(Cliente cliente){
+		cliente.getReclamos();
+	}
 	
-	public void registrarReclamoCompuesto(int dniCuit){}
-	// ver si dni es string o int
 }	

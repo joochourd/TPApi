@@ -4,9 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import observador.ObservableReclamo;
 
-public abstract class Reclamo extends ObservableReclamo {
+public abstract class Reclamo{
 	
 	public Reclamo(int numeroReclamo, LocalDate fecha, String descripcion, Enum<Tipos> tipo) {
 		super();
@@ -54,7 +53,6 @@ public abstract class Reclamo extends ObservableReclamo {
 	}
 	public void setEstado(Enum<Estados> estado) {
 		this.estado = estado;
-		this.updateObserver(estado);
 	}
 	public Enum<Tipos> getTipo() {
 		return tipo;
