@@ -5,7 +5,7 @@ import java.util.Date;
 public class Empleado {
 	private String nombre;
 	private Date fechaNac;
-	private String contraseña;
+	private String password;
 	private String nomUsr;
 	private int nroLU;
 	private Rol rolOriginal;

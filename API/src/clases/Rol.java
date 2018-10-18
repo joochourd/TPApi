@@ -16,6 +16,11 @@ public class Rol {
 			}
 		}
 		usr.remove(i);
+		
+		
+		/*for(Empleado empleado : usr) {
+			if (empleado.getNroLU() == nroLu)  usr.remove(empleado);
+		}*/
 	}
 	public void agregarUsr(Empleado usuario){
 		usr.add(usuario);
