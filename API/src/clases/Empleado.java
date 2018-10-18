@@ -1,7 +1,6 @@
 package clases;
 
 import java.util.Date;
-import java.util.List;
 
 public class Empleado {
 	private String nombre;
@@ -30,12 +29,12 @@ public class Empleado {
 	}
 
 
-	public String getContraseña() {
-		return contraseña;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setContraseña(String contraseña) {
-		this.contraseña = contraseña;
+	public void setpassword(String password) {
+		this.password = password;
 	}
 
 	public String getNomUsr() {

@@ -2,10 +2,10 @@ package strategy;
 
 import java.time.LocalDate;
 
-import clases.Simple;
+import clases.CantYProdYFalta;
 import clases.Tipos;
 
-public class EstrategiaCantidad extends Simple implements EstrategiaAbstracta {
+public class EstrategiaCantidad extends CantYProdYFalta implements EstrategiaAbstracta {
 
 	public EstrategiaCantidad(int numeroReclamo, LocalDate fecha, String descripcion, Enum<Tipos> tipo) {
 		super(numeroReclamo, fecha, descripcion, tipo);
