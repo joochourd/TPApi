@@ -112,7 +112,7 @@ public class ClienteDAO {
 		}
 		String SQL = ("SELECT * FROM clientes WHERE dniCuit =('" + dniCuit +"');");
 		try{
-			stmt.execute(SQL);
+			rs = stmt.execute(SQL);
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
 			throw new AccesoException("Error de escritura");
