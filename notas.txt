@@ -1,0 +1,21 @@
+Aclaraciones:
+*Los numero identificadores de producto y reclamo los genera la BD
+*tablero(controlador de reclamos)
+*Un listener por cada reclamo simple y que avise al compuesto
+*Interfaz observa a tablero
+*reclamoDAO recibe para guardarse como parametro prepeare statement
+
+
+Dudas:
+*Se busca un producto de a uno por codigo o titulo, antes habia List<String> titulo
+*Modificar factura creo que no es necesario o no se tendria que poder
+*Clase Sistema. public List <String> reclamoCantProdFalta(List<int> cantidad, String tituloProd){}.¿Que es o para que esta?
+
+
+Para SQL:
+/*Identidad para SQL*/
+Start at 1 and increment by 1
+CREATE TABLE IDENTITY_TEST1 
+(
+ID INT IDENTITY(1,1) PRIMARY KEY,
+
