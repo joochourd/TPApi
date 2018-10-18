@@ -1,11 +1,11 @@
-package Clases;
+package clases;
 
 import java.time.LocalDate;
 
 public class Facturacion extends Simple {
 	public Facturacion(int numeroReclamo, LocalDate fecha, String descripcion, Enum<Tipos> tipo, LocalDate fechaFacturacion, int nroFactura) {
 		super(numeroReclamo, fecha, descripcion, tipo);
-		this.fecha = fecha;
+		this.fechaFacturacion = fecha;
 		this.nroFactura = nroFactura;
 		// TODO Auto-generated constructor stub
 	}

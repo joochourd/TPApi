@@ -1,6 +1,6 @@
-package Clases;
+package clases;
 
-public class StrategyProducto extends AbstractStrategy {
+public class StrategyCantidad extends AbstractStrategy {
 
 	@Override
 	public void accion() {
