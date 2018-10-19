@@ -1,5 +1,5 @@
 package clases;
 
-public enum Tipos {
+public enum Tipo {
 	Simple, Zona, Facturacion, Cantidad, Producto, Falta
 }

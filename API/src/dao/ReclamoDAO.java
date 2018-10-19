@@ -7,6 +7,7 @@ import java.sql.Statement;
 
 import clases.Cliente;
 import clases.Reclamo;
+import clases.Tipo;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 
@@ -21,7 +22,7 @@ public class ReclamoDAO {
 		return instancia;
 	}
 	
-	public void grabarReclamo(Reclamo Reclamo) throws ConexionException, AccesoException{
+	public void grabarReclamo(Reclamo reclamo) throws ConexionException, AccesoException{
 		Connection con = null;  
 		Statement stmt = null;  
 		try {    
@@ -36,7 +37,7 @@ public class ReclamoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = "INSERT INTO facturas values ('" + Reclamo.getNro() +"','" + Reclamo.getTipo() + "','" + Reclamo.getFecha() + "','" + Reclamo.getTotal() + "');";
+		String SQL = "INSERT INTO reclamos values ('" + reclamo.getTipo() + "','" + reclamo.getFecha() + "','" + reclamo.getDescripcion() + "','" + reclamo.getEstado() + "');";
 		try{
 			stmt.execute(SQL);
 		} catch (SQLException e1) {
@@ -59,7 +60,7 @@ public class ReclamoDAO {
 			} catch (SQLException e1) {
 				throw new AccesoException("Error de acceso");
 			}
-			String SQL = ("DELETE FROM facturas WHERE numero = ('" + nro +"');");
+			String SQL = ("DELETE FROM reclamos WHERE numero = ('" + nro +"');");
 			try{
 				stmt.execute(SQL);
 			} catch (SQLException e1) {
@@ -67,7 +68,7 @@ public class ReclamoDAO {
 				throw new AccesoException("Error de escritura");
 			}
 	}
-	/*public void modificarReclamo(Reclamo Reclamo) throws ConexionException, AccesoException{
+	public void modificarReclamo(Reclamo reclamo) throws ConexionException, AccesoException{
 		Connection con = null;  
 		Statement stmt = null;  
 		try {    
@@ -82,15 +83,15 @@ public class ReclamoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("UPDATE facturas SET numero =('" + Reclamo.getNro() +"'), tipo=('" + Reclamo.getTipo() +"'), fecha = ('" + Reclamo.getFecha() +"'), total = ('" + Reclamo.getTotal() +"') WHERE numero = ('" + Reclamo.getNro() +"');");
+		//String SQL = ("UPDATE reclamos SET tipo=('" + reclamo.getTipo() +"'), fecha = ('" + reclamo.getFecha() +"'), total = ('" + reclamo.getTotal() +"') WHERE numero = ('" + reclamo.getNro() +"');");
 		try{
 			stmt.execute(SQL);
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
 			throw new AccesoException("Error de escritura");
 		}
-	}*/
-	public void buscarReclamo(int nro) throws ConexionException, AccesoException{
+	}
+	public void buscarReclamo(int nro, Tipo tipo) throws ConexionException, AccesoException{
 		Connection con = null;  
 		Statement stmt = null;  
 		ResultSet rs = null;
@@ -106,7 +107,7 @@ public class ReclamoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("SELECT * FROM facturas WHERE numero =('" + nro +"');");
+		String SQL = ("SELECT * FROM reclamos WHERE numero =('" + nro +"') or tipo = ('" + tipo +"');");
 		try{
 			rs = stmt.executeQuery(SQL);
 			while (rs.next()) {

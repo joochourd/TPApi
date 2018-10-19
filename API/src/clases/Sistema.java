@@ -73,6 +73,7 @@ public class Sistema {
 	public void registrarReclamoCompuesto(int dniCuit){}
 	// ver si dni es string o int
 	
+	
 	public void administrarReclamoCantProdFaltante(){}
 	
 	public void administrarReclamoZona(){}
@@ -81,9 +82,9 @@ public class Sistema {
 	
 	public void realizarConsulta(){}
 	
-	public void login(String usuario, String contraseña){}
+	public void login(String usuario, String password){}
 	
-	public List<Reclamo> getReclamos(Cliente cliente){
+	public List<Reclamo> getReclamosCliente(Cliente cliente){
 		cliente.getReclamos();
 	}
 	

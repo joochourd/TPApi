@@ -7,11 +7,11 @@ import java.util.List;
 
 public abstract class Reclamo{
 	
-	public Reclamo(int numeroReclamo, LocalDate fecha, String descripcion, Enum<Tipos> tipo) {
+	public Reclamo(int numeroReclamo, LocalDate fecha, String descripcion, Enum<Tipo> tipo) {
 		super();
 		this.fecha = fecha;
 		this.descripcion = descripcion;
-		this.tipo = Tipos.Cantidad;
+		this.tipo = Tipo.Cantidad;
 		this.estado = Estados.Registrado;
 		this.historial = new ArrayList<ActualizacionEstado>();
 	}
@@ -19,7 +19,7 @@ public abstract class Reclamo{
 	LocalDate fecha;
 	String descripcion;
 	Enum <Estados> estado;
-	Enum <Tipos> tipo;
+	Enum <Tipo> tipo;
 	
 
 	List <ActualizacionEstado> historial;
@@ -54,10 +54,10 @@ public abstract class Reclamo{
 	public void setEstado(Enum<Estados> estado) {
 		this.estado = estado;
 	}
-	public Enum<Tipos> getTipo() {
+	public Enum<Tipo> getTipo() {
 		return tipo;
 	}
-	public void setTipo(Enum<Tipos> tipo) {
+	public void setTipo(Enum<Tipo> tipo) {
 		this.tipo = tipo;
 	}
 	// ACA TERMIAN LOS SETTERS / GETTERS

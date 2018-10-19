@@ -37,7 +37,7 @@ public class EmpleadoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = "INSERT INTO empleados values ('" + empleado.getNomUsr() +"','" + empleado.getContraseña() + "','" + empleado.getNombre() + "','" + empleado.getNroLU() + "','" + empleado.getRolOriginal() + "','" + empleado.getRolTemporal() + "');";
+		String SQL = "INSERT INTO empleados values ('" + empleado.getNomUsr() +"','" + empleado.getPassword() + "','" + empleado.getNombre() + "','" + empleado.getNroLU() + "','" + empleado.getRolOriginal() + "','" + empleado.getRolTemporal() + "');";
 		try{
 			stmt.execute(SQL);
 		} catch (SQLException e1) {
@@ -83,7 +83,7 @@ public class EmpleadoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("UPDATE clientes SET nombre =('" + empleado.getNombre() +"'), contraseña=('" + empleado.getContraseña() +"'), nroLu = ('" + empleado.getNroLU() +"'), rolOriginal = ('" + empleado.getRolOriginal() +"'), rolTemporal = ('" + empleado.getRolTemporal() +"') WHERE nombreUsr = ('" + empleado.getNomUsr() +"');");
+		String SQL = ("UPDATE empleados SET nombre =('" + empleado.getNombre() +"'), contraseña=('" + empleado.getPassword() +"'), nroLu = ('" + empleado.getNroLU() +"'), rolOriginal = ('" + empleado.getRolOriginal() +"'), rolTemporal = ('" + empleado.getRolTemporal() +"') WHERE nombreUsr = ('" + empleado.getNomUsr() +"');");
 		try{
 			stmt.execute(SQL);
 		} catch (SQLException e1) {

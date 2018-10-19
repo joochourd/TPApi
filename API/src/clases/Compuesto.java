@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Compuesto extends Reclamo {
 
-	public Compuesto(int numeroReclamo, LocalDate fecha, String descripcion, Enum<Tipos> tipo) {
+	public Compuesto(int numeroReclamo, LocalDate fecha, String descripcion, Enum<Tipo> tipo) {
 		super(numeroReclamo, fecha, descripcion, tipo);
 		// TODO Auto-generated constructor stub
 	}
@@ -16,7 +16,7 @@ public class Compuesto extends Reclamo {
 	}
 	
 	public void addReclamo(int numeroReclamo) {
-		Simple simple = Sistema.getInstancia();
+		Simple simple = Sistema.getInstance().alta;
 	}
 
 }
