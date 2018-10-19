@@ -74,6 +74,11 @@ public abstract class Reclamo{
 		return false;
 		
 	}
+	
+	private void saveINBD() {
+		
+	}
+
 
 }
 

@@ -8,6 +8,16 @@ import dao.ProductoDAO;
 
 public class Sistema {
 	
+	private static Sistema instance;
+	
+	public Sistema getInstance () {
+		if (instance == null) {
+			return new Sistema();
+		}
+		return instance;
+	}
+
+	
 	
 	public void modificarCliente(int dniCuitAnterior, String nombreAnterior, int dniCuit, String nombre, String domicilio, String telefono, String mail){
 		Cliente cliente = buscarCliente(dniCuitAnterior);
