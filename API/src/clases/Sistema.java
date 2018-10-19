@@ -21,9 +21,7 @@ public class Sistema {
 	
 	public void modificarCliente(int dniCuitAnterior, String nombreAnterior, int dniCuit, String nombre, String domicilio, String telefono, String mail){
 		Cliente cliente = buscarCliente(dniCuitAnterior);
-		cliente.modificarCliente(dniCuit, nombre, domicilio, telefono, mail);
-		ClienteDAO cDao = new ClienteDAO();
-		cDao.modificarCliente(cliente, nombreAnterior, dniCuitAnterior);
+		cliente.modificar(dniCuit, nombre, domicilio, telefono, mail);
 	}
 	public Cliente altaCliente(int dniCuit, String nombre, String domicilio, String telefono, String mail){
 		Cliente cliente = buscarCliente(dniCuit);

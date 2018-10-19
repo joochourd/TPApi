@@ -26,12 +26,13 @@ public class Cliente {
 		
 	}
 	
-	public void modificarCliente(int dniCuit, String nombre, String domicilio, String telefono, String mail){
-		if(this.dniCuit != dniCuit) this.dniCuit = dniCuit;
-		if(this.nombre != nombre) this.nombre = nombre;
-		if(this.domicilio != domicilio) this.domicilio = domicilio;
-		if(this.telefono != telefono) this.telefono = telefono;
-		if(this.mail != mail) this.mail = mail;
+	public void modificar(int dniCuit, String nombre, String domicilio, String telefono, String mail) throws ConexionException, AccesoException{
+		this.dniCuit = dniCuit;
+		this.nombre = nombre;
+		this.domicilio = domicilio;
+		this.telefono = telefono;
+		this.mail = mail;
+		this.guardate();
 	}
 
 	public String getDomicilio() {
