@@ -37,7 +37,12 @@ public class ClienteDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = "INSERT INTO clientes values ('" + cliente.getNombre() +"','" + cliente.getDomicilio() + "','" + cliente.getTelefono() + "','" + cliente.getDniCuit() + "');";
+		String SQL = "INSERT INTO clientes values ('" +
+				cliente.getNombre() +"','" 
+				+ cliente.getDomicilio() + "','" 
+				+ cliente.getTelefono() + "','" 
+				+ cliente.getDniCuit() + "','" 
+				+ cliente.getMail() + "');";
 		try{
 			stmt.execute(SQL);
 		} catch (SQLException e1) {

@@ -83,7 +83,7 @@ public class EmpleadoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("UPDATE empleados SET nombre =('" + empleado.getNombre() +"'), contraseña=('" + empleado.getPassword() +"'), nroLu = ('" + empleado.getNroLU() +"'), rolOriginal = ('" + empleado.getRolOriginal() +"'), rolTemporal = ('" + empleado.getRolTemporal() +"') WHERE nombreUsr = ('" + empleado.getNomUsr() +"');");
+		String SQL = ("UPDATE empleados SET nombre =('" + empleado.getNombre() +"'), keyword=('" + empleado.getPassword() +"'), nroLu = ('" + empleado.getNroLU() +"'), rolOriginal = ('" + empleado.getRolOriginal() +"'), rolTemporal = ('" + empleado.getRolTemporal() +"') WHERE nombreUsr = ('" + empleado.getNomUsr() +"');");
 		try{
 			stmt.execute(SQL);
 		} catch (SQLException e1) {
