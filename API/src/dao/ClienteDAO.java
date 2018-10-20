@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import clases.Cliente;
 import excepciones.AccesoException;
@@ -73,7 +75,7 @@ public class ClienteDAO {
 				throw new AccesoException("Error de escritura");
 			}
 	}
-	public void modificarCliente(Cliente cliente, String nombreAnterior, int dniCuitAnterior) throws ConexionException, AccesoException{
+	public void modificarCliente(Cliente cliente) throws ConexionException, AccesoException{
 		Connection con = null;  
 		Statement stmt = null;  
 		try {    
@@ -88,7 +90,7 @@ public class ClienteDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("UPDATE clientes SET nombre =('" + cliente.getNombre() +"'), mail=('" + cliente.getMail() +"'), domicilio = ('" + cliente.getDomicilio() +"'), dniCuit=('" + cliente.getDniCuit() +"'), telefono = ('" + cliente.getTelefono() +"') WHERE nombre = ('" + nombreAnterior +"') AND dniCuit = ('" + dniCuitAnterior +"');");
+		String SQL = ("UPDATE clientes SET nombre =('" + cliente.getNombre() +"'), mail=('" + cliente.getMail() +"'), domicilio = ('" + cliente.getDomicilio() +"'), telefono = ('" + cliente.getTelefono() +"') WHERE dniCuit = ('" + cliente.getDniCuit() +"');");
 		try{
 			stmt.execute(SQL);
 		} catch (SQLException e1) {
@@ -96,7 +98,7 @@ public class ClienteDAO {
 			throw new AccesoException("Error de escritura");
 		}
 	}
-	public void buscarCliente(int dniCuit) throws ConexionException, AccesoException{
+	public Cliente buscarCliente(int dniCuit) throws ConexionException, AccesoException{
 		Connection con = null;  
 		Statement stmt = null;  
 		ResultSet rs = null;
@@ -122,5 +124,63 @@ public class ClienteDAO {
 			System.out.println(e1.getMessage());
 			throw new AccesoException("");//Rellenar msj
 		}
+		return
+	}
+	
+	public List<Cliente> obtenerTodosClientes() throws ConexionException, AccesoException, SQLException{
+		Connection con = null;  
+		Statement stmt = null;  
+		ResultSet rs = null;  
+		List <Cliente> clientes = new ArrayList<Cliente>();
+		try {    
+			con = ConnectionFactory.getInstancia().getConection();
+		}
+		catch (ClassNotFoundException | SQLException e) {
+			throw new ConexionException("No esta disponible el acceso al Servidor");
+		}
+
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e1) {
+			throw new AccesoException("Error de acceso");
+		}
+		String SQL = "";
+		try {
+			rs = stmt.executeQuery(SQL);
+		} catch (SQLException e1) {
+			throw new AccesoException("");
+		}
+		while(rs.next()){
+			
+		}
+		return clientes;
+	}
+	
+	public obtenerReclamosCliente() throws ConexionException, AccesoException, SQLException{
+		Connection con = null;  
+		Statement stmt = null;  
+		ResultSet rs = null;  
+		Map<Cliente, Integer> map = new HashMap<Cliente, Integer>();
+		try {    
+			con = ConnectionFactory.getInstancia().getConection();
+		}
+		catch (ClassNotFoundException | SQLException e) {
+			throw new ConexionException("No esta disponible el acceso al Servidor");
+		}
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e1) {
+			throw new AccesoException("Error de acceso");
+		}
+		String SQL = 
+		try {
+			rs = stmt.executeQuery(SQL);
+		} catch (SQLException e1) {
+			throw new AccesoException("");
+		}
+		while(rs.next()){
+			
+		}
+		return		
 	}
 }

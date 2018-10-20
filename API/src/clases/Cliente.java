@@ -26,13 +26,8 @@ public class Cliente {
 		
 	}
 	
-	public void modificar(int dniCuit, String nombre, String domicilio, String telefono, String mail) throws ConexionException, AccesoException{
-		this.dniCuit = dniCuit;
-		this.nombre = nombre;
-		this.domicilio = domicilio;
-		this.telefono = telefono;
-		this.mail = mail;
-		this.guardate();
+	public void modificate() throws ConexionException, AccesoException{
+		ClienteDAO.getInstancia().modificarCliente(this);
 	}
 
 	public String getDomicilio() {
@@ -71,13 +66,8 @@ public class Cliente {
 		this.domicilio = domicilio;
 	}
 
-	public void setDniCuit(int dniCuit) {
-		this.dniCuit = dniCuit;
-	}
-	
 	public void guardate() throws ConexionException, AccesoException{
-		ClienteDAO cliente = new ClienteDAO();
-		cliente.grabarCliente(this);
+		ClienteDAO.getInstancia().grabarCliente(this);
 	}
 	
 

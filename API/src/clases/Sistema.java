@@ -4,12 +4,16 @@ import java.util.Date;
 import java.util.List;
 
 import dao.ClienteDAO;
+import dao.EmpleadoDAO;
 import dao.ProductoDAO;
+import excepciones.AccesoException;
+import excepciones.ConexionException;
 
 public class Sistema {
-	
+
 	private static Sistema instance;
-	
+	private Empleado empleadoActual;
+
 	public Sistema getInstance () {
 		if (instance == null) {
 			return new Sistema();
@@ -17,73 +21,92 @@ public class Sistema {
 		return instance;
 	}
 
-	
-	
-	public void modificarCliente(int dniCuitAnterior, String nombreAnterior, int dniCuit, String nombre, String domicilio, String telefono, String mail){
-		Cliente cliente = buscarCliente(dniCuitAnterior);
-		cliente.modificar(dniCuit, nombre, domicilio, telefono, mail);
+
+
+	public void modificarCliente(int dniCuit, String nombre, String domicilio, String telefono, String mail) throws ConexionException, AccesoException{
+		Cliente cli = ClienteDAO.getInstancia().buscarCliente(dniCuit);
+		cli.setNombre(nombre);
+		cli.setDomicilio(domicilio);
+		cli.setTelefono(telefono);
+		cli.setMail(mail);
+		cli.modificate();
 	}
-	public Cliente altaCliente(int dniCuit, String nombre, String domicilio, String telefono, String mail){
+
+	public void altaCliente(int dniCuit, String nombre, String domicilio, String telefono, String mail) throws ConexionException, AccesoException{
 		Cliente cliente = buscarCliente(dniCuit);
-		if (cliente == null){ //primero verifica que el cliente no exista
+		if (cliente == null){
 			cliente = new Cliente(dniCuit, nombre, domicilio, telefono, mail);
 			cliente.guardate();
 		}
-		
+
 	}
-	public void bajaCliente(int dniCuit, String nombre){
-		ClienteDAO cDao= new ClienteDAO();
-		return cDao.borrarCliente(dniCuit, nombre);
+	public void bajaCliente(int dniCuit, String nombre) throws ConexionException, AccesoException{
+		ClienteDAO.getInstancia().borrarCliente(dniCuit, nombre);
 	}
-	public Cliente buscarCliente (int dniCuit){ // Ver como devolver un cliente
-		ClienteDAO cDao = new ClienteDAO();
-		return cDao.buscarCliente(dniCuit);
+
+	public Cliente buscarCliente (int dniCuit) throws ConexionException, AccesoException{
+		return ClienteDAO.getInstancia().buscarCliente(dniCuit);
 	}
-	public Producto altaProducto(String titulo, String descripcion, float precio){
+
+	public void altaProducto(String titulo, String descripcion, float precio) throws ConexionException, AccesoException{
 		Producto prod = new Producto(titulo, descripcion, precio);
 		prod.guardate();
-		
+
 	}
-	public void modificarProducto(int codigoPublicacion,String titulo, String descripcion, float precio){
-		Producto producto = buscarProducto();
-		producto.modificarProducto(titulo, descripcion, precio);
-		ProductoDAO pDao = new ProductoDAO();
-		pDao.modificarProducto(producto);
+	public void modificarProducto(int codigoPublicacion,String titulo, String descripcion, float precio) throws ConexionException, AccesoException{
+		Producto prod = ProductoDAO.getInstancia().buscarProducto(titulo, codigoPublicacion);
+		prod.setTitulo(titulo);
+		prod.setDescripcion(descripcion);
+		prod.setPrecio(precio);
+		prod.modificate();
 	}
-	
-	public void bajaProducto(int codigoPublicacion){
-		ProductoDAO pDao = new ProductoDAO();
-		pDao.borrarProducto(codigoPublicacion);
-	}
-	public Producto buscarProducto(String tituloProd, int codigo){// Ver como devolver un producto
-		ProductoDAO pDao = new ProductoDAO();
-		return pDao.buscarProducto(tituloProd, codigo);
+
+	public void bajaProducto(int codigoPublicacion) throws ConexionException, AccesoException{
+		ProductoDAO.getInstancia().borrarProducto(codigoPublicacion);
 	}
 	
-	
-	
-	public List <String> reclamoCantProdFalta(List<int> cantidad, String tituloProd){}	
-	
-	public Reclamo registrarReclamoZona(String zona, int dniCuit){}
-	
-	public Reclamo registrarReclamoFacturacion(Date fecha, int nroFactura, int dniCuit){}	
-	
+	public Producto buscarProducto(String tituloProd, int codigo) throws ConexionException, AccesoException{
+		return ProductoDAO.getInstancia().buscarProducto(tituloProd, codigo);
+	}
+
+
+	public List <String> reclamoCantProdFalta(List<Integer> cantidad, String tituloProd){
+		return null;
+	}	
+
+	public void registrarReclamoZona(String zona, int dniCuit){}
+
+	public void registrarReclamoFacturacion(Date fecha, int nroFactura, int dniCuit){}	
+
 	public void registrarReclamoCompuesto(int dniCuit){}
-	// ver si dni es string o int
-	
-	
+
 	public void administrarReclamoCantProdFaltante(){}
-	
+
 	public void administrarReclamoZona(){}
-	
+
 	public void administrarReclamoFacturacion(){}
-	
+
 	public void realizarConsulta(){}
-	
-	public void login(String usuario, String password){}
-	
+
+	public String login(String usuario, String password) throws ConexionException, AccesoException{
+		Empleado emp = EmpleadoDAO.getInstancia().buscarEmpleado(usuario);
+		if(emp != null){
+			if(emp.getPassword().equals(password)){
+				this.empleadoActual = emp;
+				return "Bienvenido al sistema...";
+			}
+			else{
+				return "Contrasenia incorrecta...";
+			}
+		}
+		else{
+			return "Usuario incorrecto...";
+		}
+	}
+
 	public List<Reclamo> getReclamosCliente(Cliente cliente){
 		cliente.getReclamos();
+		return ;
 	}
-	
+
 }	

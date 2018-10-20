@@ -92,7 +92,7 @@ public class ProductoDAO {
 		}
 	}
 	
-	public void buscarProducto(String tituloProd, int codigo ) throws ConexionException, AccesoException{
+	public Producto buscarProducto(String tituloProd, int codigo ) throws ConexionException, AccesoException{
 		Connection con = null;  
 		Statement stmt = null;  
 		ResultSet rs = null;
@@ -118,6 +118,7 @@ public class ProductoDAO {
 			System.out.println(e1.getMessage());
 			throw new AccesoException("");//Rellenar msj
 		}
+		return
 	}
 
 
