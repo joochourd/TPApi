@@ -3,11 +3,11 @@ package strategy;
 import java.time.LocalDate;
 
 import clases.CantYProdYFalta;
-import clases.Tipo;
+import clases.TipoReclamo;
 
 public class EstrategiaProducto extends CantYProdYFalta implements EstrategiaAbstracta {
 
-	public EstrategiaProducto(int numeroReclamo, LocalDate fecha, String descripcion, Enum<Tipo> tipo) {
+	public EstrategiaProducto(int numeroReclamo, LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo) {
 		super(numeroReclamo, fecha, descripcion, tipo);
 		// TODO Auto-generated constructor stub
 	}

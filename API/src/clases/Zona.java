@@ -6,7 +6,7 @@ public class Zona extends Simple {
 
 	private String zona; 
 
-	public Zona(int numeroReclamo, LocalDate fecha, String descripcion, Enum<Tipo> tipo, String zona) {
+	public Zona(int numeroReclamo, LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, String zona) {
 		super(numeroReclamo, fecha, descripcion, tipo);
 		this.zona = zona;
 		// TODO Auto-generated constructor stub

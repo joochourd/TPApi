@@ -14,7 +14,7 @@ public class CantYProdYFalta extends Simple {
 	private List<Integer> cantidades;
 	private EstrategiaAbstracta strategy;
 	
-	public CantYProdYFalta(int numeroReclamo, LocalDate fecha, String descripcion, Enum<Tipo> tipo) {
+	public CantYProdYFalta(int numeroReclamo, LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo) {
 		super(numeroReclamo, fecha, descripcion, tipo);
 		this.productos = new ArrayList<Producto>();
 		this.cantidades = new ArrayList<Integer>();

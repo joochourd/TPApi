@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class Facturacion extends Simple {
 
 
-	public Facturacion(int numeroReclamo, LocalDate fecha, String descripcion, Enum<Tipo> tipo, LocalDate fechaFacturacion, int nroFactura) {
+	public Facturacion(int numeroReclamo, LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, LocalDate fechaFacturacion, int nroFactura) {
 		super(numeroReclamo, fecha, descripcion, tipo);
 		this.fechaFacturacion = fecha;
 		this.nroFactura = nroFactura;

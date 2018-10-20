@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public abstract class Simple extends Reclamo {
 
-	public Simple(int numeroReclamo, LocalDate fecha, String descripcion, Enum<Tipo> tipo) {
+	public Simple(int numeroReclamo, LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo) {
 		super(numeroReclamo, fecha, descripcion, tipo);
 		// TODO Auto-generated constructor stub
 	}

@@ -6,8 +6,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import clases.Cliente;
+import clases.Facturacion;
 import clases.Reclamo;
-import clases.Tipo;
+import clases.TipoReclamo;
+import clases.Zona;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 
@@ -35,8 +37,21 @@ public class ReclamoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = "INSERT INTO reclamos values ('" + reclamo.getTipo() + "','" + reclamo.getFecha() + "','"
-				+ reclamo.getDescripcion() + "','" + reclamo.getEstado() + "');";
+		String SQL = "INSERT INTO reclamos  (" +
+			"idReclamo,"+
+			"fecha,"+
+			"descripcion,"+
+			"estados"+
+			getSpecificColunmForType((TipoReclamo) reclamo.getTipo(), reclamo)+
+			" values ('" +
+			reclamo.getNumeroReclamo() + "','" +
+			reclamo.getFecha() + "','"+
+			reclamo.getDescripcion() + "','" +
+			reclamo.getEstado().toString() +
+			getSpecificColunmValueForType((TipoReclamo) reclamo.getTipo(), reclamo)+
+			"');";
+		
+		
 		try {
 			stmt.execute(SQL);
 		} catch (SQLException e1) {
@@ -82,8 +97,14 @@ public class ReclamoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("UPDATE reclamos SET " + "tipo=('" + reclamo.getTipo() + "')," + " fecha = ('"
-				+ reclamo.getFecha() + "')," + " total = ('" + "')" + " WHERE numero = ('" + "');");
+		String SQL = ("UPDATE reclamos SET " +
+			"idReclamo = ('" + reclamo.getNumeroReclamo() + "')," +
+			" fecha = ('"+ reclamo.getFecha() + "')," +
+			" descripcion = ('"+ reclamo.getDescripcion() +"')" +
+			" estados= ('"+ reclamo.getEstado() + "')" +
+			" tipo = ('"+ reclamo.getTipo().toString() +"')" +
+			getSpecificQueryForType((TipoReclamo) reclamo.getTipo(), reclamo)+
+			" WHERE idReclamo = ('" +reclamo.getNumeroReclamo()+ "');");
 
 		try {
 			stmt.execute(SQL);
@@ -93,7 +114,7 @@ public class ReclamoDAO {
 		}
 	}
 
-	public void buscarReclamo(int nro, Tipo tipo) throws ConexionException, AccesoException {
+	public void buscarReclamo(int nro, TipoReclamo tipo) throws ConexionException, AccesoException {
 		Connection con = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -120,21 +141,54 @@ public class ReclamoDAO {
 		}
 	}
 
-	private String getSpecificQueryForType(Tipo tipo) {
+	private String getSpecificQueryForType(TipoReclamo tipo, Reclamo reclamo) {
 
 		switch (tipo) {
 		case Zona:
-			return ("");
+			return ("zona = "+((Zona) reclamo).getZona()+"");
 			
 		case Facturacion:
-
+			return ("fechaFacturacion = "+((Facturacion) reclamo).getFecha().toString() +", nroFactura = "+ ((Facturacion) reclamo).getNroFactura());
 			
 		case Cantidad:
 		case Producto:
 		case Falta:
-				
-			
+			return ("");
+		}
 
+		return "";
+	}
+	private String getSpecificColunmForType(TipoReclamo tipo, Reclamo reclamo) {
+
+		switch (tipo) {
+		case Zona:
+			return (", zona");
+			
+		case Facturacion:
+			return (",  fechaFacturacion, nroFactura");
+			
+		case Cantidad:
+		case Producto:
+		case Falta:
+			return ("");
+		}
+
+		return "";
+	}
+	
+	private String getSpecificColunmValueForType(TipoReclamo tipo, Reclamo reclamo) {
+
+		switch (tipo) {
+		case Zona:
+			return ((Zona) reclamo).getZona();
+			
+		case Facturacion:
+			return ((Facturacion) reclamo).getFecha().toString() + ((Facturacion) reclamo).getNroFactura();
+			
+		case Cantidad:
+		case Producto:
+		case Falta:
+			return ("");
 		}
 
 		return "";
