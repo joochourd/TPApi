@@ -1,10 +1,21 @@
 package justATest;
 
+import java.time.LocalDate;
+
+import clases.TipoReclamo;
+import clases.Zona;
+import dao.ReclamoDAO;
+import excepciones.AccesoException;
+import excepciones.ConexionException;
+
 public class JustAReplaceForAUnitTest {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ConexionException, AccesoException {
 		// TODO Auto-generated method stub
-
+		Zona zona = new Zona(0, LocalDate.now(), "just a description", TipoReclamo.Zona, "Just a zone");
+		ReclamoDAO dao = new ReclamoDAO();
+		dao.grabarReclamo(zona);
+		System.out.println("hola");
 	}
 
 }
