@@ -7,8 +7,7 @@ import observador.ObservableTablero;
 
 public class Tablero  extends ObservableTablero {
 	private List <Reclamo> reclamos;
-
-/*Agregar restrincciones de roles*/
+	
 	public void crearReclamoZona(){}
 	public void crearReclamoFacturacion(){}
 	public void crearReclamoCantYProdYFalta(){}
@@ -17,6 +16,7 @@ public class Tablero  extends ObservableTablero {
 	public void tratarReclamoFacturacion(){}
 	public void tratarCantYPordYFalta(){}
 	public void tratarReclamoCompuesto(){}
+	public void generarReportes(){}
 	public void getReclamos(Rol rol, TipoReclamo tipoReclamo){//ver como traer todos los reclamos
 		
 	}

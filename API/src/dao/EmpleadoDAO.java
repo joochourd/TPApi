@@ -91,7 +91,7 @@ public class EmpleadoDAO {
 			throw new AccesoException("Error de escritura");
 		}
 	}
-	public void buscarEmpleado(String nomUsr) throws ConexionException, AccesoException{
+	public Empleado buscarEmpleado(String nomUsr) throws ConexionException, AccesoException{
 		Connection con = null;  
 		Statement stmt = null;  
 		ResultSet rs = null;

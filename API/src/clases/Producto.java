@@ -29,8 +29,7 @@ public class Producto {
 	}
 	
 	public void guardate() throws ConexionException, AccesoException{
-		ProductoDAO pDao = new ProductoDAO();
-		pDao.grabarProducto(this);
+		ProductoDAO.getInstancia().grabarProducto(this);
 	}
 
 	public int getCodigoPublicacion() {

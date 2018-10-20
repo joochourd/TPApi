@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Rol {
 
-	private String descripcion;
+	private Enum<TipoRol> descripcion;
 	private List<Empleado> usr;
 	private List<Enum> permisos;
 	

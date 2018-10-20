@@ -15,11 +15,11 @@ public abstract class Reclamo{
 		this.estado = Estados.Registrado;
 		this.historial = new ArrayList<ActualizacionEstado>();
 	}
-	int numeroReclamo ; 
-	LocalDate fecha;
-	String descripcion;
-	Enum <Estados> estado;
-	Enum <TipoReclamo> tipo;
+	private int numeroReclamo ; 
+	private LocalDate fecha;
+	private String descripcion;
+	private Enum <Estados> estado;
+	private Enum <TipoReclamo> tipo;
 	
 
 	List <ActualizacionEstado> historial;
