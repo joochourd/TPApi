@@ -44,9 +44,6 @@ public class Tablero  extends ObservableTablero {
 
 	public void administrarReclamoZona(int idReclamoZona, Estados estado, String descripcion){
 		
-		
-		
-		
 	}
 
 	public void administrarReclamoFacturacion(){}
