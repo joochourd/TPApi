@@ -4,23 +4,32 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.ReclamoDAO;
+import excepciones.AccesoException;
+import excepciones.ConexionException;
+
 
 public abstract class Reclamo{
 	
-	public Reclamo(int numeroReclamo, LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo) {
+	public Reclamo(int numeroReclamo, LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr) {
 		super();
 		this.fecha = fecha;
+		this.numeroReclamo = numeroReclamo;
 		this.descripcion = descripcion;
 		this.tipo = TipoReclamo.Cantidad;
 		this.estado = Estados.Registrado;
+		this.clienteDniCuit = clienteDniCuit;
+		this.empleadoNombreUsr = empleadoNombreUsr;
 		this.historial = new ArrayList<ActualizacionEstado>();
 	}
-	private int numeroReclamo ; 
-	private LocalDate fecha;
-	private String descripcion;
-	private Enum <Estados> estado;
-	private Enum <TipoReclamo> tipo;
-	
+	protected int numeroReclamo ; 
+	protected LocalDate fecha;
+	protected String descripcion;
+	protected Enum <Estados> estado;
+	protected Enum <TipoReclamo> tipo;
+	protected int clienteDniCuit;
+	protected String empleadoNombreUsr;
+
 
 	List <ActualizacionEstado> historial;
 	
@@ -78,9 +87,7 @@ public abstract class Reclamo{
 		
 	}
 	
-	private void saveINBD() {
-		
-	}
+	protected abstract void guardate() throws ConexionException, AccesoException;
 
 
 }

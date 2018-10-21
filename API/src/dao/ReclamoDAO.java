@@ -29,7 +29,7 @@ public class ReclamoDAO {
 		}
 		return instancia;
 	}
-
+	//Mar
 	public void grabarReclamo(Reclamo reclamo) throws ConexionException, AccesoException {
 		Connection con = null;
 		Statement stmt = null;
@@ -144,30 +144,30 @@ public class ReclamoDAO {
 				Date auxFecha = resultSet.getDate("fecha"); // Change this to local date
 				String auxDescripcion = resultSet.getString("descripcion");
 				String auxEstados = resultSet.getString("estados");
-				int auxClientes = resultSet.getInt("clienteDniCuit");
+				int auxCliente = resultSet.getInt("clienteDniCuit");
 				String auxEmpleadoNumUsr = resultSet.getString("empleadoNumUsr");
 				String auxTipo = resultSet.getString("tipo");
 
 				
 				if(auxTipo.equals("zona")) {
 					String zona = resultSet.getString("zona");
-					Zona reclamoZona = new Zona(auxId, auxFecha.toLocalDate(), auxDescripcion, tipo,zona);
+					Zona reclamoZona = new Zona(auxId, auxFecha.toLocalDate(), auxDescripcion, TipoReclamo.valueOf(auxTipo),auxCliente,auxEmpleadoNumUsr,zona);
 					return reclamoZona;
 					
 				}
 				if(auxTipo.equals("Facturacion")) {
 					Date fecha = resultSet.getDate("fechaFacturacion");
 					int numFactura = resultSet.getInt("nroFactura");
-					Facturacion reclamoFacturacion = new Facturacion(auxId, auxFecha.toLocalDate(), auxDescripcion,tipo, fecha.toLocalDate(),numFactura);
+					Facturacion reclamoFacturacion = new Facturacion(auxId, auxFecha.toLocalDate(), auxDescripcion,TipoReclamo.valueOf(auxTipo),auxCliente,auxEmpleadoNumUsr, fecha.toLocalDate(),numFactura);
 					return reclamoFacturacion;
 				}
 
 				if(auxTipo.equals("CantYProdYFalta")) {
-					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(), auxDescripcion,tipo);
+					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(), auxDescripcion,TipoReclamo.valueOf(auxTipo),auxCliente,auxEmpleadoNumUsr);
 					return reclamoDeCantidadProductoYfalta;
 				}
 			}
-			 
+		return null;	 
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
 			throw new AccesoException("");// Rellenar msj
@@ -176,7 +176,7 @@ public class ReclamoDAO {
 	
 	
 
-	public List<Reclamo> obtenerReclamosPorTipo(TipoReclamo tipo) throws ConexionException, AccesoException {
+	public List<Reclamo> obtenerReclamosPorTipo(Enum<TipoReclamo> tipoReclamo) throws ConexionException, AccesoException {
 		Connection con = null;
 		Statement stmt = null;
 		ResultSet resultSet = null;
@@ -192,7 +192,7 @@ public class ReclamoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("SELECT * FROM reclamos WHERE  tipo = ('" + tipo.toString() + "');");
+		String SQL = ("SELECT * FROM reclamos WHERE  tipo = ('" + tipoReclamo.toString() + "');");
 		try {
 			resultSet = stmt.executeQuery(SQL);
 			while (resultSet.next()) {
@@ -200,26 +200,26 @@ public class ReclamoDAO {
 				Date auxFecha = resultSet.getDate("fecha"); // Change this to local date
 				String auxDescripcion = resultSet.getString("descripcion");
 				String auxEstados = resultSet.getString("estados");
-				int auxClientes = resultSet.getInt("clienteDniCuit");
+				int auxCliente = resultSet.getInt("clienteDniCuit");
 				String auxEmpleadoNumUsr = resultSet.getString("empleadoNumUsr");
 				String auxTipo = resultSet.getString("tipo");
 
 				
-				if(tipo.toString().equals("zona")) {
+				if(tipoReclamo.toString().equals("zona")) {
 					String zona = resultSet.getString("zona");
-					Zona reclamoZona = new Zona(auxId, auxFecha.toLocalDate(), auxDescripcion, tipo,zona);
+					Zona reclamoZona = new Zona(auxId, auxFecha.toLocalDate(), auxDescripcion, tipoReclamo,auxCliente,auxEmpleadoNumUsr,zona);
 					reclamos.add(reclamoZona);
 					
 				}
-				if(tipo.toString().equals("Facturacion")) {
+				if(tipoReclamo.toString().equals("Facturacion")) {
 					Date fecha = resultSet.getDate("fechaFacturacion");
 					int numFactura = resultSet.getInt("nroFactura");
-					Facturacion reclamoFacturacion = new Facturacion(auxId, auxFecha.toLocalDate(), auxDescripcion,tipo, fecha.toLocalDate(),numFactura);
+					Facturacion reclamoFacturacion = new Facturacion(auxId, auxFecha.toLocalDate(), auxDescripcion,tipoReclamo,auxCliente,auxEmpleadoNumUsr, fecha.toLocalDate(),numFactura);
 					reclamos.add(reclamoFacturacion);
 				}
 
-				if(tipo.toString().equals("CantYProdYFalta")) {
-					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(), auxDescripcion,tipo);
+				if(tipoReclamo.toString().equals("CantYProdYFalta")) {
+					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(), auxDescripcion,tipoReclamo,auxCliente,auxEmpleadoNumUsr);
 					reclamos.add(reclamoDeCantidadProductoYfalta);
 				}
 			}
@@ -255,26 +255,26 @@ public class ReclamoDAO {
 				Date auxFecha = resultSet.getDate("fecha"); // Change this to local date
 				String auxDescripcion = resultSet.getString("descripcion");
 				String auxEstados = resultSet.getString("estados");
-				int auxClientes = resultSet.getInt("clienteDniCuit");
+				int auxCliente = resultSet.getInt("clienteDniCuit");
 				String auxEmpleadoNumUsr = resultSet.getString("empleadoNumUsr");
 				String auxTipo = resultSet.getString("tipo");
 
 				
 				if(auxTipo.equals("zona")) {
 					String zona = resultSet.getString("zona");
-					Zona reclamoZona = new Zona(auxId, auxFecha.toLocalDate(), auxDescripcion, TipoReclamo.valueOf(auxTipo) ,zona);
+					Zona reclamoZona = new Zona(auxId, auxFecha.toLocalDate(), auxDescripcion, TipoReclamo.valueOf(auxTipo),auxCliente,auxEmpleadoNumUsr,zona);
 					reclamos.add(reclamoZona);
 					
 				}
 				if(auxTipo.equals("Facturacion")) {
 					Date fecha = resultSet.getDate("fechaFacturacion");
 					int numFactura = resultSet.getInt("nroFactura");
-					Facturacion reclamoFacturacion = new Facturacion(auxId, auxFecha.toLocalDate(), auxDescripcion,TipoReclamo.valueOf(auxTipo), fecha.toLocalDate(),numFactura);
+					Facturacion reclamoFacturacion = new Facturacion(auxId, auxFecha.toLocalDate(), auxDescripcion,TipoReclamo.valueOf(auxTipo),auxCliente,auxEmpleadoNumUsr, fecha.toLocalDate(),numFactura);
 					reclamos.add(reclamoFacturacion);
 				}
 
 				if(auxTipo.equals("CantYProdYFalta")) {
-					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(), auxDescripcion,TipoReclamo.valueOf(auxTipo));
+					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(), auxDescripcion,TipoReclamo.valueOf(auxTipo),auxCliente,auxEmpleadoNumUsr);
 					reclamos.add(reclamoDeCantidadProductoYfalta);
 				}
 			}
@@ -320,7 +320,6 @@ public class ReclamoDAO {
 
 		return "";
 	}
-	
 	private String getSpecificColunmValueForType(TipoReclamo tipo, Reclamo reclamo) {
 
 		switch (tipo) {

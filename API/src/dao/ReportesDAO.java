@@ -55,6 +55,7 @@ public class ReportesDAO {
 			System.out.println(e1.getMessage());
 			throw new AccesoException("Error de escritura");
 		}
+		return null;
 	}
 
 	public void cantidadReclamosTratadosPorMes(String numeroMes) throws ConexionException, AccesoException {

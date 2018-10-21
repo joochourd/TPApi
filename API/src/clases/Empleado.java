@@ -64,6 +64,9 @@ public class Empleado {
 	public Rol getRolOriginal() {
 		return rolOriginal;
 	}
-
+	public Rol getRolInstantaneo() {
+		//decidir como se va a calcular el rol del momento por ahora retorno solo en principal
+		return this.rolOriginal;
+	}
 	
 }

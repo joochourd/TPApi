@@ -118,7 +118,7 @@ public class ProductoDAO {
 			System.out.println(e1.getMessage());
 			throw new AccesoException("");//Rellenar msj
 		}
-		return
+		return null;
 	}
 
 

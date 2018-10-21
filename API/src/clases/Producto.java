@@ -18,7 +18,7 @@ public class Producto {
 		this.precio = precio;
 	}
 	
-	public void modificate(){
+	public void modificate() throws ConexionException, AccesoException{
 		ProductoDAO.getInstancia().modificarProducto(this);
 	}
 	

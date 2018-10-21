@@ -124,7 +124,7 @@ public class ClienteDAO {
 			System.out.println(e1.getMessage());
 			throw new AccesoException("");//Rellenar msj
 		}
-		return
+		return null;
 	}
 	
 	public List<Cliente> obtenerTodosClientes() throws ConexionException, AccesoException, SQLException{

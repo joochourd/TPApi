@@ -15,7 +15,7 @@ public class Sistema {
 	private static Sistema instance;
 	private Empleado empleadoActual;
 
-	public Sistema getInstance () {
+	public static Sistema getInstance () {
 		if (instance == null) {
 			return new Sistema();
 		}
@@ -75,20 +75,6 @@ public class Sistema {
 		return null;
 	}	
 
-	public void registrarReclamoZona(String zona, int dniCuit){}
-
-	public void registrarReclamoFacturacion(Date fecha, int nroFactura, int dniCuit){}	
-
-	public void registrarReclamoCompuesto(int dniCuit){}
-
-	public void administrarReclamoCantProdFaltante(){}
-
-	public void administrarReclamoZona(){}
-
-	public void administrarReclamoFacturacion(){}
-
-	public void realizarConsulta(){}
-
 	public String login(String usuario, String password) throws ConexionException, AccesoException{
 		Empleado emp = EmpleadoDAO.getInstancia().buscarEmpleado(usuario);
 		if(emp != null){
@@ -105,14 +91,15 @@ public class Sistema {
 		}
 	}
 
-	/*public List<Reclamo> getReclamosCliente(Cliente cliente){
-		ReclamoDAO.getInstancia().obtenerReclamos(tipo);
-	}*/
+	public List<Reclamo> getReclamosCliente(Cliente cliente){
+		return null;
+		//ReclamoDAO.getInstancia().obtenerReclamos(tipo);
+	}
 	public Reclamo getReclamo(int nroReclamo) throws ConexionException, AccesoException {
 		return ReclamoDAO.getInstancia().obtenerReclamo(nroReclamo);
 	}
-	public List<Reclamo>getReclamostipo(TipoReclamo tipo) throws ConexionException, AccesoException{
-		return ReclamoDAO.getInstancia().obtenerReclamosPorTipo(tipo);
+	public List<Reclamo>getReclamostipo(Enum<TipoReclamo> enum1) throws ConexionException, AccesoException{
+		return ReclamoDAO.getInstancia().obtenerReclamosPorTipo(enum1);
 	}
 	public List<Reclamo>getReclamoCliente(int numeroCliente)throws ConexionException, AccesoException{
 		return ReclamoDAO.getInstancia().obtenerReclamosDeCliente(numeroCliente);
