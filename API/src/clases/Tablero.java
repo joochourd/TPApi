@@ -19,15 +19,20 @@ public class Tablero  extends ObservableTablero {
 	}
 	
 
-	public void registrarReclamoZona(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, String zona, int dniCuit){
-		Zona reclamo = new Zona(fecha, descripcion, tipo, zona);
+	public void registrarReclamoZona(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String zona) throws ConexionException, AccesoException{
+		Zona reclamo = new Zona(fecha, descripcion, tipo, clienteDniCuit, empleado.getNomUsr(), zona);
+		reclamo.guardate();
 	}
 
-	public void registrarReclamoFacturacion(Date fecha, int nroFactura, int dniCuit){
-		Facturacion reclamo = new Facturacion(fecha, descripcion, tipo, fechaFacturacion, nroFactura)
+	public void registrarReclamoFacturacion(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, LocalDate fechaFacturacion, int nroFactura) throws ConexionException, AccesoException{
+		Facturacion reclamo = new Facturacion(fecha, descripcion, tipo, clienteDniCuit, empleado.getNomUsr(), fechaFacturacion, nroFactura);
+		reclamo.guardate();
 	}	
 
-	public void registrarReclamoCompuesto(int dniCuit){}
+	public void registrarReclamoCompuesto(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit) throws ConexionException, AccesoException{
+		Compuesto reclamo = new Compuesto(fecha, descripcion, tipo, clienteDniCuit, empleado.getNomUsr());
+		reclamo.guardate();
+	}
 
 	public void administrarReclamoCantProdFaltante(){}
 
