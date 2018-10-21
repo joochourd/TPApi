@@ -1,10 +1,17 @@
 package dao;
 
+import java.sql.Array;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import clases.ActualizacionEstado;
+import clases.CantYProdYFalta;
 import clases.Cliente;
 import clases.Facturacion;
 import clases.Reclamo;
@@ -113,11 +120,11 @@ public class ReclamoDAO {
 			throw new AccesoException("Error de escritura");
 		}
 	}
-
-	public void buscarReclamo(int nro, TipoReclamo tipo) throws ConexionException, AccesoException {
+	
+	public Reclamo obtenerReclamo(int numeroReclamo) throws ConexionException, AccesoException {
 		Connection con = null;
 		Statement stmt = null;
-		ResultSet rs = null;
+		ResultSet resultSet = null;
 		try {
 			con = ConnectionFactory.getInstancia().getConection();
 		} catch (ClassNotFoundException | SQLException e) {
@@ -129,12 +136,150 @@ public class ReclamoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("SELECT * FROM reclamos WHERE numero =('" + nro + "') or tipo = ('" + tipo + "');");
+		String SQL = ("SELECT * FROM reclamos WHERE numero =('" + numeroReclamo + "');");
 		try {
-			rs = stmt.executeQuery(SQL);
-			while (rs.next()) {
+			resultSet = stmt.executeQuery(SQL);
+			while (resultSet.next()) {
+				int auxId = resultSet.getInt("idReclamo");
+				Date auxFecha = resultSet.getDate("fecha"); // Change this to local date
+				String auxDescripcion = resultSet.getString("descripcion");
+				String auxEstados = resultSet.getString("estados");
+				int auxClientes = resultSet.getInt("clienteDniCuit");
+				String auxEmpleadoNumUsr = resultSet.getString("empleadoNumUsr");
+				String auxTipo = resultSet.getString("tipo");
 
+				
+				if(auxTipo.equals("zona")) {
+					String zona = resultSet.getString("zona");
+					Zona reclamoZona = new Zona(auxId, auxFecha.toLocalDate(), auxDescripcion, tipo,zona);
+					return reclamoZona;
+					
+				}
+				if(auxTipo.equals("Facturacion")) {
+					Date fecha = resultSet.getDate("fechaFacturacion");
+					int numFactura = resultSet.getInt("nroFactura");
+					Facturacion reclamoFacturacion = new Facturacion(auxId, auxFecha.toLocalDate(), auxDescripcion,tipo, fecha.toLocalDate(),numFactura);
+					return reclamoFacturacion;
+				}
+
+				if(auxTipo.equals("CantYProdYFalta")) {
+					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(), auxDescripcion,tipo);
+					return reclamoDeCantidadProductoYfalta;
+				}
 			}
+			 
+		} catch (SQLException e1) {
+			System.out.println(e1.getMessage());
+			throw new AccesoException("");// Rellenar msj
+		}
+	}
+	
+	
+
+	public List<Reclamo> obtenerReclamosPorTipo(TipoReclamo tipo) throws ConexionException, AccesoException {
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet resultSet = null;
+		List<Reclamo> reclamos = new ArrayList<Reclamo>();
+		try {
+			con = ConnectionFactory.getInstancia().getConection();
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new ConexionException("No esta disponible el acceso al Servidor");
+		}
+
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e1) {
+			throw new AccesoException("Error de acceso");
+		}
+		String SQL = ("SELECT * FROM reclamos WHERE  tipo = ('" + tipo.toString() + "');");
+		try {
+			resultSet = stmt.executeQuery(SQL);
+			while (resultSet.next()) {
+				int auxId = resultSet.getInt("idReclamo");
+				Date auxFecha = resultSet.getDate("fecha"); // Change this to local date
+				String auxDescripcion = resultSet.getString("descripcion");
+				String auxEstados = resultSet.getString("estados");
+				int auxClientes = resultSet.getInt("clienteDniCuit");
+				String auxEmpleadoNumUsr = resultSet.getString("empleadoNumUsr");
+				String auxTipo = resultSet.getString("tipo");
+
+				
+				if(tipo.toString().equals("zona")) {
+					String zona = resultSet.getString("zona");
+					Zona reclamoZona = new Zona(auxId, auxFecha.toLocalDate(), auxDescripcion, tipo,zona);
+					reclamos.add(reclamoZona);
+					
+				}
+				if(tipo.toString().equals("Facturacion")) {
+					Date fecha = resultSet.getDate("fechaFacturacion");
+					int numFactura = resultSet.getInt("nroFactura");
+					Facturacion reclamoFacturacion = new Facturacion(auxId, auxFecha.toLocalDate(), auxDescripcion,tipo, fecha.toLocalDate(),numFactura);
+					reclamos.add(reclamoFacturacion);
+				}
+
+				if(tipo.toString().equals("CantYProdYFalta")) {
+					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(), auxDescripcion,tipo);
+					reclamos.add(reclamoDeCantidadProductoYfalta);
+				}
+			}
+			return reclamos;
+			 
+		} catch (SQLException e1) {
+			System.out.println(e1.getMessage());
+			throw new AccesoException("");// Rellenar msj
+		}
+	}
+	
+	public List<Reclamo> obtenerReclamosDeCliente(int numeroCliente) throws AccesoException, ConexionException {
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet resultSet = null;
+		List<Reclamo> reclamos = new ArrayList<Reclamo>();
+		try {
+			con = ConnectionFactory.getInstancia().getConection();
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new ConexionException("No esta disponible el acceso al Servidor");
+		}
+
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e1) {
+			throw new AccesoException("Error de acceso");
+		}
+		String SQL = ("SELECT * FROM reclamos WHERE  clienteDniCuit = ('" + numeroCliente  + "');");
+		try {
+			resultSet = stmt.executeQuery(SQL);
+			while (resultSet.next()) {
+				int auxId = resultSet.getInt("idReclamo");
+				Date auxFecha = resultSet.getDate("fecha"); // Change this to local date
+				String auxDescripcion = resultSet.getString("descripcion");
+				String auxEstados = resultSet.getString("estados");
+				int auxClientes = resultSet.getInt("clienteDniCuit");
+				String auxEmpleadoNumUsr = resultSet.getString("empleadoNumUsr");
+				String auxTipo = resultSet.getString("tipo");
+
+				
+				if(auxTipo.equals("zona")) {
+					String zona = resultSet.getString("zona");
+					Zona reclamoZona = new Zona(auxId, auxFecha.toLocalDate(), auxDescripcion, TipoReclamo.valueOf(auxTipo) ,zona);
+					reclamos.add(reclamoZona);
+					
+				}
+				if(auxTipo.equals("Facturacion")) {
+					Date fecha = resultSet.getDate("fechaFacturacion");
+					int numFactura = resultSet.getInt("nroFactura");
+					Facturacion reclamoFacturacion = new Facturacion(auxId, auxFecha.toLocalDate(), auxDescripcion,TipoReclamo.valueOf(auxTipo), fecha.toLocalDate(),numFactura);
+					reclamos.add(reclamoFacturacion);
+				}
+
+				if(auxTipo.equals("CantYProdYFalta")) {
+					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(), auxDescripcion,TipoReclamo.valueOf(auxTipo));
+					reclamos.add(reclamoDeCantidadProductoYfalta);
+				}
+			}
+			return reclamos;
+			 
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
 			throw new AccesoException("");// Rellenar msj
@@ -193,5 +338,7 @@ public class ReclamoDAO {
 
 		return "";
 	}
+
+
 
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import dao.ClienteDAO;
 import dao.EmpleadoDAO;
 import dao.ProductoDAO;
+import dao.ReclamoDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 
@@ -104,9 +105,17 @@ public class Sistema {
 		}
 	}
 
-	public List<Reclamo> getReclamosCliente(Cliente cliente){
-		cliente.getReclamos();
-		return ;
+	/*public List<Reclamo> getReclamosCliente(Cliente cliente){
+		ReclamoDAO.getInstancia().obtenerReclamos(tipo);
+	}*/
+	public Reclamo getReclamo(int nroReclamo) throws ConexionException, AccesoException {
+		return ReclamoDAO.getInstancia().obtenerReclamo(nroReclamo);
+	}
+	public List<Reclamo>getReclamostipo(TipoReclamo tipo) throws ConexionException, AccesoException{
+		return ReclamoDAO.getInstancia().obtenerReclamosPorTipo(tipo);
+	}
+	public List<Reclamo>getReclamoCliente(int numeroCliente)throws ConexionException, AccesoException{
+		return ReclamoDAO.getInstancia().obtenerReclamosDeCliente(numeroCliente);
 	}
 
 }	
