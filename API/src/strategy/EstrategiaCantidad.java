@@ -7,8 +7,10 @@ import clases.TipoReclamo;
 
 public class EstrategiaCantidad extends CantYProdYFalta implements EstrategiaAbstracta {
 
-	public EstrategiaCantidad(int numeroReclamo, LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo) {
-		super(numeroReclamo, fecha, descripcion, tipo);
+
+	public EstrategiaCantidad(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit,
+			String empleadoNombreUsr) {
+		super(fecha, descripcion, tipo, clienteDniCuit, empleadoNombreUsr);
 		// TODO Auto-generated constructor stub
 	}
 

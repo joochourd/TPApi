@@ -1,24 +1,49 @@
 package clases;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
+import dao.ReclamoDAO;
+import excepciones.AccesoException;
+import excepciones.ConexionException;
 import observador.ObservableTablero;
 
 
 public class Tablero  extends ObservableTablero {
 	private List <Reclamo> reclamos;
+	private Empleado empleado;
 	
-	public void crearReclamoZona(){}
-	public void crearReclamoFacturacion(){}
-	public void crearReclamoCantYProdYFalta(){}
-	public void crearReclamoCompuesto(){}
-	public void tratarReclamoZona(){}
-	public void tratarReclamoFacturacion(){}
-	public void tratarCantYPordYFalta(){}
-	public void tratarReclamoCompuesto(){}
-	public void generarReportes(){}
-	public void getReclamos(Rol rol, TipoReclamo tipoReclamo){//ver como traer todos los reclamos
-		
+	Tablero(Empleado empleado){ //el parametro se lo pasa el sistema
+		this.empleado = empleado;
 	}
 	
+
+	public void registrarReclamoZona(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, String zona, int dniCuit){
+		Zona reclamo = new Zona(fecha, descripcion, tipo, zona);
+	}
+
+	public void registrarReclamoFacturacion(Date fecha, int nroFactura, int dniCuit){
+		Facturacion reclamo = new Facturacion(fecha, descripcion, tipo, fechaFacturacion, nroFactura)
+	}	
+
+	public void registrarReclamoCompuesto(int dniCuit){}
+
+	public void administrarReclamoCantProdFaltante(){}
+
+	public void administrarReclamoZona(){}
+
+	public void administrarReclamoFacturacion(){}
+
+	public void realizarConsulta(){}
+	 
+	public void generarReportes(){}
+	
+	public void cargarReclamosXTipo(Enum tipo) throws ConexionException, AccesoException{//x tipo reclamo
+		this.reclamos = ReclamoDAO.getInstancia().obtenerReclamosXTipos(tipo);
+	}
+	
+	public void cargarReclamosXCliente(int nroDniCuit) throws ConexionException, AccesoException{
+		this.reclamos = ReclamoDAO.getInstancia().obtenerReclamosXCliente(nroDniCuit);
+	}
 }

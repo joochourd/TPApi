@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import clases.Cliente;
 import clases.Facturacion;
@@ -114,7 +115,7 @@ public class ReclamoDAO {
 		}
 	}
 
-	public void buscarReclamo(int nro, TipoReclamo tipo) throws ConexionException, AccesoException {
+	public Reclamo buscarReclamo(int nro, TipoReclamo tipo) throws ConexionException, AccesoException {
 		Connection con = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -139,6 +140,63 @@ public class ReclamoDAO {
 			System.out.println(e1.getMessage());
 			throw new AccesoException("");// Rellenar msj
 		}
+		return
+	}
+	
+	public List<Reclamo> obtenerReclamosXTipos(Enum tipo) throws ConexionException, AccesoException {
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			con = ConnectionFactory.getInstancia().getConection();
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new ConexionException("No esta disponible el acceso al Servidor");
+		}
+
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e1) {
+			throw new AccesoException("Error de acceso");
+		}
+		String SQL = ("SELECT * FROM reclamos WHERE tipo = ('" + tipo + "');");
+		try {
+			rs = stmt.executeQuery(SQL);
+			while (rs.next()) {
+
+			}
+		} catch (SQLException e1) {
+			System.out.println(e1.getMessage());
+			throw new AccesoException("");// Rellenar msj
+		}
+		return
+	}
+	
+	public List<Reclamo> obtenerReclamosXCliente(int nroDniCuit) throws ConexionException, AccesoException {
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			con = ConnectionFactory.getInstancia().getConection();
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new ConexionException("No esta disponible el acceso al Servidor");
+		}
+
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e1) {
+			throw new AccesoException("Error de acceso");
+		}
+		String SQL = ("SELECT * FROM reclamos WHERE clienteDniCuit = ('" + nroDniCuit + "');");
+		try {
+			rs = stmt.executeQuery(SQL);
+			while (rs.next()) {
+
+			}
+		} catch (SQLException e1) {
+			System.out.println(e1.getMessage());
+			throw new AccesoException("");// Rellenar msj
+		}
+		return
 	}
 
 	private String getSpecificQueryForType(TipoReclamo tipo, Reclamo reclamo) {

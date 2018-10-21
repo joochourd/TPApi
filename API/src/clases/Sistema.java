@@ -74,20 +74,6 @@ public class Sistema {
 		return null;
 	}	
 
-	public void registrarReclamoZona(String zona, int dniCuit){}
-
-	public void registrarReclamoFacturacion(Date fecha, int nroFactura, int dniCuit){}	
-
-	public void registrarReclamoCompuesto(int dniCuit){}
-
-	public void administrarReclamoCantProdFaltante(){}
-
-	public void administrarReclamoZona(){}
-
-	public void administrarReclamoFacturacion(){}
-
-	public void realizarConsulta(){}
-
 	public String login(String usuario, String password) throws ConexionException, AccesoException{
 		Empleado emp = EmpleadoDAO.getInstancia().buscarEmpleado(usuario);
 		if(emp != null){
@@ -102,11 +88,6 @@ public class Sistema {
 		else{
 			return "Usuario incorrecto...";
 		}
-	}
-
-	public List<Reclamo> getReclamosCliente(Cliente cliente){
-		cliente.getReclamos();
-		return ;
 	}
 
 }	
