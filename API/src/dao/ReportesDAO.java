@@ -17,7 +17,7 @@ import excepciones.ConexionException;
 
 public class ReportesDAO {
 
-
+//
 
 	private static ReclamoDAO instancia;
 

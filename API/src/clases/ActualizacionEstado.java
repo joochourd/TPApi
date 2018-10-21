@@ -3,8 +3,12 @@ package clases;
 import java.time.LocalDate;
 
 public class ActualizacionEstado {
-	LocalDate fecha;
-	String descripcion;
-	Enum <Estados> estado;
+	private LocalDate fecha;
+	private String descripcion;
+	private Enum <Estados> estado;
+	private Empleado empleado;
+	
+	
+	
 }
 

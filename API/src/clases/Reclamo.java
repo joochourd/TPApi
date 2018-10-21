@@ -30,8 +30,7 @@ public abstract class Reclamo{
 	protected int clienteDniCuit;
 	protected String empleadoNombreUsr;
 
-
-	List <ActualizacionEstado> historial;
+	protected List <ActualizacionEstado> historial;
 	
 	
 	//ACA COMIENZAN LOS SETTERS GETTERS
