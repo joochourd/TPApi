@@ -42,8 +42,15 @@ public class Tablero  extends ObservableTablero {
 
 	public void administrarReclamoCantProdFaltante(){}
 
-	public void administrarReclamoZona(int idReclamoZona, Estados estado, String descripcion){
+	public void administrarReclamoZona(int idReclamoZona, Estados estado, String descripcion) throws ConexionException, AccesoException{
 		
+		Reclamo reclamo = ReclamoDAO.getInstancia().obtenerReclamo(idReclamoZona);
+		if(reclamo != null){
+			reclamo.guardarActuralizacionEstado();
+			reclamo.setEstado(estado);
+			reclamo.setDescripcion(descripcion);
+			reclamo.modificate();
+		}
 	}
 
 	public void administrarReclamoFacturacion(){}

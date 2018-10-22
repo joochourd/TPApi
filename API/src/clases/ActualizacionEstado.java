@@ -7,12 +7,15 @@ import excepciones.AccesoException;
 import excepciones.ConexionException;
 
 public class ActualizacionEstado {
+	private int idReclamo;
 	private LocalDate fecha;
 	private String descripcion;
 	private Enum <Estados> estado;
 	private String nombreUsrEmpleado;
 	
-	public ActualizacionEstado(LocalDate fecha, String descripcion, Enum <Estados> estado, String nombreUsrEmpleado) {
+
+	public ActualizacionEstado(int idReclamo, LocalDate fecha, String descripcion, Enum<Estados> estado, String nombreUsrEmpleado) {
+		this.idReclamo = idReclamo;
 		this.fecha = fecha;
 		this.descripcion = descripcion;
 		this.estado = estado;
