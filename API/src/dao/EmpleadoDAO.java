@@ -10,7 +10,7 @@ import excepciones.AccesoException;
 import excepciones.ConexionException;
 
 public class EmpleadoDAO {
-	
+	//
 	private static EmpleadoDAO instancia;
 	
 	//private ClienteDAO(){}

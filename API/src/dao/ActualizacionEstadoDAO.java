@@ -9,7 +9,7 @@ import java.util.List;
 import clases.ActualizacionEstado;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
-
+//
 public class ActualizacionEstadoDAO {
 
 private static ActualizacionEstadoDAO instancia;

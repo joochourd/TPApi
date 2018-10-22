@@ -9,7 +9,7 @@ import excepciones.AccesoException;
 import excepciones.ConexionException;
 import observador.ObservableTablero;
 
-
+//
 public class Tablero  extends ObservableTablero {
 	private List <Reclamo> reclamos;
 	private Empleado empleado;

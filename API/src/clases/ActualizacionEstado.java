@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import dao.ActualizacionEstadoDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
-
+//
 public class ActualizacionEstado {
 	private int idReclamo;
 	private LocalDate fecha;

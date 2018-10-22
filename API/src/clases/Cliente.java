@@ -7,7 +7,7 @@ import excepciones.AccesoException;
 import excepciones.ConexionException;
 
 public class Cliente {
-	
+	//
 	//private int numero;
 	private String nombre;
 	private String domicilio;
