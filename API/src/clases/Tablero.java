@@ -1,10 +1,11 @@
 package clases;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import dao.ReclamoDAO;
+import dao.ReportesDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 import observador.ObservableTablero;
@@ -21,23 +22,31 @@ public class Tablero  extends ObservableTablero {
 	}
 	
 
-	public void registrarReclamoZona(int numeroReclamo,LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String zona) throws ConexionException, AccesoException{
-		Zona reclamo = new Zona(numeroReclamo, fecha, descripcion, tipo, clienteDniCuit, empleado.getNomUsr(), zona);
+	public void registrarReclamoZona(int numeroReclamo,LocalDate fecha, String descripcion, int clienteDniCuit, String zona) throws ConexionException, AccesoException{
+		Zona reclamo = new Zona(numeroReclamo, fecha, descripcion, TipoReclamo.Zona, clienteDniCuit, empleado.getNomUsr(), zona);
 		reclamo.guardate();
+		this.reclamos.add(reclamo);
+		this.updateObserver(reclamo);
 	}
 
-	public void registrarReclamoFacturacion(int numeroReclamo, LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, LocalDate fechaFacturacion, int nroFactura) throws ConexionException, AccesoException{
-		Facturacion reclamo = new Facturacion(numeroReclamo,fecha, descripcion, tipo, clienteDniCuit, empleado.getNomUsr(), fechaFacturacion, nroFactura);
+	public void registrarReclamoFacturacion(int numeroReclamo, LocalDate fecha, String descripcion, int clienteDniCuit, LocalDate fechaFacturacion, int nroFactura) throws ConexionException, AccesoException{
+		Facturacion reclamo = new Facturacion(numeroReclamo,fecha, descripcion, TipoReclamo.Facturacion, clienteDniCuit, empleado.getNomUsr(), fechaFacturacion, nroFactura);
 		reclamo.guardate();
+		this.reclamos.add(reclamo);
+		this.updateObserver(reclamo);
 	}
 	public void registrarReclamoCantProdFalta(int numeroReclamo, LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, LocalDate fechaFacturacion, int nroFactura) throws ConexionException, AccesoException{
 		CantYProdYFalta reclamo = new CantYProdYFalta(numeroReclamo,fecha, descripcion, tipo, clienteDniCuit, empleado.getNomUsr());
 		reclamo.guardate();
+		this.reclamos.add(reclamo);
+		this.updateObserver(reclamo);
 	}	
 
-	public void registrarReclamoCompuesto(int numeroReclamo, LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit) throws ConexionException, AccesoException{
-		Compuesto reclamo = new Compuesto(numeroReclamo, fecha, descripcion, tipo, clienteDniCuit, empleado.getNomUsr());
+	public void registrarReclamoCompuesto(int numeroReclamo, LocalDate fecha, String descripcion, int clienteDniCuit) throws ConexionException, AccesoException{
+		Compuesto reclamo = new Compuesto(numeroReclamo, fecha, descripcion, TipoReclamo.compuesto, clienteDniCuit, empleado.getNomUsr());
 		reclamo.guardate();
+		this.reclamos.add(reclamo);
+		this.updateObserver(reclamo);
 	}
 
 
@@ -50,6 +59,7 @@ public class Tablero  extends ObservableTablero {
 			reclamo.setDescripcion(descripcion);
 			//reclamo.setFecha(LocalDate.now());
 			reclamo.modificate();
+			this.updateObserver(reclamo);
 		}
 		else{
 			System.out.println("Reclamo not found 404...");
@@ -85,11 +95,11 @@ public class Tablero  extends ObservableTablero {
 	 
 	/* Reportes*/
 	
-	public List<Cliente> clientesConMasReclamosPorMes() throws ConexionException, AccesoException{
-		return ReportesDAO.getInstancia().clientesConMasReclamosPorMes();
+	public List<Cliente> clientesConMasReclamosPorMes(int mes) throws ConexionException, AccesoException{
+		return ReportesDAO.getInstancia().clientesConMasReclamosPorMes(mes);
 	}
 	
-	public int cantidadReclamosTratadosPorMes(String numeroMes) throws ConexionException, AccesoException{
+	public int cantidadReclamosTratadosPorMes(int numeroMes) throws ConexionException, AccesoException{
 		return ReportesDAO.getInstancia().cantidadReclamosTratadosPorMes(numeroMes);
 	}
 	

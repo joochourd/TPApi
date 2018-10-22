@@ -25,7 +25,15 @@ public class Compuesto extends Reclamo {
 	
 	public void addReclamo(Simple reclamosSimple) throws ConexionException, AccesoException {
 		this.simples.add(reclamosSimple);
-		this.guardate();
+		//this.guardate();
+	}
+	
+	public String chequearEstado(){
+		return ;}
+	
+	public void removeReclamo(int idReclamo) throws ConexionException, AccesoException{
+		Reclamo reclamo = ReclamoDAO.getInstancia().obtenerReclamo(idReclamo);
+		this.simples.remove(reclamo);
 	}
 
 	@Override

@@ -18,7 +18,7 @@ public abstract class Reclamo{
 		this.fecha = fecha;
 		this.numeroReclamo = numeroReclamo;
 		this.descripcion = descripcion;
-		this.tipo = TipoReclamo.Cantidad;
+		this.tipo = tipo;
 		this.estado = Estados.Registrado;
 		this.clienteDniCuit = clienteDniCuit;
 		this.empleadoNombreUsr = empleadoNombreUsr;

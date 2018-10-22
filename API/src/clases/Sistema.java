@@ -1,12 +1,8 @@
 package clases;
 
-import java.util.Date;
-import java.util.List;
-
 import dao.ClienteDAO;
 import dao.EmpleadoDAO;
 import dao.ProductoDAO;
-import dao.ReclamoDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 

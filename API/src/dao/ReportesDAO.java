@@ -24,7 +24,7 @@ public class ReportesDAO {
 
 	public static ReportesDAO getInstancia() {
 		if (instancia == null) {
-			instancia = new ReclamoDAO();
+			instancia = new ReportesDAO();
 		}
 		return instancia;
 	}

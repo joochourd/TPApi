@@ -1,18 +1,14 @@
 package dao;
 
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import clases.ActualizacionEstado;
 import clases.CantYProdYFalta;
-import clases.Cliente;
 import clases.Facturacion;
 import clases.Reclamo;
 import clases.TipoReclamo;
