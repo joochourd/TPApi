@@ -14,11 +14,20 @@ public class Factura {
 	private float total;
 	
 	
+	
 	public void grabate() throws ConexionException, AccesoException{
 		FacturaDAO factura = new FacturaDAO();
 		factura.grabarFactura(this);
 	}
 	
+	public Factura(int nro, String tipo, Date fecha, float total) {
+		super();
+		this.nro = nro;
+		this.tipo = tipo;
+		this.fecha = fecha;
+		this.total = total;
+	}
+
 	public int getNro() {
 		return nro;
 	}

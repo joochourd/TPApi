@@ -37,6 +37,9 @@ public class ActualizacionEstado {
 	public String getNombreUsrEmpleado() {
 		return nombreUsrEmpleado;
 	}
+	public int getIdReclamo(){
+		return this.idReclamo;
+	}
 	
 	public void guardate() throws ConexionException, AccesoException{
 		ActualizacionEstadoDAO.getInstancia().grabarActualizacionEstado(this);

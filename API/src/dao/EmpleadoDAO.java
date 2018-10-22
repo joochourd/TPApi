@@ -4,13 +4,15 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 
 import clases.Empleado;
+import clases.Rol;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 
 public class EmpleadoDAO {
-	//
+	
 	private static EmpleadoDAO instancia;
 	
 	//private ClienteDAO(){}
@@ -37,7 +39,7 @@ public class EmpleadoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = "INSERT INTO empleados values ('" + empleado.getNomUsr() +"','" + empleado.getPassword() + "','" + empleado.getNombre() + "','" + empleado.getNroLU() + "','" + empleado.getRolOriginal() + "','" + empleado.getRolTemporal() + "');";
+		String SQL = "INSERT INTO empleados values ('" + empleado.getNomUsr() +"','" + empleado.getPassword() + "','" + empleado.getNombre() + "','" + empleado.getNroLU() + "','" + empleado.getRolOriginal().getId() + "','" + empleado.getRolTemporal().getId() + "');";
 		try{
 			stmt.execute(SQL);
 		} catch (SQLException e1) {
@@ -110,8 +112,16 @@ public class EmpleadoDAO {
 		String SQL = ("SELECT * FROM empleados WHERE NombreUsr =('" + nomUsr +"');");
 		try{
 			rs = stmt.executeQuery(SQL);
+			Rol Rol;
 			while (rs.next()) {
-				
+				String nombre = rs.getString("nombre");
+				Date fechaNac = rs.getDate("fechaNac");
+				String password = rs.getString("keyword"); // keyword o password?
+				int nroLU = rs.getInt("nroLU");
+				int auxRol = rs.getInt("idRolOriginal")
+				// Como hago esta asignacion ? 
+				Rol rolOriginal; 
+				Rol rolTemporal;
 			}
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());

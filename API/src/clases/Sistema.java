@@ -71,10 +71,6 @@ public class Sistema {
 	}
 
 
-	public List <String> reclamoCantProdFalta(List<Integer> cantidad, String tituloProd){
-		return null;
-	}	
-
 	public String login(String usuario, String password) throws ConexionException, AccesoException{
 		Empleado emp = EmpleadoDAO.getInstancia().buscarEmpleado(usuario);
 		if(emp != null){
@@ -89,20 +85,6 @@ public class Sistema {
 		else{
 			return "Usuario incorrecto...";
 		}
-	}
-
-	public List<Reclamo> getReclamosCliente(Cliente cliente){
-		return null;
-		//ReclamoDAO.getInstancia().obtenerReclamos(tipo);
-	}
-	public Reclamo getReclamo(int nroReclamo) throws ConexionException, AccesoException {
-		return ReclamoDAO.getInstancia().obtenerReclamo(nroReclamo);
-	}
-	public List<Reclamo>getReclamostipo(Enum<TipoReclamo> enum1) throws ConexionException, AccesoException{
-		return ReclamoDAO.getInstancia().obtenerReclamosPorTipo(enum1);
-	}
-	public List<Reclamo>getReclamoCliente(int numeroCliente)throws ConexionException, AccesoException{
-		return ReclamoDAO.getInstancia().obtenerReclamosDeCliente(numeroCliente);
 	}
 
 }	

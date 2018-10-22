@@ -92,7 +92,7 @@ public class ProductoDAO {
 		}
 	}
 	
-	public Producto buscarProducto(String tituloProd, int codigo ) throws ConexionException, AccesoException{
+	public Producto buscarProducto(String titulo, int codigoPublicacion ) throws ConexionException, AccesoException{
 		Connection con = null;  
 		Statement stmt = null;  
 		ResultSet rs = null;
@@ -108,17 +108,21 @@ public class ProductoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("SELECT * FROM productos WHERE titulo =('" + tituloProd +"') or codigo = ('" + codigo +"');");
+		String SQL = ("SELECT * FROM productos WHERE titulo =('" + titulo +"') or codigo = ('" + codigoPublicacion +"');");
 		try{
 			rs = stmt.executeQuery(SQL);
+			String descripcion = null;
+			float precio = 0;
 			while (rs.next()) {
-				
+				descripcion = rs.getString("descripcion");
+				precio = rs.getFloat("precio");
 			}
+			Producto producto = new Producto(titulo, descripcion, precio); //El constructor no tiene el codigoPublicacion, pero es cuestion de agregarlo si llega a ser necesario tenerlo
+			return producto;
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
-			throw new AccesoException("");//Rellenar msj
+			throw new AccesoException("No se pudo crear el Producto");//Rellenar msj
 		}
-		return null;
 	}
 
 

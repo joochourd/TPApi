@@ -19,7 +19,7 @@ import clases.TipoReclamo;
 import clases.Zona;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
-///
+//
 public class ReclamoDAO {
 	private static ReclamoDAO instancia;
 
@@ -170,7 +170,7 @@ public class ReclamoDAO {
 		return null;	 
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
-			throw new AccesoException("");// Rellenar msj
+			throw new AccesoException("No se pudo crear el reclamo");// Rellenar msj
 		}
 	}
 	
@@ -227,7 +227,7 @@ public class ReclamoDAO {
 			 
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
-			throw new AccesoException("");// Rellenar msj
+			throw new AccesoException("No se pudieron crear los reclamos");// Rellenar msj
 		}
 	}
 	
@@ -282,7 +282,7 @@ public class ReclamoDAO {
 			 
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
-			throw new AccesoException("");// Rellenar msj
+			throw new AccesoException("No se pudieron crear los reclamos");// Rellenar msj
 		}
 	}
 

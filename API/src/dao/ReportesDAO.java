@@ -2,22 +2,22 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import clases.Cliente;
-import clases.Facturacion;
-import clases.Reclamo;
-import clases.TipoReclamo;
-import clases.Zona;
+import clases.Empleado;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 
 public class ReportesDAO {
 
-//
+//falta hacer el while del buscarReclamo y verificar el tipo de dato que devuelven los metodos aca 
 
 	private static ReclamoDAO instancia;
 
@@ -58,7 +58,7 @@ public class ReportesDAO {
 		return null;
 	}
 
-	public void cantidadReclamosTratadosPorMes(String numeroMes) throws ConexionException, AccesoException {
+	public int cantidadReclamosTratadosPorMes(String numeroMes) throws ConexionException, AccesoException {
 		
 		Connection con = null;
 		Statement stmt = null;
@@ -73,70 +73,56 @@ public class ReportesDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("SELECT fechaFacturacion FROM reclamos WHERE MONTH(Date) = " + numeroMes + 
+		String SQL = ("SELECT COUNT(fecha) as fechaFacturacion FROM reclamos WHERE MONTH(Date) = " + numeroMes + "AND ESTADOS = CERRADO"+
 		";");
 		try {
-			stmt.execute(SQL);
-		} catch (SQLException e1) {
-			System.out.println(e1.getMessage());
-			throw new AccesoException("Error de escritura");
-		}
-	}
-
-	public void tiempoPromedioRespuestaReclamosPorResponsable(Reclamo reclamo) throws ConexionException, AccesoException {
-		Connection con = null;
-		Statement stmt = null;
-		try {
-			con = ConnectionFactory.getInstancia().getConection();
-		} catch (ClassNotFoundException | SQLException e) {
-			throw new ConexionException("No esta disponible el acceso al Servidor");
-		}
-
-		try {
-			stmt = con.createStatement();
-		} catch (SQLException e1) {
-			throw new AccesoException("Error de acceso");
-		}
-		String SQL = "SELECT e.empleados DATEDIFF(month, r.fecha, r.fechaFinalizacion) AS DateDiff;\n" + 
-				"From \n" + 
-				" 	empleados e LEFT JOIN\n" + 
-				"    reclamos r ON r.empleadoNomUsr = e.nombreUsr\n" + 
-				"GROUP BY DateDiff;";
-		try {
-			stmt.execute(SQL);
-		} catch (SQLException e1) {
-			System.out.println(e1.getMessage());
-			throw new AccesoException("Error de escritura");
-		}
-	}
-
-	public void buscarReclamo(int nro, TipoReclamo tipo) throws ConexionException, AccesoException {
-		Connection con = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		try {
-			con = ConnectionFactory.getInstancia().getConection();
-		} catch (ClassNotFoundException | SQLException e) {
-			throw new ConexionException("No esta disponible el acceso al Servidor");
-		}
-
-		try {
-			stmt = con.createStatement();
-		} catch (SQLException e1) {
-			throw new AccesoException("Error de acceso");
-		}
-		String SQL = ("SELECT * FROM reclamos WHERE numero =('" + nro + "') or tipo = ('" + tipo + "');");
-		try {
-			rs = stmt.executeQuery(SQL);
-			while (rs.next()) {
-
+			ResultSet resultSet = stmt.executeQuery(SQL);
+			while (resultSet.next()) {
+				return resultSet.getInt(0);
 			}
+			
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
-			throw new AccesoException("");// Rellenar msj
+			throw new AccesoException("Error de escritura");
 		}
+		return 0;
 	}
 
+	public Map tiempoPromedioRespuestaReclamosPorResponsable(Empleado empl) throws ConexionException, AccesoException {
+		Connection con = null;
+		Statement stmt = null;
+		try {
+			con = ConnectionFactory.getInstancia().getConection();
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new ConexionException("No esta disponible el acceso al Servidor");
+		}
 
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e1) {
+			throw new AccesoException("Error de acceso");
+		}
+		String SQL = "SELECT e.empleados, avg ( DATEDIFF(month, r.fecha, r.fechaFinalizacion)) AS Promedio;" +  //ese r.fecha me genera dudas 
+				"From" + 
+				" 	empleados e LEFT JOIN" + 
+				"    reclamos r ON r.empleadoNomUsr = e.nombreUsr" + 
+				"GROUP BY e.empleados;";
+		try {
+			ResultSet resultSet = stmt.executeQuery(SQL);
+			Date fecha = null;
+			String empleadoNomUsr = null;
+			Map <String, Date> tiemposProm = new HashMap <String, Date>();
+			while (resultSet.next()) {
+				fecha = resultSet.getDate("Promedio");
+				empleadoNomUsr = resultSet.getString("empleadoNomUsr");
+				tiemposProm.put(empleadoNomUsr, fecha);
+			}
+			
+			return tiemposProm;
+		} catch (SQLException e1) {
+			System.out.println(e1.getMessage());
+			throw new AccesoException("Error de escritura");
+		}
+	}
 
 }

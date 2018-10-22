@@ -17,7 +17,7 @@ public class Tablero  extends ObservableTablero {
 	
 	Tablero(Empleado empleado) throws ConexionException, AccesoException{ //el parametro se lo pasa el sistema
 		this.empleado = empleado;
-		this.reclamos = Sistema.getInstance().getReclamostipo(this.empleado.getRolInstantaneo().getTipoReclamo());
+		this.reclamos = this.getReclamostipo(this.empleado.getRolInstantaneo().getTipoReclamo());
 	}
 	
 
@@ -40,20 +40,38 @@ public class Tablero  extends ObservableTablero {
 		reclamo.guardate();
 	}
 
-	public void administrarReclamoCantProdFaltante(){}
 
-	public void administrarReclamoZona(int idReclamoZona, Estados estado, String descripcion) throws ConexionException, AccesoException{
+	public void tratarReclamo(int idReclamo, Estados estado, String descripcion) throws ConexionException, AccesoException{
 		
-		Reclamo reclamo = ReclamoDAO.getInstancia().obtenerReclamo(idReclamoZona);
+		Reclamo reclamo = ReclamoDAO.getInstancia().obtenerReclamo(idReclamo);
 		if(reclamo != null){
 			reclamo.guardarActuralizacionEstado();
 			reclamo.setEstado(estado);
 			reclamo.setDescripcion(descripcion);
+			reclamo.setFecha(LocalDate.now());
 			reclamo.modificate();
 		}
+		else{
+			System.out.println("Reclamo not found 404...");
+		}
+	}
+	
+	public List<Reclamo> getReclamosCliente(int numeroCliente) throws AccesoException, ConexionException{
+		return ReclamoDAO.getInstancia().obtenerReclamosDeCliente(numeroCliente);
+	}
+	
+	public Reclamo getReclamo(int nroReclamo) throws ConexionException, AccesoException {
+		return ReclamoDAO.getInstancia().obtenerReclamo(nroReclamo);
+	}
+	
+	public List<Reclamo>getReclamostipo(Enum<TipoReclamo> enum1) throws ConexionException, AccesoException{
+		return ReclamoDAO.getInstancia().obtenerReclamosPorTipo(enum1);
+	}
+	
+	public List<Reclamo>getReclamoCliente(int numeroCliente)throws ConexionException, AccesoException{
+		return ReclamoDAO.getInstancia().obtenerReclamosDeCliente(numeroCliente);
 	}
 
-	public void administrarReclamoFacturacion(){}
 
 	public void realizarConsulta(){}
 	 

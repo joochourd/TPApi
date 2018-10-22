@@ -113,8 +113,9 @@ public abstract class Reclamo{
 	
 	protected abstract void guardate() throws ConexionException, AccesoException;
 	
-	public void guardarActuralizacionEstado(){
-		ActualizacionEstado actEst = new ActualizacionEstado(int idReclamo, LocalDate fecha, String descripcion, Enum<Estados> estado, String nombreUsrEmpleado);
+	public void guardarActuralizacionEstado() throws ConexionException, AccesoException{
+		ActualizacionEstado actEst = new ActualizacionEstado(this.getNumeroReclamo(), this.getFecha(),  this.getDescripcion(),  this.getEstado(), this.getEmpleadoNombreUsr());
+		//this.historial.add(actEst);
 		actEst.guardate();
 	}
 }

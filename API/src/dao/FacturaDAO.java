@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 
 import clases.Factura;
 import excepciones.AccesoException;
@@ -90,7 +91,7 @@ private static FacturaDAO instancia;
 			throw new AccesoException("Error de escritura");
 		}
 	}*/
-	public void buscarFactura(int nro) throws ConexionException, AccesoException{
+	public Factura buscarFactura(int nro) throws ConexionException, AccesoException{
 		Connection con = null;  
 		Statement stmt = null;  
 		ResultSet rs = null;
@@ -109,12 +110,20 @@ private static FacturaDAO instancia;
 		String SQL = ("SELECT * FROM facturas WHERE numero =('" + nro +"');");
 		try{
 			rs = stmt.executeQuery(SQL);
+			String tipo = null;
+			Date fecha = null;
+			float total = 0;
 			while (rs.next()) {
+				tipo = rs.getString("tipo");
+				fecha = rs.getDate("fecha");
+				total = rs.getFloat("total");
 				
 			}
+			Factura factura = new Factura(nro, tipo, fecha, total);
+			return factura;
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
-			throw new AccesoException("");//Rellenar msj
+			throw new AccesoException("No se pudo Crear la Factura");
 		}
 	}
 
