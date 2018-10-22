@@ -11,6 +11,20 @@ public class Empleado {
 	private Rol rolOriginal;
 	private Rol rolTemporal;
 	
+	
+	
+	public Empleado(String nombre, Date fechaNac, String password, String nomUsr, int nroLU, Rol rolOriginal,
+			Rol rolTemporal) {
+		super();
+		this.nombre = nombre;
+		this.fechaNac = fechaNac;
+		this.password = password;
+		this.nomUsr = nomUsr;
+		this.nroLU = nroLU;
+		this.rolOriginal = rolOriginal;
+		this.rolTemporal = rolTemporal;
+	}
+
 	public void setRol (Rol rol){}
 	
 	public void backToRol (){}

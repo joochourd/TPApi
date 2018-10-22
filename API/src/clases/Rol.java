@@ -4,8 +4,16 @@ import java.util.List;
 
 public class Rol {
 
+	private int id;
 	private Enum<TipoRol> descripcion;
 	private Enum<TipoReclamo> tipoReclamo;
+	
+	
+	
+	public Rol() {
+		super();
+	}
+	
 	public Enum<TipoRol> getDescripcion() {
 		return descripcion;
 	}
@@ -49,5 +57,13 @@ public class Rol {
 	}
 	public void agregarUsr(Empleado usuario){
 		usr.add(usuario);
+	}
+	public int getId() {
+		// TODO Auto-generated method stub
+		return this.id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 }

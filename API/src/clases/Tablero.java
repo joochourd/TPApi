@@ -48,7 +48,7 @@ public class Tablero  extends ObservableTablero {
 			reclamo.guardarActuralizacionEstado();
 			reclamo.setEstado(estado);
 			reclamo.setDescripcion(descripcion);
-			reclamo.setFecha(LocalDate.now());
+			//reclamo.setFecha(LocalDate.now());
 			reclamo.modificate();
 		}
 		else{
@@ -73,9 +73,29 @@ public class Tablero  extends ObservableTablero {
 	}
 
 
-	public void realizarConsulta(){}
+	public String realizarConsultaReclamo(int idReclamo) throws ConexionException, AccesoException{
+		Reclamo reclamo = ReclamoDAO.getInstancia().obtenerReclamo(idReclamo);
+		return  " Estado: " + reclamo.getEstado() + "Descripcion: " + reclamo.getDescripcion();
+	}
+	
+	public void reclamosEmpleadoLogueado() throws ConexionException, AccesoException{
+		this.reclamos = ReclamoDAO.getInstancia().obtenerReclamoXEmpleado(this.empleado.getNomUsr());
+		
+	}
 	 
-	public void generarReportes(){}
+	/* Reportes*/
+	
+	public List<Cliente> clientesConMasReclamosPorMes() throws ConexionException, AccesoException{
+		return ReportesDAO.getInstancia().clientesConMasReclamosPorMes();
+	}
+	
+	public int cantidadReclamosTratadosPorMes(String numeroMes) throws ConexionException, AccesoException{
+		return ReportesDAO.getInstancia().cantidadReclamosTratadosPorMes(numeroMes);
+	}
+	
+	public Map tiempoPromedioRespuestaReclamosPorResponsable(Empleado empl) throws ConexionException, AccesoException{
+		return ReportesDAO.getInstancia().tiempoPromedioRespuestaReclamosPorResponsable(empl);
+	}
 	
 	/*public void cargarReclamosXTipo(Enum tipo) throws ConexionException, AccesoException{//x tipo reclamo
 		this.reclamos = ReclamoDAO.getInstancia().obtenerReclamosXTipos(tipo);

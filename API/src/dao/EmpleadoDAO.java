@@ -8,6 +8,8 @@ import java.util.Date;
 
 import clases.Empleado;
 import clases.Rol;
+import clases.TipoReclamo;
+import clases.TipoRol;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 
@@ -109,25 +111,38 @@ public class EmpleadoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("SELECT * FROM empleados WHERE NombreUsr =('" + nomUsr +"');");
+		String SQL = ("SELECT * FROM empleados INNER JOIN roles ON roles.idRoles AS idRolOriginal = empleados.idRolOriginal AND roles.idRoles AS idRolTemporal = empleados.idRolTemporal WHERE NombreUsr =('" + nomUsr +"';)");
+		
+		//String SQLidTemp = ("SELECT * FROM empleados INNER JOIN roles ON roles.idRoles = empleados.idRolTemporal WHERE NombreUsr =('" + nomUsr +"');");
 		try{
 			rs = stmt.executeQuery(SQL);
 			Rol Rol;
 			while (rs.next()) {
 				String nombre = rs.getString("nombre");
 				Date fechaNac = rs.getDate("fechaNac");
-				String password = rs.getString("keyword"); // keyword o password?
+				String password = rs.getString("keyword"); // keyword o password? keyword, password es una palabra reservada en SQL
 				int nroLU = rs.getInt("nroLU");
-				int auxRol = rs.getInt("idRolOriginal")
-				// Como hago esta asignacion ? 
-				Rol rolOriginal; 
-				Rol rolTemporal;
+				String auxRolOD = rs.getString("descripcion");
+				String auxRolOTR = rs.getString("tipoReclamo");
+				String auxRolTD = rs.getString("descripcion");
+				String auxRolTTR = rs.getString("tipoReclamo");
+				// Como hago esta asignacion ?
+				Enum<TipoRol> descripcionO = TipoRol.valueOf(auxRolOD);
+				Enum<TipoReclamo> tipoReclamoO = TipoReclamo.valueOf(auxRolOTR);
+				Enum<TipoRol> descripcionT = TipoRol.valueOf(auxRolTD);
+				Enum<TipoReclamo> tipoReclamoT = TipoReclamo.valueOf(auxRolTTR);
+				Rol rolOriginal = new Rol();
+				rolOriginal.setDescripcion(descripcionO);
+				rolOriginal.setTipoReclamo(tipoReclamoO);
+				Rol rolTemporal = new Rol();
+				rolTemporal.setDescripcion(descripcionT);
+				rolTemporal.setTipoReclamo(tipoReclamoT);
+				Empleado empleado = new Empleado(nombre, fechaNac, password, nomUsr, nroLU, rolOriginal, rolTemporal);
+				return empleado;
 			}
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
-			throw new AccesoException("");//Rellenar msj
+			throw new AccesoException("No se pudo crear el empleado");//Rellenar msj
 		}
 	}
-	return
-
 }

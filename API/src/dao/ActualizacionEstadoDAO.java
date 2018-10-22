@@ -102,19 +102,7 @@ private static ActualizacionEstadoDAO instancia;
 				fecha = rs.getDate("fecha");
 				descripcion = rs.getString("descripcion");
 				auxEstado = rs.getString("estado");
-				
-				if (auxEstado.equals("Registrado")) {
-					estado = Estados.Registrado;
-				}
-				if (auxEstado.equals("Resuelto")) {
-					estado = Estados.Resuelto;
-				}
-				if (auxEstado.equals("EnTratamineto")) {
-					estado = Estados.EnTratamineto;
-				}
-				if (auxEstado.equals("Cerrado")) {
-					estado = Estados.Cerrado;
-				}
+				estado = Estados.valueOf("auxEstado");
 				String nombreUsrEmpleado = rs.getString("empleadoNombreUsr");
 				ActualizacionEstado actualizacion = new ActualizacionEstado(idReclamo, fecha.toLocalDate(), descripcion,estado, nombreUsrEmpleado);
 				actualizaciones.add(actualizacion);

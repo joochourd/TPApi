@@ -50,7 +50,7 @@ public class ReclamoDAO {
 			"descripcion,"+
 			"estados"+
 			getSpecificColunmForType((TipoReclamo) reclamo.getTipo(), reclamo)+
-			" values ('" +
+			") values ('" +
 			reclamo.getNumeroReclamo() + "','" +
 			reclamo.getFecha() + "','"+
 			reclamo.getDescripcion() + "','" +
@@ -170,7 +170,7 @@ public class ReclamoDAO {
 		return null;	 
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
-			throw new AccesoException("No se pudo crear el reclamo");// Rellenar msj
+			throw new AccesoException("No se pudo crear el reclamo");
 		}
 	}
 	
@@ -227,9 +227,65 @@ public class ReclamoDAO {
 			 
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
-			throw new AccesoException("No se pudieron crear los reclamos");// Rellenar msj
+			throw new AccesoException("No se pudieron crear los reclamos");
 		}
 	}
+
+	public List<Reclamo> obtenerReclamoXEmpleado(String nomUsr) throws ConexionException, AccesoException {
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet resultSet = null;
+		List<Reclamo> reclamos = new ArrayList<Reclamo>();
+		try {
+			con = ConnectionFactory.getInstancia().getConection();
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new ConexionException("No esta disponible el acceso al Servidor");
+		}
+
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e1) {
+			throw new AccesoException("Error de acceso");
+		}
+		String SQL = ("SELECT * FROM reclamos WHERE empleadoNomUsr =('" + nomUsr + "');");
+		try {
+			resultSet = stmt.executeQuery(SQL);
+			while (resultSet.next()) {
+				int auxId = resultSet.getInt("idReclamo");
+				Date auxFecha = resultSet.getDate("fecha"); 
+				String auxDescripcion = resultSet.getString("descripcion");
+				String auxEstados = resultSet.getString("estados");
+				int auxCliente = resultSet.getInt("clienteDniCuit");
+				String auxEmpleadoNumUsr = resultSet.getString("empleadoNumUsr");
+				String auxTipo = resultSet.getString("tipo");
+
+				
+				if(auxTipo.equals("zona")) {
+					String zona = resultSet.getString("zona");
+					Zona reclamoZona = new Zona(auxId, auxFecha.toLocalDate(), auxDescripcion, TipoReclamo.valueOf(auxTipo),auxCliente,auxEmpleadoNumUsr,zona);
+					reclamos.add(reclamoZona);
+					
+				}
+				if(auxTipo.equals("Facturacion")) {
+					Date fecha = resultSet.getDate("fechaFacturacion");
+					int numFactura = resultSet.getInt("nroFactura");
+					Facturacion reclamoFacturacion = new Facturacion(auxId, auxFecha.toLocalDate(), auxDescripcion,TipoReclamo.valueOf(auxTipo),auxCliente,auxEmpleadoNumUsr, fecha.toLocalDate(),numFactura);
+					reclamos.add(reclamoFacturacion);
+				}
+
+				if(auxTipo.equals("CantYProdYFalta")) {
+					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(), auxDescripcion,TipoReclamo.valueOf(auxTipo),auxCliente,auxEmpleadoNumUsr);
+					reclamos.add(reclamoDeCantidadProductoYfalta);
+				}
+			}
+		return reclamos;	 
+		} catch (SQLException e1) {
+			System.out.println(e1.getMessage());
+			throw new AccesoException("No se pudo crear el reclamo");
+		}
+	}
+	
+	
 	
 	public List<Reclamo> obtenerReclamosDeCliente(int numeroCliente) throws AccesoException, ConexionException {
 		Connection con = null;
@@ -282,7 +338,7 @@ public class ReclamoDAO {
 			 
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
-			throw new AccesoException("No se pudieron crear los reclamos");// Rellenar msj
+			throw new AccesoException("No se pudieron crear los reclamos");
 		}
 	}
 

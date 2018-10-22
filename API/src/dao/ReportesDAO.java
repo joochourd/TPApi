@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,16 +20,16 @@ public class ReportesDAO {
 
 //falta hacer el while del buscarReclamo y verificar el tipo de dato que devuelven los metodos aca 
 
-	private static ReclamoDAO instancia;
+	private static ReportesDAO instancia;
 
-	public static ReclamoDAO getInstancia() {
+	public static ReportesDAO getInstancia() {
 		if (instancia == null) {
 			instancia = new ReclamoDAO();
 		}
 		return instancia;
 	}
 
-	public List<Cliente> clientesConMasReclamosPorMes() throws ConexionException, AccesoException {
+	public List<Cliente> clientesConMasReclamosPorMes(int mes) throws ConexionException, AccesoException {
 		Connection con = null;
 		Statement stmt = null;
 		try {
@@ -42,23 +43,33 @@ public class ReportesDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = "SELECT c.clientes, COUNT(r.reclamos)" +
+		String SQL = "SELECT TOP 5 c.nombre, c.dniCuit, COUNT(r.idReclamo) AS cantidadReclamos" +
 		"FROM" +
 		"    clientes c LEFT JOIN" +
-		"    reclamos r ON r.clienteDniCuit = c.dniCuit" +
-		"GROUP BY c.dniCuit ;";
+		"    reclamos r ON r.clienteDniCuit = c.dniCuit WHERE MONTH (r.fecha = " + mes +")" +
+		"GROUP BY c.dniCuit, c.nombre ORDER BY cantidadReclamos ;";
 		
 		
 		try {
-			stmt.execute(SQL);
+			ResultSet resultSet = stmt.executeQuery(SQL);
+			List<Cliente> clientes = new ArrayList<>();
+			while (resultSet.next()) {
+				String nombre = resultSet.getString("nombre");
+				String domicilio= resultSet.getString("domicilio");
+				String telefono= resultSet.getString("telefono");
+				String mail= resultSet.getString("mail");
+				int dniCuit= resultSet.getInt("dniCuit");
+				Cliente cliente = new Cliente(dniCuit, nombre, domicilio, telefono, mail);
+				clientes.add(cliente);
+			}
+			return clientes;
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
 			throw new AccesoException("Error de escritura");
 		}
-		return null;
 	}
 
-	public int cantidadReclamosTratadosPorMes(String numeroMes) throws ConexionException, AccesoException {
+	public int cantidadReclamosTratadosPorMes(int numeroMes) throws ConexionException, AccesoException {
 		
 		Connection con = null;
 		Statement stmt = null;
@@ -73,7 +84,7 @@ public class ReportesDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("SELECT COUNT(fecha) as fechaFacturacion FROM reclamos WHERE MONTH(Date) = " + numeroMes + "AND ESTADOS = CERRADO"+
+		String SQL = ("SELECT COUNT(r.idReclamo) as cantidadReclamo FROM reclamos r WHERE MONTH(r.fecha) = " + numeroMes + "AND ESTADOS = 'cerrado'"+
 		";");
 		try {
 			ResultSet resultSet = stmt.executeQuery(SQL);

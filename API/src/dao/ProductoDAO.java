@@ -121,7 +121,7 @@ public class ProductoDAO {
 			return producto;
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
-			throw new AccesoException("No se pudo crear el Producto");//Rellenar msj
+			throw new AccesoException("No se pudo crear el Producto");
 		}
 	}
 
