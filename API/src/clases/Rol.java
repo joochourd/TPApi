@@ -10,8 +10,10 @@ public class Rol {
 	
 	
 	
-	public Rol() {
+	public Rol(Enum<TipoRol> rol, Enum<TipoReclamo>tipoReclamo) {
 		super();
+		this.descripcion = rol;
+		this.tipoReclamo = tipoReclamo;
 	}
 	
 	public Enum<TipoRol> getDescripcion() {

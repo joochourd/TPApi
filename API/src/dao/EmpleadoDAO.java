@@ -131,18 +131,19 @@ public class EmpleadoDAO {
 				Enum<TipoReclamo> tipoReclamoO = TipoReclamo.valueOf(auxRolOTR);
 				Enum<TipoRol> descripcionT = TipoRol.valueOf(auxRolTD);
 				Enum<TipoReclamo> tipoReclamoT = TipoReclamo.valueOf(auxRolTTR);
-				Rol rolOriginal = new Rol();
+				Rol rolOriginal = new Rol(descripcionT, tipoReclamoT);
 				rolOriginal.setDescripcion(descripcionO);
 				rolOriginal.setTipoReclamo(tipoReclamoO);
-				Rol rolTemporal = new Rol();
+				Rol rolTemporal = new Rol(descripcionT, tipoReclamoT);
 				rolTemporal.setDescripcion(descripcionT);
 				rolTemporal.setTipoReclamo(tipoReclamoT);
 				Empleado empleado = new Empleado(nombre, fechaNac, password, nomUsr, nroLU, rolOriginal, rolTemporal);
 				return empleado;
 			}
+			return null;
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
-			throw new AccesoException("No se pudo crear el empleado");//Rellenar msj
+			throw new AccesoException("No se pudo crear el empleado");
 		}
 	}
 }
