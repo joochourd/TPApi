@@ -18,8 +18,9 @@ class TestSQLQueries {
 	void test() throws ConexionException, AccesoException {
 		
 		Zona zona = new Zona(0, LocalDate.now(), "just a description", TipoReclamo.Zona, 0, "Just a zone", null);
-		ReclamoDAO dao = new ReclamoDAO();
+		ReclamoDAO dao = ReclamoDAO.getInstancia();
 		dao.grabarReclamo(zona);
+		System.out.println("the test just ran");
 		fail("Not yet implemented");
 	}
 
