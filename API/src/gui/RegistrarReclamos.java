@@ -9,6 +9,7 @@ import java.awt.Panel;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import extensions.*;
 
 import com.toedter.calendar.JCalendar;
 
@@ -185,13 +186,12 @@ public class RegistrarReclamos {
 					break;
 				case 2:
 					//Change to local Date
-					sistema.getTablero().registrarReclamoFacturacion(0, LocalDate.now(), textFieldDescripcion.getText(), Integer.parseInt(textFieldNumerocliente.getText()), jcalendar.getDate(), textFieldNumeroFactura.getText());
+					sistema.getTablero().registrarReclamoFacturacion(0, LocalDate.now(), textFieldDescripcion.getText(), Integer.parseInt(textFieldNumerocliente.getText()), ExtensionHelper.dateToLocalDate(jcalendar.getDate()), Integer.parseInt(textFieldNumeroFactura.getText()));
 
 				case 3:
 				case 4:
 				case 5:
-					sistema.getTablero().registrarReclamoCantProdFalta(0, LocalDate.now(), textFieldDescripcion.getText(), tipo, Integer.parseInt(textFieldNumerocliente.getText()), jcalendar.getDate(), Integer.parseInt(textFieldNumeroFactura.getText()));
-					
+					sistema.getTablero().registrarReclamoCantProdFalta(0, LocalDate.now(), textFieldDescripcion.getText(), tipo, Integer.parseInt(textFieldNumerocliente.getText()), ExtensionHelper.dateToLocalDate(jcalendar.getDate()), Integer.parseInt(textFieldNumeroFactura.getText()));
 				default:
 					break;
 				}
