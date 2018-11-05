@@ -7,6 +7,9 @@ import excepciones.AccesoException;
 import excepciones.ConexionException;
 
 public class Facturacion extends Simple {
+	
+	private LocalDate fechaFacturacion;
+	private int nroFactura;
 
 
 	public Facturacion(int numeroReclamo,LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr, LocalDate fechaFacturacion, int nroFactura) {
@@ -15,11 +18,6 @@ public class Facturacion extends Simple {
 		this.nroFactura = nroFactura;
 		// TODO Auto-generated constructor stub
 	}
-
-
-	private LocalDate fechaFacturacion;
-	private int nroFactura;
-	
 
 
 	@Override

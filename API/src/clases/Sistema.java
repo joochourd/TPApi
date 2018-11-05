@@ -10,6 +10,7 @@ public class Sistema {
 
 	private static Sistema instance;
 	private Empleado empleadoActual;
+	private Tablero tablero;
 
 	public static Sistema getInstance () {
 		if (instance == null) {
@@ -81,6 +82,30 @@ public class Sistema {
 		else{
 			return "Usuario incorrecto...";
 		}
+	}
+
+
+
+	public Empleado getEmpleadoActual() {
+		return empleadoActual;
+	}
+
+
+
+	public void setEmpleadoActual(Empleado empleadoActual) {
+		this.empleadoActual = empleadoActual;
+	}
+
+
+
+	public Tablero getTablero() {
+		return tablero;
+	}
+
+
+
+	public void setTablero(Tablero tablero) {
+		this.tablero = tablero;
 	}
 
 }	
