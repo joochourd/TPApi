@@ -15,10 +15,14 @@ import clases.TipoReclamo;
 import clases.Zona;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
+import view.ReclamoView;
 //
 public class ReclamoDAO {
+	
 	private static ReclamoDAO instancia;
 
+	private ReclamoDAO(){}
+	
 	public static ReclamoDAO getInstancia() {
 		if (instancia == null) {
 			instancia = new ReclamoDAO();
@@ -227,6 +231,14 @@ public class ReclamoDAO {
 		}
 	}
 
+	public ReclamoView reclamoToReclamoView (Reclamo r){
+		
+		
+		
+		return null;
+			
+	}
+	
 	public List<Reclamo> obtenerReclamoXEmpleado(String nomUsr) throws ConexionException, AccesoException {
 		Connection con = null;
 		Statement stmt = null;

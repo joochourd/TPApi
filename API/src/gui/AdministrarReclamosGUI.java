@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import clases.Facturacion;
+import clases.Reclamo;
 import clases.TipoReclamo;
 import dao.ReclamoDAO;
 
@@ -50,15 +51,22 @@ public class AdministrarReclamosGUI extends JFrame {
 		layeredPane.setBounds(0, 0, 434, 261);
 		contentPane.add(layeredPane);
 		
-		JList listReclamos = new JList();
-		listReclamos.setBounds(347, 88, -120, -37);
-		layeredPane.add(listReclamos);
 		
 		if (ordenRol == 1) {
-			ReclamoDAO auxR = new ReclamoDAO();
-			auxR.getInstancia();
-			List <Facturacion> reclamos = auxR.obtenerReclamosPorTipo(TipoReclamo.Facturacion);
-			listReclamos.add(comp)
+			Facturacion facturacion;
+			List<Reclamo> reclamos = ReclamoDAO.getInstancia().obtenerReclamosPorTipo(TipoReclamo.Facturacion);
+			String[] datos = new String[reclamos.size()];
+			//auxR.obtenerReclamosPorTipo(TipoReclamo.Facturacion);
+			for (int i = 0; i < reclamos.size(); i++) {
+				datos[i] = reclamos.get(i).toString()//Facturacion f = (Facturacion) reclamos.get(i);
+			}
+			JList listReclamos = new JList(datos);
+			//listReclamos.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+			listReclamos.setBounds(347, 88, -120, -37);
+			layeredPane.add(listReclamos);
+
+			
+			
 		}
 	}
 }
