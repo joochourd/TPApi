@@ -18,10 +18,8 @@ public class Producto {
 		this.precio = precio;
 	}
 	
-	public void modificarProducto (String titulo, String descripcion, float precio){
-		if(this.titulo != titulo) this.titulo= titulo;
-		if(this.descripcion != descripcion) this.descripcion = descripcion;
-		if(this.precio != precio) this.precio = precio;
+	public void modificate() throws ConexionException, AccesoException{
+		ProductoDAO.getInstancia().modificarProducto(this);
 	}
 	
 	public boolean soyProducto (int codigoPub){
@@ -29,16 +27,11 @@ public class Producto {
 	}
 	
 	public void guardate() throws ConexionException, AccesoException{
-		ProductoDAO pDao = new ProductoDAO();
-		pDao.grabarProducto(this);
+		ProductoDAO.getInstancia().grabarProducto(this);
 	}
 
 	public int getCodigoPublicacion() {
 		return codigoPublicacion;
-	}
-
-	public void setCodigoPublicacion(int codigoPublicacion) {//Ver si tiene que ir
-		this.codigoPublicacion = codigoPublicacion;
 	}
 
 	public String getTitulo() {

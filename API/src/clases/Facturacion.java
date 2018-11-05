@@ -2,12 +2,16 @@ package clases;
 
 import java.time.LocalDate;
 
+import dao.ReclamoDAO;
+import excepciones.AccesoException;
+import excepciones.ConexionException;
+
 public class Facturacion extends Simple {
 
 
-	public Facturacion(int numeroReclamo, LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, LocalDate fechaFacturacion, int nroFactura) {
-		super(numeroReclamo, fecha, descripcion, tipo);
-		this.fechaFacturacion = fecha;
+	public Facturacion(int numeroReclamo,LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr, LocalDate fechaFacturacion, int nroFactura) {
+		super(numeroReclamo, fecha, descripcion, tipo, clienteDniCuit, empleadoNombreUsr);
+		this.fechaFacturacion = fechaFacturacion;
 		this.nroFactura = nroFactura;
 		// TODO Auto-generated constructor stub
 	}
@@ -44,5 +48,15 @@ public class Facturacion extends Simple {
 	public void setNroFactura(int nroFactura) {
 		this.nroFactura = nroFactura;
 	}
+
+
+
+	@Override
+	protected void guardate() throws ConexionException, AccesoException {
+		ReclamoDAO.getInstancia().grabarReclamo(this);
+		
+	}
+	
+	
 
 }

@@ -2,12 +2,16 @@ package clases;
 
 import java.time.LocalDate;
 
+import dao.ReclamoDAO;
+import excepciones.AccesoException;
+import excepciones.ConexionException;
+
 public class Zona extends Simple {
 
 	private String zona; 
 
-	public Zona(int numeroReclamo, LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, String zona) {
-		super(numeroReclamo, fecha, descripcion, tipo);
+	public Zona(int numeroReclamo,LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr, String zona) {
+		super(numeroReclamo,fecha, descripcion, tipo, clienteDniCuit, empleadoNombreUsr);
 		this.zona = zona;
 		// TODO Auto-generated constructor stub
 	}
@@ -24,6 +28,11 @@ public class Zona extends Simple {
 	public void accion() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	protected void guardate() throws ConexionException, AccesoException {
+		ReclamoDAO.getInstancia().grabarReclamo(this);		
 	}
 
 }

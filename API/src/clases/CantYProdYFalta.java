@@ -6,6 +6,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.ReclamoDAO;
+import excepciones.AccesoException;
+import excepciones.ConexionException;
 import strategy.EstrategiaAbstracta;
 
 public class CantYProdYFalta extends Simple {
@@ -14,8 +17,8 @@ public class CantYProdYFalta extends Simple {
 	private List<Integer> cantidades;
 	private EstrategiaAbstracta strategy;
 	
-	public CantYProdYFalta(int numeroReclamo, LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo) {
-		super(numeroReclamo, fecha, descripcion, tipo);
+	public CantYProdYFalta(int numeroReclamo,LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr) {
+		super(numeroReclamo, fecha, descripcion, tipo, clienteDniCuit, empleadoNombreUsr);
 		this.productos = new ArrayList<Producto>();
 		this.cantidades = new ArrayList<Integer>();
 		// TODO Auto-generated constructor stub
@@ -31,6 +34,14 @@ public class CantYProdYFalta extends Simple {
 
 	public void setEstrategia(EstrategiaAbstracta strategy) {
 		this.strategy = strategy;
+	}
+
+
+
+	@Override
+	protected void guardate() throws ConexionException, AccesoException {
+		ReclamoDAO.getInstancia().grabarReclamo(this);
+		
 	}
 
 }

@@ -1,9 +1,9 @@
 package observador;
 
-import clases.Estados;
+import clases.Reclamo;
 
 public interface Observer {
 	
-	public void update(Enum<Estados> estado);
+	public void update(Reclamo reclamo);
 
 }

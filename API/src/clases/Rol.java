@@ -4,7 +4,40 @@ import java.util.List;
 
 public class Rol {
 
-	private String descripcion;
+	private int id;
+	private Enum<TipoRol> descripcion;
+	private Enum<TipoReclamo> tipoReclamo;
+	
+	
+	
+	public Rol() {
+		super();
+	}
+	
+	public Enum<TipoRol> getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(Enum<TipoRol> descripcion) {
+		this.descripcion = descripcion;
+	}
+	public Enum<TipoReclamo> getTipoReclamo() {
+		return tipoReclamo;
+	}
+	public void setTipoReclamo(Enum<TipoReclamo> tipoReclamo) {
+		this.tipoReclamo = tipoReclamo;
+	}
+	public List<Empleado> getUsr() {
+		return usr;
+	}
+	public void setUsr(List<Empleado> usr) {
+		this.usr = usr;
+	}
+	public List<Enum> getPermisos() {
+		return permisos;
+	}
+	public void setPermisos(List<Enum> permisos) {
+		this.permisos = permisos;
+	}
 	private List<Empleado> usr;
 	private List<Enum> permisos;
 	
@@ -24,5 +57,13 @@ public class Rol {
 	}
 	public void agregarUsr(Empleado usuario){
 		usr.add(usuario);
+	}
+	public int getId() {
+		// TODO Auto-generated method stub
+		return this.id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 }
