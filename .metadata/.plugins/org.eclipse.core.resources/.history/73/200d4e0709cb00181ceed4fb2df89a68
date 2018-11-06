@@ -1,0 +1,5 @@
+package Clases;
+
+public abstract class Simple {
+
+}

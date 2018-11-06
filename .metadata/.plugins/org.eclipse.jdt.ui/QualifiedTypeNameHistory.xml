@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.sql.Statement"/>
+<fullyQualifiedTypeName name="java.sql.ResultSet"/>
+<fullyQualifiedTypeName name="Clases.Cliente"/>
+<fullyQualifiedTypeName name="java.sql.Connection"/>
+<fullyQualifiedTypeName name="java.sql.SQLException"/>
+<fullyQualifiedTypeName name="java.sql.DriverManager"/>
+<fullyQualifiedTypeName name="excepciones.ConexionException"/>
+<fullyQualifiedTypeName name="excepciones.AccesoException"/>
+<fullyQualifiedTypeName name="Clases.Producto"/>
+<fullyQualifiedTypeName name="java.util.Collection"/>
+<fullyQualifiedTypeName name="dao.ProductoDAO"/>
+<fullyQualifiedTypeName name="clases.Factura"/>
+<fullyQualifiedTypeName name="observador.ObservableReclamo"/>
+<fullyQualifiedTypeName name="java.util.Observer"/>
+<fullyQualifiedTypeName name="observador.Observer"/>
+<fullyQualifiedTypeName name="clases.Empleado"/>
+<fullyQualifiedTypeName name="javax.swing.JFrame"/>
+<fullyQualifiedTypeName name="clases.Tablero"/>
+<fullyQualifiedTypeName name="java.awt.Container"/>
+<fullyQualifiedTypeName name="strategy.EstrategiaAbstracta"/>
+<fullyQualifiedTypeName name="clases.CantYProdYFalta"/>
+<fullyQualifiedTypeName name="clases.Tipo"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="java.lang.Enum"/>
+<fullyQualifiedTypeName name="dao.EmpleadoDAO"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.lang.String"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="clases.Zona"/>
+<fullyQualifiedTypeName name="clases.Facturacion"/>
+<fullyQualifiedTypeName name="clases.Compuesto"/>
+<fullyQualifiedTypeName name="clases.ActualizacionEstado"/>
+<fullyQualifiedTypeName name="dao.ActualizacionEstadoDAO"/>
+<fullyQualifiedTypeName name="javax.accessibility.AccessibleRelationSet"/>
+<fullyQualifiedTypeName name="clases.Reclamo"/>
+<fullyQualifiedTypeName name="dao.ReportesDAO"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="dao.ReclamoDAO"/>
+<fullyQualifiedTypeName name="clases.TipoReclamo"/>
+<fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
+<fullyQualifiedTypeName name="javax.swing.JComboBox"/>
+<fullyQualifiedTypeName name="javax.swing.JPanel"/>
+<fullyQualifiedTypeName name="view.ReclamoView"/>
+<fullyQualifiedTypeName name="gui.RegistrarReclamos"/>
+</qualifiedTypeNameHistroy>

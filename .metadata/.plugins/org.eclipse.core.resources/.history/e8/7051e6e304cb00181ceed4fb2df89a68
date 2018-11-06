@@ -1,0 +1,9 @@
+package Clases;
+
+
+public class Estados {
+    Estados estado;
+    
+    public Estados(Estados estado) {
+        this.estado = estado;
+    }

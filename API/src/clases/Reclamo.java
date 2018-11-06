@@ -10,6 +10,7 @@ import dao.ReclamoDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 //
+import view.ReclamoView;
 
 public abstract class Reclamo{
 	
@@ -117,6 +118,11 @@ public abstract class Reclamo{
 		ActualizacionEstado actEst = new ActualizacionEstado(this.getNumeroReclamo(), LocalDate.now(),  this.getDescripcion(),  this.getEstado(), this.getEmpleadoNombreUsr());
 		//this.historial.add(actEst);
 		actEst.guardate();
+	}
+	
+	public ReclamoView reclamoToReclamoView() {
+		ReclamoView reclamoV = new ReclamoView(this.numeroReclamo, this.fecha, this.descripcion, this.estado.toString(), this.tipo.toString(), String.valueOf(this.clienteDniCuit), this.empleadoNombreUsr);
+		return reclamoV;
 	}
 }
 

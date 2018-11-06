@@ -1,0 +1,11 @@
+package clases;
+
+import java.time.LocalDate;
+
+public class ActualizacionEstado {
+	private LocalDate fecha;
+	private String descripcion;
+	private Enum <Estados> estado;
+	private Empleado empleado;
+}
+

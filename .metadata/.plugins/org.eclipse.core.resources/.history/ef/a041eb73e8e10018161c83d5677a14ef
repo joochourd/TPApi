@@ -1,0 +1,219 @@
+package gui;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import java.awt.Label;
+import javax.swing.JComboBox;
+import java.awt.Panel;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import extensions.*;
+
+import com.toedter.calendar.JCalendar;
+
+import clases.Sistema;
+import clases.TipoReclamo;
+import excepciones.AccesoException;
+import excepciones.ConexionException;
+
+import javax.swing.JList;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import java.awt.event.ActionEvent;
+
+public class RegistrarReclamos {
+
+	private JFrame frame;
+	private JTextField textFieldZona;
+	private JTextField textFieldDescripcion;
+	private JTextField textFieldNumerocliente;
+	private JTextField txtFieldFechaFacturacion;
+	private JTextField textFieldNumeroFactura;
+	private JTextField txtFieldCantidad;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					RegistrarReclamos window = new RegistrarReclamos();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public RegistrarReclamos() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 700, 700);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		
+		Label label = new Label("Tipo de reclamo");
+		label.setBounds(36, 10, 95, 22);
+		frame.getContentPane().add(label);
+		
+		JComboBox comboBox_TipoReclamo = new JComboBox();
+		comboBox_TipoReclamo.setBounds(222, 10, 117, 20);
+		comboBox_TipoReclamo.addItem("Cantidades");
+		comboBox_TipoReclamo.addItem("Producto");
+		comboBox_TipoReclamo.addItem("Faltantes");
+		comboBox_TipoReclamo.addItem("Zona");
+		comboBox_TipoReclamo.addItem("Facturacion");
+		frame.getContentPane().add(comboBox_TipoReclamo);
+		
+		
+		
+		JPanel panelZona = new JPanel();
+		panelZona.setBounds(10, 355, 414, 59);
+		frame.getContentPane().add(panelZona);
+		panelZona.setLayout(null);
+		panelZona.setVisible(false);
+		
+		JLabel lblNombreZona = new JLabel("Nombre Zona");
+		lblNombreZona.setBounds(24, 28, 88, 14);
+		panelZona.add(lblNombreZona);
+		
+		textFieldZona = new JTextField();
+		textFieldZona.setText("Nombre de Zona ");
+		textFieldZona.setBounds(213, 25, 121, 20);
+		panelZona.add(textFieldZona);
+		textFieldZona.setColumns(10);
+		
+		JLabel lblDescripcion = new JLabel("Descripcion");
+		lblDescripcion.setBounds(36, 55, 95, 14);
+		frame.getContentPane().add(lblDescripcion);
+		
+		textFieldDescripcion = new JTextField();
+		textFieldDescripcion.setBounds(222, 52, 117, 20);
+		frame.getContentPane().add(textFieldDescripcion);
+		textFieldDescripcion.setColumns(10);
+		
+		JLabel lblNumeroDeCliente = new JLabel("Numero de cliente");
+		lblNumeroDeCliente.setBounds(36, 93, 117, 14);
+		frame.getContentPane().add(lblNumeroDeCliente);
+		
+		textFieldNumerocliente = new JTextField();
+		textFieldNumerocliente.setBounds(222, 90, 117, 20);
+		frame.getContentPane().add(textFieldNumerocliente);
+		textFieldNumerocliente.setColumns(10);
+		
+		JPanel panelFacturacion = new JPanel();
+		panelFacturacion.setBounds(10, 264, 414, 80);
+		frame.getContentPane().add(panelFacturacion);
+		panelFacturacion.setLayout(null);
+		panelFacturacion.setVisible(false);
+		
+		
+		JLabel lblFechaDeFacturacion = new JLabel("Fecha de facturacion");
+		lblFechaDeFacturacion.setBounds(23, 11, 109, 14);
+		panelFacturacion.add(lblFechaDeFacturacion);
+		
+		JLabel lblNumeroFactura = new JLabel("Numero de factura");
+		lblNumeroFactura.setBounds(23, 39, 109, 14);
+		panelFacturacion.add(lblNumeroFactura);
+		
+		txtFieldFechaFacturacion = new JTextField();
+		txtFieldFechaFacturacion.setBounds(209, 8, 123, 200);
+		panelFacturacion.add(txtFieldFechaFacturacion);
+		txtFieldFechaFacturacion.setColumns(10);
+		
+		textFieldNumeroFactura = new JTextField();
+		textFieldNumeroFactura.setBounds(209, 36, 123, 20);
+		panelFacturacion.add(textFieldNumeroFactura);
+		textFieldNumeroFactura.setColumns(10);
+		
+		JPanel panelCantidadProductoYFalta = new JPanel();
+		panelCantidadProductoYFalta.setBounds(10, 125, 414, 128);
+		frame.getContentPane().add(panelCantidadProductoYFalta);
+		panelCantidadProductoYFalta.setLayout(null);
+		panelCantidadProductoYFalta.setVisible(false);
+		
+		JLabel lblNewLabel = new JLabel("Cantidad");
+		lblNewLabel.setBounds(24, 71, 80, 14);
+		panelCantidadProductoYFalta.add(lblNewLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("Producto");
+		lblNewLabel_1.setBounds(24, 21, 46, 14);
+		panelCantidadProductoYFalta.add(lblNewLabel_1);
+		
+		JComboBox comboBox_Producto = new JComboBox();
+		comboBox_Producto.setBounds(203, 18, 129, 20);
+		panelCantidadProductoYFalta.add(comboBox_Producto);
+		
+		txtFieldCantidad = new JTextField();
+		txtFieldCantidad.setBounds(203, 68, 129, 20);
+		panelCantidadProductoYFalta.add(txtFieldCantidad);
+		txtFieldCantidad.setColumns(10);
+		
+		
+		
+		JCalendar jcalendar = new JCalendar();
+		jcalendar.setBounds(209, 8, 200, 200);
+		panelCantidadProductoYFalta.add(jcalendar);
+		
+		
+		
+		JButton btnCargar = new JButton("Cargar");
+		btnCargar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Sistema sistema = Sistema.getInstance();
+				switch (comboBox_TipoReclamo.getSelectedIndex()) {
+				case 1:
+					
+					try {
+						sistema.getTablero().registrarReclamoZona(0, LocalDate.now(), textFieldDescripcion.getText(), Integer.parseInt(textFieldNumerocliente.getText()) , textFieldZona.getText());
+					} catch (NumberFormatException | ConexionException | AccesoException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						System.out.println("Crashed trying to parse String to int");
+					}
+					break;
+				case 2:
+					//Change to local Date
+					try {
+						sistema.getTablero().registrarReclamoFacturacion(0, LocalDate.now(), textFieldDescripcion.getText(), Integer.parseInt(textFieldNumerocliente.getText()), ExtensionHelper.dateToLocalDate(jcalendar.getDate()), Integer.parseInt(textFieldNumeroFactura.getText()));
+					} catch (NumberFormatException | ConexionException | AccesoException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+				case 3:
+				case 4:
+				case 5:
+					try {
+						sistema.getTablero().registrarReclamoCantProdFalta(0, LocalDate.now(), textFieldDescripcion.getText(), TipoReclamo.Falta, Integer.parseInt(textFieldNumerocliente.getText()), ExtensionHelper.dateToLocalDate(jcalendar.getDate()), Integer.parseInt(textFieldNumeroFactura.getText()));
+					} catch (NumberFormatException | ConexionException | AccesoException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				default:
+					break;
+				}
+			}
+		});
+		btnCargar.setBounds(261, 439, 89, 23);
+		frame.getContentPane().add(btnCargar);
+	}
+}

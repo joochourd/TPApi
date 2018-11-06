@@ -1,0 +1,81 @@
+package clases;
+
+import java.util.Date;
+import java.util.List;
+
+public class Empleado {
+	private String nombre;
+	private Date fechaNac;
+	private String contraseña;
+	private String nomUsr;
+	private int nroLU;
+	private Rol rolOriginal;
+	private Rol rolTemporal;
+	private List<Reclamo> reclamos;
+	
+	public void setRol (Rol rol){}
+	
+	public void backToRol (){}
+	
+	public void addReclamo(Reclamo reclamo){
+		reclamos.add(reclamo);
+	}
+	
+	public List<Reclamo> getReclamos(){
+		return reclamos;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public Date getFechaNac() {
+		return fechaNac;
+	}
+
+	public void setFechaNac(Date fechaNac) {
+		this.fechaNac = fechaNac;
+	}
+
+	public String getContraseña() {
+		return contraseña;
+	}
+
+	public void setContraseña(String contraseña) {
+		this.contraseña = contraseña;
+	}
+
+	public String getNomUsr() {
+		return nomUsr;
+	}
+
+	public void setNomUsr(String nomUsr) {
+		this.nomUsr = nomUsr;
+	}
+
+	public void setNroLU(int nroLU) {
+		this.nroLU = nroLU;
+	}
+	
+	public int getNroLU (){
+		return  this.nroLU;
+	}
+
+	public Rol getRolTemporal() {
+		return rolTemporal;
+	}
+
+	public void setRolTemporal(Rol rolTemporal) {
+		this.rolTemporal = rolTemporal;
+	}
+
+	public Rol getRolOriginal() {
+		return rolOriginal;
+	}
+
+	
+}

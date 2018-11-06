@@ -1,0 +1,11 @@
+package clases;
+
+public enum TipoRol {
+	responsableFacturacion, /**administra todos los reclamos referidos a facturación*/
+	responsableDistribucion, /**administra todos los reclamos referidos a distribución, faltante  y entrega de productos*/
+	responsableZonas, /**administra los reclamos de zona*/
+	callCenter, /**son los encargados de ingresar los reclamos y resolver consultas por teléfono*/
+	administrador, /**administra la configuración de la aplicación*/
+	consulta/**usuario que solo puede realizar consultas sobre el sistema (reportes, estado de reclamos, etc.)*/
+
+}

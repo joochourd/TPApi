@@ -1,0 +1,27 @@
+package observador;
+
+import java.util.List;
+import java.util.Observer;
+
+public class Observable {
+	
+private List<Observer> observadores;
+	
+	public Observable(){
+		observadores = new ArrayList<Observer>();
+	}
+	
+	public void addObserver(Observer instancia){
+		observadores.add(instancia);
+	}
+	
+	public void removeObserver(Observer instancia){
+		observadores.remove(instancia);
+	}
+	
+	public void updateObserver(String dato){
+		for(Observer observer : observadores)
+			observer.update(dato);
+	}
+
+}

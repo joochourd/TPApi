@@ -1,0 +1,16 @@
+package clases;
+
+public class CantYProdYFalta extends Simple {
+	
+	public CantYProdYFalt(){
+		super()
+	}
+
+
+	@Override
+	public void accion() {
+		// TODO Auto-generated method stub
+
+	}
+
+}

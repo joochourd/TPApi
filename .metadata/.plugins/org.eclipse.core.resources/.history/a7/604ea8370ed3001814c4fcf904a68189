@@ -1,0 +1,13 @@
+package strategy;
+
+import clases.Simple;
+
+public class EstrategiaFaltante extends Simple implements EstrategiaAbstracta {
+
+	@Override
+	public void accion() {
+		// TODO Auto-generated method stub
+
+	}
+
+}
