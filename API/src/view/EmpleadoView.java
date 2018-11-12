@@ -11,6 +11,7 @@ public class EmpleadoView {
 	private int nroLU;
 	private int rolOriginal;
 	private int rolTemporal;
+	//
 
 	public EmpleadoView(String nombre, Date fechaNac, String nomUsr, int nroLU, int rolOriginal, int rolTemporal){
 		this.nombre = nombre;
