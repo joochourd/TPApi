@@ -1,0 +1,62 @@
+package view;
+
+import java.util.Date;
+
+import clases.Rol;
+
+public class EmpleadoView {
+	private String nombre;
+	private Date fechaNac;
+	private String nomUsr;
+	private int nroLU;
+	private int rolOriginal;
+	private int rolTemporal;
+
+	public EmpleadoView(String nombre, Date fechaNac, String nomUsr, int nroLU, int rolOriginal, int rolTemporal){
+		this.nombre = nombre;
+		this.fechaNac = fechaNac;
+		this.nomUsr = nomUsr;
+		this.nroLU = nroLU;
+		this.rolOriginal = rolOriginal;
+		this.rolTemporal = rolTemporal;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public Date getFechaNac() {
+		return fechaNac;
+	}
+	public void setFechaNac(Date fechaNac) {
+		this.fechaNac = fechaNac;
+	}
+	
+	public String getNomUsr() {
+		return nomUsr;
+	}
+	public void setNomUsr(String nomUsr) {
+		this.nomUsr = nomUsr;
+	}
+	public int getNroLU() {
+		return nroLU;
+	}
+	public void setNroLU(int nroLU) {
+		this.nroLU = nroLU;
+	}
+	public int getRolOriginal() {
+		return rolOriginal;
+	}
+	public void setRolOriginal(int rolOriginal) {
+		this.rolOriginal = rolOriginal;
+	}
+	public int getRolTemporal() {
+		return rolTemporal;
+	}
+	public void setRolTemporal(int rolTemporal) {
+		this.rolTemporal = rolTemporal;
+	}
+	
+}
