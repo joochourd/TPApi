@@ -66,6 +66,10 @@ public class Empleado {
 	public Rol getRolTemporal() {
 		return rolTemporal;
 	}
+	
+	public int getRolTemporalId() {
+		return rolTemporal.getId();
+	}
 
 	public void setRolTemporal(Rol rolTemporal) {
 		this.rolTemporal = rolTemporal;

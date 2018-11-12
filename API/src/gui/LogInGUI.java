@@ -13,9 +13,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import clases.Empleado;
+import clases.Rol;
 import dao.EmpleadoDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
+import view.EmpleadoView;
 
 public class LogInGUI extends JFrame {
 
@@ -79,33 +81,34 @@ public class LogInGUI extends JFrame {
 				EmpleadoDAO empDAO = new EmpleadoDAO();
 				empDAO.getInstancia();
 				try {
-					Empleado emp = empDAO.buscarEmpleado(txtNomUsr.getText());
-					Integer ordenRol = null;
+					EmpleadoView emp = empDAO.buscarEmpleado(txtNomUsr.getText(), txtContr.getText());
 					if (emp != null) {
-						if (emp.getPassword().equals(txtContr)) {
-								if (emp.getRolTemporal().equals("responsableFacturacion")) {
-									ordenRol = 1; 
-								}
-								if (emp.getRolTemporal().equals("responsableDistribucion")) {
-									ordenRol = 2;
-								}
-								if (emp.getRolTemporal().equals("responsableZonas")) {
-									ordenRol = 3;
-								}
-								if (emp.getRolTemporal().equals("callCenter")) {
-									ordenRol = 4;
-								}
-								if (emp.getRolTemporal().equals("administrador")) {
-									ordenRol = 5;
-								}
-								if (emp.getRolTemporal().equals("consulta")) {
-									ordenRol = 6;
-								}
-								AdministrarReclamosGUI adminReclamos = new AdministrarReclamosGUI(ordenRol);
-								adminReclamos.setVisible(true);
-						}else {
-							System.out.println("Contraseña incorrecta");
+						emp.getRolTemporal();
+						switch (emp.getRolTemporal()) {
+						case 1://responsableFacturacion
+						
+							break;
+						case 2://responsableFacturacion
+							
+							break;
+						case 3://responsableZonas
+							
+							break;
+						case 4://callCenter
+							RegistrarReclamos venta = new RegistrarReclamos();
+							venta.setVisible(true);
+							break;
+						case 5://administrador
+							
+							break;
+						case 6://consulta
+							
+							break;
+
+						default:
+							break;
 						}
+						
 					}else {
 						System.out.println("Nombre de usuario incorrecto");
 					}

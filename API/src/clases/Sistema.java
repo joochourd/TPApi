@@ -11,6 +11,8 @@ public class Sistema {
 	private static Sistema instance;
 	private Empleado empleadoActual;
 	private Tablero tablero;
+	
+	
 
 	public static Sistema getInstance () {
 		if (instance == null) {
