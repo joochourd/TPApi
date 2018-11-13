@@ -3,6 +3,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 
 
 public class PruebaConexion {
@@ -33,6 +34,7 @@ public class PruebaConexion {
 	            System.out.println(rs.getInt(1) + " " + rs.getString(2));  
 	         }  */
 	         System.out.println("\nSuccess");
+	         System.out.println(LocalDate.now());
 	      }  
 	  
 	      // Handle any errors that may have occurred.  

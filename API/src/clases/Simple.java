@@ -8,6 +8,10 @@ protected String idCompuesto = null;
 		super(numeroReclamo, fecha, descripcion, tipo, clienteDniCuit, empleadoNombreUsr);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Simple(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr) {
+		super(fecha, descripcion, tipo, clienteDniCuit, empleadoNombreUsr);
+	}
 
 	@Override
 	public void accion() {

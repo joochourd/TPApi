@@ -8,7 +8,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import clases.ActualizacionEstado;
+import clases.Estados;
 import clases.Reclamo;
+import clases.Sistema;
 import clases.TipoReclamo;
 import dao.ReclamoDAO;
 import excepciones.AccesoException;
@@ -19,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -29,6 +32,7 @@ public class AdministrarFacturacionGUI extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtDescripcion;
 	private JTextField txtNuevoEstado;
+	static volatile JList listaFacturacion = null;
 
 	/**
 	 * Launch the application.
@@ -58,13 +62,13 @@ public class AdministrarFacturacionGUI extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblSeleccioneReclamo = new JLabel("Seleccione Reclamo:");
-		lblSeleccioneReclamo.setBounds(10, 11, 103, 14);
+		lblSeleccioneReclamo.setBounds(4, 11, 126, 14);
 		contentPane.add(lblSeleccioneReclamo);
 		
 		List<ReclamoView> reclamosV = new ArrayList<>();
 		String[] datos = new String[reclamosV.size()];
 		List<Reclamo> reclamos = null;
-		JList listaFacturacion;
+		
 		try {
 		//Consigo todos los reclamos de facturacion
 			reclamos = ReclamoDAO.getInstancia().obtenerReclamosPorTipo(TipoReclamo.Facturacion);
@@ -79,7 +83,7 @@ public class AdministrarFacturacionGUI extends JFrame {
 		//Cargo la lista con los datos
 			JList aux = new JList(datos);
 			listaFacturacion = aux;
-			listaFacturacion.setBounds(123, 11, 309, 26);
+			listaFacturacion.setBounds(142, 9, 309, 18);
 			contentPane.add(listaFacturacion);
 			
 		} catch (ConexionException | AccesoException e) {
@@ -90,15 +94,7 @@ public class AdministrarFacturacionGUI extends JFrame {
 		panelAceptar.setBounds(10, 77, 476, 213);
 		contentPane.add(panelAceptar);
 		panelAceptar.setLayout(null);
-		
-		JButton btnAceptar = new JButton("Aceptar");
-		btnAceptar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				panelAceptar.setVisible(true);
-			}
-		});
-		btnAceptar.setBounds(341, 48, 91, 23);
-		contentPane.add(btnAceptar);
+		panelAceptar.setVisible(false);
 		
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
@@ -106,7 +102,7 @@ public class AdministrarFacturacionGUI extends JFrame {
 				System.exit(0);
 			}
 		});
-		btnCancelar.setBounds(133, 48, 91, 23);
+		btnCancelar.setBounds(360, 50, 91, 23);
 		contentPane.add(btnCancelar);
 		
 
@@ -118,7 +114,7 @@ public class AdministrarFacturacionGUI extends JFrame {
 		txtDescripcion.setColumns(10);
 		
 		JLabel lblIngreseLaDescripcion = new JLabel("Ingrese la descripcion:");
-		lblIngreseLaDescripcion.setBounds(0, 42, 117, 54);
+		lblIngreseLaDescripcion.setBounds(0, 42, 141, 54);
 		panelAceptar.add(lblIngreseLaDescripcion);
 		
 		txtNuevoEstado = new JTextField();
@@ -127,16 +123,23 @@ public class AdministrarFacturacionGUI extends JFrame {
 		txtNuevoEstado.setColumns(10);
 		
 		JLabel lblIngreseElNuevo = new JLabel("Ingrese el nuevo estado:");
-		lblIngreseElNuevo.setBounds(0, 127, 131, 14);
+		lblIngreseElNuevo.setBounds(0, 127, 151, 14);
 		panelAceptar.add(lblIngreseElNuevo);
 		
 		JButton btnAceptarNuevoEstado = new JButton("Aceptar");
 		btnAceptarNuevoEstado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ActualizacionEstado update = new ActualizacionEstado(listaFacturacion.getSelectedValuesList().get(0), fecha, descripcion, estado, nombreUsrEmpleado)
+				List <Reclamo> selection = listaFacturacion.getSelectedValuesList();
+				//ActualizacionEstado update = new ActualizacionEstado( selection.get(0).getNumeroReclamo(), LocalDate.now(), txtDescripcion.getText(), Estados.valueOf(txtNuevoEstado.getText()), Sistema.getInstance().getEmpleadoActual().getNomUsr());
+				try {
+					Sistema.getInstance().getTablero().tratarReclamo(selection.get(0).getNumeroReclamo(), Estados.valueOf(txtNuevoEstado.getText()), txtDescripcion.getText());
+				} catch (ConexionException | AccesoException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
-		btnAceptarNuevoEstado.setBounds(375, 179, 91, 23);
+		btnAceptarNuevoEstado.setBounds(137, 164, 91, 23);
 		panelAceptar.add(btnAceptarNuevoEstado);
 		
 		JButton btnCancelarNuevoEstado = new JButton("Cancelar");
@@ -145,8 +148,17 @@ public class AdministrarFacturacionGUI extends JFrame {
 				System.exit(0);
 			}
 		});
-		btnCancelarNuevoEstado.setBounds(185, 179, 91, 23);
+		btnCancelarNuevoEstado.setBounds(359, 164, 91, 23);
 		panelAceptar.add(btnCancelarNuevoEstado);
+		
+		JButton btnAceptar = new JButton("Aceptar");
+		btnAceptar.setBounds(143, 50, 91, 23);
+		contentPane.add(btnAceptar);
+		btnAceptar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelAceptar.setVisible(true);
+			}
+		});
 		
 
 

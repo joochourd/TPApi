@@ -18,6 +18,12 @@ public class Facturacion extends Simple {
 		this.nroFactura = nroFactura;
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Facturacion(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr, LocalDate fechaFacturacion, int nroFactura) {
+		super(fecha, descripcion, tipo, clienteDniCuit, empleadoNombreUsr);
+		this.fechaFacturacion = fechaFacturacion;
+		this.nroFactura = nroFactura;
+	}
 
 
 	@Override

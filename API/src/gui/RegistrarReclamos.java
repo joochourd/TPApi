@@ -19,6 +19,7 @@ import excepciones.AccesoException;
 import excepciones.ConexionException;
 
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.time.Instant;
@@ -31,20 +32,38 @@ import javax.swing.JLayeredPane;
 public class RegistrarReclamos {
 
 	private JFrame frame;
+
 	private JTextField textFieldZona;
 	private JTextField textFieldDescripcion;
 	private JTextField textFieldNumerocliente;
 	private JTextField textFieldNumeroFactura;
 	private JTextField txtFieldCantidad;
+
+	private JComboBox comboBox_TipoReclamo;
+	private JComboBox comboBox_Producto;
+
+	private JCalendar calendar;
+
+	private JLabel lblNombreZona;
+	private JLabel lblDescripcion;
+	private JLabel lblNumeroDeCliente;
+	private JLabel lblCantidad;
+	private JLabel lblFechaDeFacturacion;
+	private JLabel lblNumeroFactura;
+	private JLabel lblProducto;
+
 	private JPanel panelZona = new JPanel();
 	private JPanel panelFacturacion = new JPanel();
 	private JPanel panelCantidadProductoYFalta = new JPanel();
 	private JLayeredPane layeredPane = new JLayeredPane();
 
-	public void setVisible(boolean a){   //Porque es una aplicacion windows
+	private JButton btnCargar;
+	private JButton btnCancelar;
+
+	public void setVisible(boolean a) { // Porque es una aplicacion windows
 		this.frame.setVisible(a);
 	}
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -76,76 +95,74 @@ public class RegistrarReclamos {
 		frame.setBounds(100, 100, 700, 700);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
-		
+
 		Label label = new Label("Tipo de reclamo");
 		label.setBounds(36, 10, 95, 22);
 		frame.getContentPane().add(label);
-		
-		JComboBox comboBox_TipoReclamo = new JComboBox();
+
+		comboBox_TipoReclamo = new JComboBox();
 		comboBox_TipoReclamo.setBounds(222, 10, 117, 20);
 		comboBox_TipoReclamo.addItem("Cantidades");
 		comboBox_TipoReclamo.addItem("Producto");
 		comboBox_TipoReclamo.addItem("Faltantes");
 		comboBox_TipoReclamo.addItem("Zona");
 		comboBox_TipoReclamo.addItem("Facturacion");
-		comboBox_TipoReclamo.addActionListener((new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                myBox(evt);
-            }
-		}));
+		comboBox_TipoReclamo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				seleccion(evt);
+			}
+		});
 		frame.getContentPane().add(comboBox_TipoReclamo);
 		layeredPane.setLayer(panelZona, 0);
 		panelZona.setBounds(0, 0, 651, 455);
 		panelZona.setLayout(null);
 		panelZona.setVisible(true);
-		
-		JLabel lblNombreZona = new JLabel("Nombre Zona");
+
+		lblNombreZona = new JLabel("Nombre Zona");
 		lblNombreZona.setBounds(99, 145, 88, 14);
 		panelZona.add(lblNombreZona);
-		
+
 		textFieldZona = new JTextField();
 		textFieldZona.setText("Nombre de Zona ");
 		textFieldZona.setBounds(243, 142, 121, 20);
 		panelZona.add(textFieldZona);
 		textFieldZona.setColumns(10);
-		
-		JLabel lblDescripcion = new JLabel("Descripcion");
+
+		lblDescripcion = new JLabel("Descripcion");
 		lblDescripcion.setBounds(36, 55, 95, 14);
 		frame.getContentPane().add(lblDescripcion);
-		
+
 		textFieldDescripcion = new JTextField();
 		textFieldDescripcion.setBounds(222, 52, 117, 20);
 		frame.getContentPane().add(textFieldDescripcion);
 		textFieldDescripcion.setColumns(10);
-		
-		JLabel lblNumeroDeCliente = new JLabel("Numero de cliente");
+
+		lblNumeroDeCliente = new JLabel("DNI/CUIT de cliente");
 		lblNumeroDeCliente.setBounds(36, 93, 117, 14);
 		frame.getContentPane().add(lblNumeroDeCliente);
-		
+
 		textFieldNumerocliente = new JTextField();
 		textFieldNumerocliente.setBounds(222, 90, 117, 20);
 		frame.getContentPane().add(textFieldNumerocliente);
 		textFieldNumerocliente.setColumns(10);
+		
 		layeredPane.setLayer(panelFacturacion, 0);
 		panelFacturacion.setBounds(0, 0, 651, 455);
 		panelFacturacion.setLayout(null);
 		panelFacturacion.setVisible(true);
-		
-		
-		JLabel lblFechaDeFacturacion = new JLabel("Fecha de facturacion");
+
+		lblFechaDeFacturacion = new JLabel("Fecha de facturacion");
 		lblFechaDeFacturacion.setBounds(32, 113, 123, 14);
 		panelFacturacion.add(lblFechaDeFacturacion);
-		
-		JLabel lblNumeroFactura = new JLabel("Numero de factura");
+
+		lblNumeroFactura = new JLabel("Numero de factura");
 		lblNumeroFactura.setBounds(32, 39, 109, 14);
 		panelFacturacion.add(lblNumeroFactura);
-		JCalendar jcalendar = new JCalendar();
-		jcalendar.setBounds(209, 113, 316, 272);
-		panelFacturacion.add(jcalendar);
-		
-		
-		
+
+		calendar = new JCalendar();
+		calendar.setBounds(209, 113, 316, 272);
+		panelFacturacion.add(calendar);
+
 		textFieldNumeroFactura = new JTextField();
 		textFieldNumeroFactura.setBounds(209, 36, 123, 20);
 		panelFacturacion.add(textFieldNumeroFactura);
@@ -154,89 +171,58 @@ public class RegistrarReclamos {
 		panelCantidadProductoYFalta.setBounds(0, 0, 651, 455);
 		panelCantidadProductoYFalta.setLayout(null);
 		panelCantidadProductoYFalta.setVisible(true);
-		
-		JLabel lblNewLabel = new JLabel("Cantidad");
-		lblNewLabel.setBounds(133, 187, 80, 14);
-		panelCantidadProductoYFalta.add(lblNewLabel);
-		
-		JLabel lblNewLabel_1 = new JLabel("Producto");
-		lblNewLabel_1.setBounds(133, 60, 61, 14);
-		panelCantidadProductoYFalta.add(lblNewLabel_1);
-		
-		JComboBox comboBox_Producto = new JComboBox();
+
+		lblCantidad = new JLabel("Cantidad");
+		lblCantidad.setBounds(133, 187, 80, 14);
+		panelCantidadProductoYFalta.add(lblCantidad);
+
+		lblProducto = new JLabel("Producto");
+		lblProducto.setBounds(133, 60, 61, 14);
+		panelCantidadProductoYFalta.add(lblProducto);
+
+		comboBox_Producto = new JComboBox();
 		comboBox_Producto.setBounds(248, 57, 129, 20);
 		panelCantidadProductoYFalta.add(comboBox_Producto);
-		
+
 		txtFieldCantidad = new JTextField();
 		txtFieldCantidad.setBounds(248, 184, 129, 20);
 		panelCantidadProductoYFalta.add(txtFieldCantidad);
 		txtFieldCantidad.setColumns(10);
-		
-		
-		
-		
-		
-		JButton btnCargar = new JButton("Cargar");
-		btnCargar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Sistema sistema = Sistema.getInstance();
-				switch (comboBox_TipoReclamo.getSelectedIndex()) {
-				case 1:
-					
-					try {
-						sistema.getTablero().registrarReclamoZona(0, LocalDate.now(), textFieldDescripcion.getText(), Integer.parseInt(textFieldNumerocliente.getText()) , textFieldZona.getText());
-					} catch (NumberFormatException | ConexionException | AccesoException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						System.out.println("Crashed trying to parse String to int");
-					}
-					break;
-				case 2:
-					//Change to local Date
-					try {
-						sistema.getTablero().registrarReclamoFacturacion(0, LocalDate.now(), textFieldDescripcion.getText(), Integer.parseInt(textFieldNumerocliente.getText()), ExtensionHelper.dateToLocalDate(jcalendar.getDate()), Integer.parseInt(textFieldNumeroFactura.getText()));
-					} catch (NumberFormatException | ConexionException | AccesoException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
 
-				case 3:
-				case 4:
-				case 5:
-					try {
-						sistema.getTablero().registrarReclamoCantProdFalta(0, LocalDate.now(), textFieldDescripcion.getText(), TipoReclamo.Falta, Integer.parseInt(textFieldNumerocliente.getText()), ExtensionHelper.dateToLocalDate(jcalendar.getDate()), Integer.parseInt(textFieldNumeroFactura.getText()));
-					} catch (NumberFormatException | ConexionException | AccesoException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				default:
-					break;
-				}
+		btnCargar = new JButton("Cargar");
+		btnCargar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cargar(e);
 			}
 		});
 		btnCargar.setBounds(112, 587, 89, 23);
 		frame.getContentPane().add(btnCargar);
 		layeredPane.setLayout(null);
-		
-		
-		/*layeredPane.add(panelCantidadProductoYFalta);			No borrar!
-		layeredPane.add(panelFacturacion);
-		layeredPane.add(panelZona);*/
+
+		/*
+		 * layeredPane.add(panelCantidadProductoYFalta); No borrar!
+		 * layeredPane.add(panelFacturacion); layeredPane.add(panelZona);
+		 */
 		layeredPane.setBounds(10, 119, 573, 455);
 		frame.getContentPane().add(layeredPane);
-		
-		JButton btnCancelar = new JButton("Cancelar");
+
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 		btnCancelar.setBounds(389, 586, 97, 25);
 		frame.getContentPane().add(btnCancelar);
-		
-		
+
 	}
 
-	protected void myBox(ActionEvent evt) {
-		// TODO Auto-generated method stub	
-		JComboBox cb = (JComboBox) evt.getSource();
-		if(cb.getSelectedItem() != null){
-			switch (cb.getSelectedIndex()) {
+	protected void seleccion(ActionEvent evt) {
+		// JComboBox cb = (JComboBox) evt.getSource();
+		// if(cb.getSelectedItem() != null){
+		if (this.comboBox_TipoReclamo.getSelectedItem() != null) {
+			// switch (cb.getSelectedIndex()) {
+			switch (this.comboBox_TipoReclamo.getSelectedIndex()) {
 			case 0:
 				layeredPane.removeAll();
 				layeredPane.add(panelCantidadProductoYFalta);
@@ -271,7 +257,77 @@ public class RegistrarReclamos {
 				break;
 			}
 		}
-			//System.out.println(cb.getSelectedItem().toString());
-			System.out.println(cb.getSelectedIndex());
+		// System.out.println(cb.getSelectedIndex());
+		System.out.println(this.comboBox_TipoReclamo.getSelectedIndex());
+	}
+
+	protected void cargar(ActionEvent evt) {
+		Sistema sistema = Sistema.getInstance();
+		
+		if (this.textFieldDescripcion.getText().length() > 0 && this.textFieldNumerocliente.getText().length() > 0) {
+			switch (this.comboBox_TipoReclamo.getSelectedIndex()) {
+			case 0:
+				try {
+					sistema.getTablero().registrarReclamoCantProdFalta(LocalDate.now(), textFieldDescripcion.getText(),
+							TipoReclamo.Cantidad, Integer.parseInt(textFieldNumerocliente.getText()),
+							ExtensionHelper.dateToLocalDate(calendar.getDate()),
+							Integer.parseInt(textFieldNumeroFactura.getText()));
+				} catch (NumberFormatException | ConexionException | AccesoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			case 1:
+				try {
+					sistema.getTablero().registrarReclamoCantProdFalta(LocalDate.now(), textFieldDescripcion.getText(),
+							TipoReclamo.Producto, Integer.parseInt(textFieldNumerocliente.getText()),
+							ExtensionHelper.dateToLocalDate(calendar.getDate()),
+							Integer.parseInt(textFieldNumeroFactura.getText()));
+				} catch (NumberFormatException | ConexionException | AccesoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			case 2:
+				try {
+					sistema.getTablero().registrarReclamoCantProdFalta(LocalDate.now(), textFieldDescripcion.getText(),
+							TipoReclamo.Falta, Integer.parseInt(textFieldNumerocliente.getText()),
+							ExtensionHelper.dateToLocalDate(calendar.getDate()),
+							Integer.parseInt(textFieldNumeroFactura.getText()));
+				} catch (NumberFormatException | ConexionException | AccesoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			case 3:
+				try {
+					sistema.getTablero().registrarReclamoZona(LocalDate.now(), this.textFieldDescripcion.getText(), Integer.parseInt(this.textFieldNumerocliente.getText()), this.textFieldZona.getText());
+				} catch (NumberFormatException | ConexionException | AccesoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println("Crashed trying to parse String to int");
+				}
+				break;
+			case 4:
+				// Change to local Date
+				try {
+					sistema.getTablero().registrarReclamoFacturacion(LocalDate.now(), textFieldDescripcion.getText(),
+							Integer.parseInt(textFieldNumerocliente.getText()),
+							ExtensionHelper.dateToLocalDate(calendar.getDate()),
+							Integer.parseInt(textFieldNumeroFactura.getText()));
+				} catch (NumberFormatException | ConexionException | AccesoException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				break;
+
+			default:
+				break;
+			}
+		}
+		else{
+			JOptionPane.showMessageDialog(null, "Faltan completar parametros", "Cuidado", JOptionPane.WARNING_MESSAGE);
+	    }
+		 
 	}
 }

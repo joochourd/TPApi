@@ -23,6 +23,12 @@ public class CantYProdYFalta extends Simple {
 		this.cantidades = new ArrayList<Integer>();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public CantYProdYFalta(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr) {
+		super(fecha, descripcion, tipo, clienteDniCuit, empleadoNombreUsr);
+		this.productos = new ArrayList<Producto>();
+		this.cantidades = new ArrayList<Integer>();
+	}
 
 	
 

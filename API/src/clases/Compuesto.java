@@ -19,6 +19,12 @@ public class Compuesto extends Reclamo {
 		this.idCompuesto = ids ++;
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Compuesto(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr) {
+		super(fecha, descripcion, tipo, clienteDniCuit, empleadoNombreUsr);
+		simples = new ArrayList<Simple>();
+		this.idCompuesto = ids ++;
+	}
 
 	@Override
 	public void accion() {

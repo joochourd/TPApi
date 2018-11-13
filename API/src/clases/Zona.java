@@ -15,6 +15,11 @@ public class Zona extends Simple {
 		this.zona = zona;
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Zona(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr, String zona) {
+		super(fecha, descripcion, tipo, clienteDniCuit, empleadoNombreUsr);
+		this.zona = zona;
+	}
 
 	public String getZona() {
 		return zona;

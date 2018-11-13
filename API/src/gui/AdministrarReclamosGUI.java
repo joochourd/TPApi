@@ -56,7 +56,7 @@ public class AdministrarReclamosGUI extends JFrame {
 	 */
 	public AdministrarReclamosGUI(Integer ordenRol) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 408, 239);
+		setBounds(100, 100, 393, 288);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -146,7 +146,7 @@ public class AdministrarReclamosGUI extends JFrame {
 				}
 			}
 		});
-		btnAceptar.setBounds(258, 178, 91, 23);
+		btnAceptar.setBounds(71, 205, 91, 23);
 		contentPane.add(btnAceptar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
@@ -155,7 +155,7 @@ public class AdministrarReclamosGUI extends JFrame {
 				System.exit(0);
 			}
 		});
-		btnCancelar.setBounds(42, 178, 91, 23);
+		btnCancelar.setBounds(228, 205, 91, 23);
 		contentPane.add(btnCancelar);
 		
 		

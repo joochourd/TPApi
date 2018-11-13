@@ -109,5 +109,6 @@ public class Sistema {
 	public void setTablero(Tablero tablero) {
 		this.tablero = tablero;
 	}
+	
 
 }	

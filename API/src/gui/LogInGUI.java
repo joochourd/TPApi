@@ -54,24 +54,24 @@ public class LogInGUI extends JFrame {
 		
 		JLabel lblLogIn = new JLabel("Log In");
 		lblLogIn.setHorizontalAlignment(SwingConstants.CENTER);
-		lblLogIn.setBounds(187, 27, 82, 24);
+		lblLogIn.setBounds(169, 23, 82, 24);
 		contentPane.add(lblLogIn);
 		
 		JLabel lblNombreDe = new JLabel("Nombre de Usuario:");
-		lblNombreDe.setBounds(127, 62, 106, 24);
+		lblNombreDe.setBounds(50, 60, 132, 24);
 		contentPane.add(lblNombreDe);
 		
 		JLabel lblContrasenia = new JLabel("Contrase\u00F1a:");
-		lblContrasenia.setBounds(127, 97, 70, 24);
+		lblContrasenia.setBounds(50, 97, 118, 24);
 		contentPane.add(lblContrasenia);
 		
 		txtNomUsr = new JTextField();
-		txtNomUsr.setBounds(243, 62, 86, 20);
+		txtNomUsr.setBounds(243, 62, 132, 20);
 		contentPane.add(txtNomUsr);
 		txtNomUsr.setColumns(10);
 		
 		txtContr = new JTextField();
-		txtContr.setBounds(243, 99, 86, 20);
+		txtContr.setBounds(243, 99, 132, 20);
 		contentPane.add(txtContr);
 		txtContr.setColumns(10);
 		
@@ -86,23 +86,28 @@ public class LogInGUI extends JFrame {
 						emp.getRolTemporal();
 						switch (emp.getRolTemporal()) {
 						case 1://responsableFacturacion
-						
+							AdministrarFacturacionGUI admFact = new AdministrarFacturacionGUI();
+							admFact.setVisible(true);
 							break;
 						case 2://responsableFacturacion
-							
+							AdministrarCantProdFaltGUI admCPF = new AdministrarCantProdFaltGUI();
+							admCPF.setVisible(true);
 							break;
 						case 3://responsableZonas
-							
+							AdministrarZonaGUI admZona = new AdministrarZonaGUI();
+							admZona.setVisible(true);
 							break;
 						case 4://callCenter
 							RegistrarReclamos venta = new RegistrarReclamos();
 							venta.setVisible(true);
 							break;
 						case 5://administrador
-							
+							AdministradorAppGUI administrador = new AdministradorAppGUI();
+							administrador.setVisible(true);
 							break;
 						case 6://consulta
-							
+							ConsultasGUI consultas = new ConsultasGUI();
+							consultas.setVisible(true);
 							break;
 
 						default:
@@ -118,15 +123,16 @@ public class LogInGUI extends JFrame {
 				} 
 			}
 		});
-		btnIniciarSesion.setBounds(127, 132, 95, 31);
+		btnIniciarSesion.setBounds(73, 184, 132, 24);
 		contentPane.add(btnIniciarSesion);
 		
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
 			}
 		});
-		btnCancelar.setBounds(253, 130, 89, 33);
+		btnCancelar.setBounds(243, 185, 132, 24);
 		contentPane.add(btnCancelar);
 		
 	}

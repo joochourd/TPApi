@@ -22,28 +22,29 @@ public class Tablero  extends ObservableTablero {
 	}
 	
 
-	public void registrarReclamoZona(int numeroReclamo,LocalDate fecha, String descripcion, int clienteDniCuit, String zona) throws ConexionException, AccesoException{
-		Zona reclamo = new Zona(numeroReclamo, fecha, descripcion, TipoReclamo.Zona, clienteDniCuit, empleado.getNomUsr(), zona);
+	public void registrarReclamoZona(LocalDate fecha, String descripcion, int clienteDniCuit, String zona) throws ConexionException, AccesoException{
+		Zona reclamo = new Zona(fecha, descripcion, TipoReclamo.Zona, clienteDniCuit, empleado.getNomUsr(), zona);
 		reclamo.guardate();
 		this.reclamos.add(reclamo);
 		this.updateObserver(reclamo);
 	}
 
-	public void registrarReclamoFacturacion(int numeroReclamo, LocalDate fecha, String descripcion, int clienteDniCuit, LocalDate fechaFacturacion, int nroFactura) throws ConexionException, AccesoException{
-		Facturacion reclamo = new Facturacion(numeroReclamo,fecha, descripcion, TipoReclamo.Facturacion, clienteDniCuit, empleado.getNomUsr(), fechaFacturacion, nroFactura);
+	public void registrarReclamoFacturacion(LocalDate fecha, String descripcion, int clienteDniCuit, LocalDate fechaFacturacion, int nroFactura) throws ConexionException, AccesoException{
+		Facturacion reclamo = new Facturacion(fecha, descripcion, TipoReclamo.Facturacion, clienteDniCuit, empleado.getNomUsr(), fechaFacturacion, nroFactura);
 		reclamo.guardate();
 		this.reclamos.add(reclamo);
 		this.updateObserver(reclamo);
 	}
-	public void registrarReclamoCantProdFalta(int numeroReclamo, LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, LocalDate fechaFacturacion, int nroFactura) throws ConexionException, AccesoException{
-		CantYProdYFalta reclamo = new CantYProdYFalta(numeroReclamo,fecha, descripcion, tipo, clienteDniCuit, empleado.getNomUsr());
+	
+	public void registrarReclamoCantProdFalta(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, LocalDate fechaFacturacion, int nroFactura) throws ConexionException, AccesoException{
+		CantYProdYFalta reclamo = new CantYProdYFalta(fecha, descripcion, tipo, clienteDniCuit, empleado.getNomUsr());
 		reclamo.guardate();
 		this.reclamos.add(reclamo);
 		this.updateObserver(reclamo);
 	}	
 
-	public void registrarReclamoCompuesto(int numeroReclamo, LocalDate fecha, String descripcion, int clienteDniCuit) throws ConexionException, AccesoException{
-		Compuesto reclamo = new Compuesto(numeroReclamo, fecha, descripcion, TipoReclamo.compuesto, clienteDniCuit, empleado.getNomUsr());
+	public void registrarReclamoCompuesto(LocalDate fecha, String descripcion, int clienteDniCuit) throws ConexionException, AccesoException{
+		Compuesto reclamo = new Compuesto(fecha, descripcion, TipoReclamo.compuesto, clienteDniCuit, empleado.getNomUsr());
 		reclamo.guardate();
 		this.reclamos.add(reclamo);
 		this.updateObserver(reclamo);

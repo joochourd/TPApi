@@ -26,7 +26,7 @@ public abstract class Reclamo{
 		this.historial = new ArrayList<ActualizacionEstado>();
 	}
 	
-	/*public Reclamo(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr) {
+	public Reclamo(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr) {
 		super();
 		this.fecha = fecha;
 		this.descripcion = descripcion;
@@ -35,7 +35,7 @@ public abstract class Reclamo{
 		this.clienteDniCuit = clienteDniCuit;
 		this.empleadoNombreUsr = empleadoNombreUsr;
 		this.historial = new ArrayList<ActualizacionEstado>();
-	}*/ //no borrar
+	} //no borrar
 	
 	protected int numeroReclamo ; 
 	protected LocalDate fecha;
