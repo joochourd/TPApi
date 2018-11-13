@@ -1,7 +1,0 @@
-package observador;
-
-public interface observer {
-	
-	public void update(String dato);
-
-}

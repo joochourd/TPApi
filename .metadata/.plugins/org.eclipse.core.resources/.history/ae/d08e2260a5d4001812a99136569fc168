@@ -1,6 +1,0 @@
-package clases;
-
-public enum TipoRol {
-	responsableFacturacion, responsableDistribución, responsableZonas, callCenter, administrador, consulta
-
-}

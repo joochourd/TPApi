@@ -1,7 +1,0 @@
-package Clases;
-
-import java.util.List;
-
-public class Tablero {
-	private List <Reclamo> reclamos;
-}

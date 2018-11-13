@@ -1,5 +1,0 @@
-package excepciones;
-
-public class AccesoException extends Exception {
-
-}
