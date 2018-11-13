@@ -30,7 +30,7 @@ public abstract class Reclamo{
 		super();
 		this.fecha = fecha;
 		this.descripcion = descripcion;
-		this.tipo = TipoReclamo.Cantidad;
+		this.tipo = tipo;
 		this.estado = Estados.Registrado;
 		this.clienteDniCuit = clienteDniCuit;
 		this.empleadoNombreUsr = empleadoNombreUsr;
@@ -87,9 +87,22 @@ public abstract class Reclamo{
 		return this.numeroReclamo;
 	}
 	
+	public int getClienteDniCuit() {
+		return clienteDniCuit;
+	}
 	
 	// ACA TERMIAN LOS SETTERS / GETTERS
 	
+	
+
+	public void setClienteDniCuit(int clienteDniCuit) {
+		this.clienteDniCuit = clienteDniCuit;
+	}
+
+	public void setHistorial(List<ActualizacionEstado> historial) {
+		this.historial = historial;
+	}
+
 	public String getEmpleadoNombreUsr() {
 		return empleadoNombreUsr;
 	}

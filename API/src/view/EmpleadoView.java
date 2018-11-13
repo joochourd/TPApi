@@ -3,6 +3,7 @@ package view;
 import java.util.Date;
 
 import clases.Rol;
+import clases.TipoRol;
 
 public class EmpleadoView {
 	private String nombre;
@@ -59,5 +60,6 @@ public class EmpleadoView {
 	public void setRolTemporal(int rolTemporal) {
 		this.rolTemporal = rolTemporal;
 	}
+
 	
 }

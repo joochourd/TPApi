@@ -2,6 +2,8 @@ package clases;
 
 import java.util.Date;
 
+import view.EmpleadoView;
+
 public class Empleado {
 	private String nombre;
 	private Date fechaNac;
@@ -82,9 +84,9 @@ public class Empleado {
 	public Rol getRolOriginal() {
 		return rolOriginal;
 	}
-	public Rol getRolInstantaneo() {
-		//decidir como se va a calcular el rol del momento por ahora retorno solo en principal
-		return this.rolOriginal;
+	
+	public EmpleadoView toView(){
+		return new EmpleadoView(this.nombre, this.fechaNac, this.nomUsr, this.nroLU, this.rolOriginal.getId(), this.rolTemporal.getId());
 	}
 	
 }

@@ -102,7 +102,7 @@ public class EmpleadoDAO {
 		}
 	}
 
-	public EmpleadoView buscarEmpleado(String nomUsr, String password) throws ConexionException, AccesoException {
+	public Empleado buscarEmpleado(String nomUsr, String password) throws ConexionException, AccesoException {
 		Connection con = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -118,24 +118,25 @@ public class EmpleadoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		// String SQL = ("SELECT * FROM empleados INNER JOIN roles ON
-		// roles.idRoles AS idRolOriginal = empleados.idRolOriginal AND
-		// roles.idRoles AS idRolTemporal = empleados.idRolTemporal WHERE
-		// NombreUsr =('" + nomUsr +"';)");
-		String SQL = "select * from empleados where nombreUsr = ('" + nomUsr + "') AND keyword = ('" + password + "')";
-		// String SQLidTemp = ("SELECT * FROM empleados INNER JOIN roles ON
-		// roles.idRoles = empleados.idRolTemporal WHERE NombreUsr =('" + nomUsr
-		// +"');");
+		
+		String SQL = "select * from empleados, "
+				+ "(select descripcion as desRolOrig from empleados inner join roles on empleados.idRolOriginal = roles.idRoles where nombreUsr = ('" + nomUsr + "')) a,"
+				+ "(select descripcion as desRolTemp from empleados inner join roles on empleados.idRolTemporal = roles.idRoles where nombreUsr = ('" + nomUsr + "')) b "
+				+ "where nombreUsr = ('" + nomUsr + "') AND keyword = ('" + password + "')";
+		
 		try {
 			rs = stmt.executeQuery(SQL);
 			while (rs.next()) {
 				String nombre = rs.getString("nombre");
 				Date fechaNac = rs.getDate("fechaNacim");
-				String nombreUsr = rs.getString("nombreUsr"); 
+				//String nombreUsr = rs.getString("nombreUsr");
+				//String pass = rs.getString("keyword");
 				int nroLU = rs.getInt("nroLU");
-				int rolOrig = rs.getInt("idRolOriginal");
-				int rolTemp = rs.getInt("idRolTemporal");
-				EmpleadoView emp = new EmpleadoView(nombre, fechaNac, nombreUsr, nroLU, rolOrig, rolTemp);
+				int idRolOrig = rs.getInt("idRolOriginal");
+				int idRolTemp = rs.getInt("idRolTemporal");
+				String descripcionRolOrig = rs.getString("desRolOrig");
+				String descripcionRolTemp = rs.getString("desRolTemp");
+				Empleado emp = new Empleado(nombre, fechaNac, password, nomUsr, nroLU, new Rol (idRolOrig, descripcionRolOrig), new Rol (idRolTemp, descripcionRolTemp));
 				
 				return emp;
 			}

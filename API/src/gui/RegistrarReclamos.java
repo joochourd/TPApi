@@ -269,7 +269,7 @@ public class RegistrarReclamos {
 			case 0:
 				try {
 					sistema.getTablero().registrarReclamoCantProdFalta(LocalDate.now(), textFieldDescripcion.getText(),
-							TipoReclamo.Cantidad, Integer.parseInt(textFieldNumerocliente.getText()),
+							TipoReclamo.cantidad, Integer.parseInt(textFieldNumerocliente.getText()),
 							ExtensionHelper.dateToLocalDate(calendar.getDate()),
 							Integer.parseInt(textFieldNumeroFactura.getText()));
 				} catch (NumberFormatException | ConexionException | AccesoException e) {
@@ -280,7 +280,7 @@ public class RegistrarReclamos {
 			case 1:
 				try {
 					sistema.getTablero().registrarReclamoCantProdFalta(LocalDate.now(), textFieldDescripcion.getText(),
-							TipoReclamo.Producto, Integer.parseInt(textFieldNumerocliente.getText()),
+							TipoReclamo.producto, Integer.parseInt(textFieldNumerocliente.getText()),
 							ExtensionHelper.dateToLocalDate(calendar.getDate()),
 							Integer.parseInt(textFieldNumeroFactura.getText()));
 				} catch (NumberFormatException | ConexionException | AccesoException e) {
@@ -291,7 +291,7 @@ public class RegistrarReclamos {
 			case 2:
 				try {
 					sistema.getTablero().registrarReclamoCantProdFalta(LocalDate.now(), textFieldDescripcion.getText(),
-							TipoReclamo.Falta, Integer.parseInt(textFieldNumerocliente.getText()),
+							TipoReclamo.falta, Integer.parseInt(textFieldNumerocliente.getText()),
 							ExtensionHelper.dateToLocalDate(calendar.getDate()),
 							Integer.parseInt(textFieldNumeroFactura.getText()));
 				} catch (NumberFormatException | ConexionException | AccesoException e) {

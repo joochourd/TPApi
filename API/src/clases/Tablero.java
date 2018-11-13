@@ -18,19 +18,20 @@ public class Tablero  extends ObservableTablero {
 	
 	Tablero(Empleado empleado) throws ConexionException, AccesoException{ //el parametro se lo pasa el sistema
 		this.empleado = empleado;
-		this.reclamos = this.getReclamostipo(this.empleado.getRolInstantaneo().getTipoReclamo());
+		if (empleado.getRolTemporal().getTipoReclamo() != null)
+			this.reclamos = this.getReclamostipo(empleado.getRolTemporal().getTipoReclamo());
 	}
 	
 
 	public void registrarReclamoZona(LocalDate fecha, String descripcion, int clienteDniCuit, String zona) throws ConexionException, AccesoException{
-		Zona reclamo = new Zona(fecha, descripcion, TipoReclamo.Zona, clienteDniCuit, empleado.getNomUsr(), zona);
+		Zona reclamo = new Zona(fecha, descripcion, TipoReclamo.zona, clienteDniCuit, empleado.getNomUsr(), zona);
 		reclamo.guardate();
 		this.reclamos.add(reclamo);
 		this.updateObserver(reclamo);
 	}
 
 	public void registrarReclamoFacturacion(LocalDate fecha, String descripcion, int clienteDniCuit, LocalDate fechaFacturacion, int nroFactura) throws ConexionException, AccesoException{
-		Facturacion reclamo = new Facturacion(fecha, descripcion, TipoReclamo.Facturacion, clienteDniCuit, empleado.getNomUsr(), fechaFacturacion, nroFactura);
+		Facturacion reclamo = new Facturacion(fecha, descripcion, TipoReclamo.facturacion, clienteDniCuit, empleado.getNomUsr(), fechaFacturacion, nroFactura);
 		reclamo.guardate();
 		this.reclamos.add(reclamo);
 		this.updateObserver(reclamo);

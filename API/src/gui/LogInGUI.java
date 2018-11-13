@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -14,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 
 import clases.Empleado;
 import clases.Rol;
+import clases.Sistema;
 import dao.EmpleadoDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
@@ -78,10 +80,8 @@ public class LogInGUI extends JFrame {
 		JButton btnIniciarSesion = new JButton("Iniciar Sesi\u00F3n");
 		btnIniciarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				EmpleadoDAO empDAO = new EmpleadoDAO();
-				empDAO.getInstancia();
 				try {
-					EmpleadoView emp = empDAO.buscarEmpleado(txtNomUsr.getText(), txtContr.getText());
+					EmpleadoView emp = Sistema.getInstance().login(txtNomUsr.getText(), txtContr.getText());
 					if (emp != null) {
 						emp.getRolTemporal();
 						switch (emp.getRolTemporal()) {
@@ -115,7 +115,7 @@ public class LogInGUI extends JFrame {
 						}
 						
 					}else {
-						System.out.println("Nombre de usuario incorrecto");
+						JOptionPane.showMessageDialog(null, "Usurario incorrecto...", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				} catch (ConexionException | AccesoException e) {
 					// TODO Auto-generated catch block

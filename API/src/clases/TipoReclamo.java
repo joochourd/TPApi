@@ -1,6 +1,6 @@
 package clases;
 
 public enum TipoReclamo {
-	 Zona, Facturacion, Cantidad, Producto, Falta,
-	 compuesto
+	 zona, facturacion, cantidad, producto, falta,
+	 compuesto, cantYProdYFalta;
 }

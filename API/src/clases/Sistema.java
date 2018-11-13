@@ -5,6 +5,7 @@ import dao.EmpleadoDAO;
 import dao.ProductoDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
+import view.EmpleadoView;
 
 public class Sistema {
 
@@ -16,7 +17,7 @@ public class Sistema {
 
 	public static Sistema getInstance () {
 		if (instance == null) {
-			return new Sistema();
+			instance = new Sistema();
 		}
 		return instance;
 	}
@@ -70,20 +71,16 @@ public class Sistema {
 	}
 
 
-	public String login(String usuario, String password) throws ConexionException, AccesoException{
-		Empleado emp = EmpleadoDAO.getInstancia().buscarEmpleado(usuario);
-		if(emp != null){
-			if(emp.getPassword().equals(password)){
-				this.empleadoActual = emp;
-				return "Bienvenido al sistema...";
-			}
-			else{
-				return "Contrasenia incorrecta...";
-			}
+	public EmpleadoView login(String usuario, String password) throws ConexionException, AccesoException {
+		Empleado emp = EmpleadoDAO.getInstancia().buscarEmpleado(usuario, password);
+		if (emp != null) {
+			this.empleadoActual = emp;
+			this.tablero = new Tablero(emp);
+			return emp.toView();
 		}
-		else{
-			return "Usuario incorrecto...";
-		}
+		else
+			return null;
+
 	}
 
 
