@@ -51,8 +51,8 @@ public class ReclamoDAO {
 				+ getSpecificColunmForType((TipoReclamo) reclamo.getTipo(), reclamo) + ") "
 				+ "values ('" + reclamo.getFecha() + "','" + reclamo.getDescripcion() + "','"
 				+ reclamo.getTipo().toString() + "','" + reclamo.getEstado().toString() + "','" 
-				+ reclamo.getClienteDniCuit() + "','" + reclamo.getEmpleadoNombreUsr() + "','" 
-				+ getSpecificColunmValueForType((TipoReclamo) reclamo.getTipo(), reclamo) + "');";
+				+ reclamo.getClienteDniCuit() + "','" + reclamo.getEmpleadoNombreUsr() + "'," 
+				+ getSpecificColunmValueForType((TipoReclamo) reclamo.getTipo(), reclamo) + ");";
 
 		try {
 			stmt.execute(SQL);
@@ -395,7 +395,7 @@ public class ReclamoDAO {
 			return "zona";
 
 		case facturacion:
-			return (",  fechaFacturacion, nroFactura, idCompuesto");
+			return ("fechaFacturacion, nroFactura");
 
 		case cantidad:
 			return ("");
@@ -412,11 +412,10 @@ public class ReclamoDAO {
 
 		switch (tipo) {
 		case zona:
-			return ((Zona) reclamo).getZona();
+			return "'" + ((Zona) reclamo).getZona() + "'";
 
 		case facturacion:
-			return ((Facturacion) reclamo).getFecha().toString() + ((Facturacion) reclamo).getNroFactura()
-					+ ((Facturacion) reclamo).getIdCompuesto().toString();
+			return "'" + ((Facturacion) reclamo).getFechaFacturacion().toString() + "'," + ((Facturacion) reclamo).getNroFactura();
 
 		case cantidad:
 		case producto:

@@ -71,7 +71,7 @@ public class AdministrarFacturacionGUI extends JFrame {
 		
 		try {
 		//Consigo todos los reclamos de facturacion
-			reclamos = ReclamoDAO.getInstancia().obtenerReclamosPorTipo(TipoReclamo.Facturacion);
+			reclamos = Sistema.getInstance().getTablero().getReclamostipo(TipoReclamo.facturacion);
 		//Paso los reclamos a ReclamosView
 			for (int i = 0; i < reclamos.size(); i++) {
 				reclamosV.add(reclamos.get(i).reclamoToReclamoView());
@@ -85,7 +85,7 @@ public class AdministrarFacturacionGUI extends JFrame {
 			listaFacturacion = aux;
 			listaFacturacion.setBounds(142, 9, 309, 18);
 			contentPane.add(listaFacturacion);
-			
+
 		} catch (ConexionException | AccesoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

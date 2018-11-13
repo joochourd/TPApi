@@ -4,11 +4,14 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.internal.matchers.Each;
+
 import dao.ReclamoDAO;
 import dao.ReportesDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 import observador.ObservableTablero;
+import view.ReclamoView;
 
 //
 public class Tablero  extends ObservableTablero {
@@ -16,7 +19,7 @@ public class Tablero  extends ObservableTablero {
 	private Empleado empleado;
 	
 	
-	Tablero(Empleado empleado) throws ConexionException, AccesoException{ //el parametro se lo pasa el sistema
+	Tablero(Empleado empleado) throws ConexionException, AccesoException{ //cuando usr se loguea, se traen los reclamos correspondietes a su rolTemporal
 		this.empleado = empleado;
 		if (empleado.getRolTemporal().getTipoReclamo() != null)
 			this.reclamos = this.getReclamostipo(empleado.getRolTemporal().getTipoReclamo());
@@ -68,6 +71,7 @@ public class Tablero  extends ObservableTablero {
 		}
 	}
 	
+	//ver!
 	public List<Reclamo> getReclamosCliente(int numeroCliente) throws AccesoException, ConexionException{
 		return ReclamoDAO.getInstancia().obtenerReclamosDeCliente(numeroCliente);
 	}
@@ -76,23 +80,32 @@ public class Tablero  extends ObservableTablero {
 		return ReclamoDAO.getInstancia().obtenerReclamo(nroReclamo);
 	}
 	
-	public List<Reclamo>getReclamostipo(Enum<TipoReclamo> enum1) throws ConexionException, AccesoException{
-		return ReclamoDAO.getInstancia().obtenerReclamosPorTipo(enum1);
+	public List<Reclamo>getReclamostipo(Enum<TipoReclamo> tipo) throws ConexionException, AccesoException{
+		return ReclamoDAO.getInstancia().obtenerReclamosPorTipo(tipo);
 	}
 	
 	public List<Reclamo>getReclamoCliente(int numeroCliente)throws ConexionException, AccesoException{
 		return ReclamoDAO.getInstancia().obtenerReclamosDeCliente(numeroCliente);
 	}
-
+	
+	public void reclamosEmpleadoLogueado() throws ConexionException, AccesoException{
+		this.reclamos = ReclamoDAO.getInstancia().obtenerReclamoXEmpleado(this.empleado.getNomUsr());
+		
+	}
+// termina ver!!
 
 	public String realizarConsultaReclamo(int idReclamo) throws ConexionException, AccesoException{
 		Reclamo reclamo = ReclamoDAO.getInstancia().obtenerReclamo(idReclamo);
 		return  " Estado: " + reclamo.getEstado() + "Descripcion: " + reclamo.getDescripcion();
 	}
 	
-	public void reclamosEmpleadoLogueado() throws ConexionException, AccesoException{
-		this.reclamos = ReclamoDAO.getInstancia().obtenerReclamoXEmpleado(this.empleado.getNomUsr());
-		
+	
+	public List<ReclamoView> getReclamosView(){
+		List<ReclamoView> views = null;
+		for (Reclamo reclamo : this.reclamos){
+			views.add(reclamo.toView());
+		}
+		return views;
 	}
 	 
 	/* Reportes*/

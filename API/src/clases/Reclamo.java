@@ -133,7 +133,7 @@ public abstract class Reclamo{
 		actEst.guardate();
 	}
 	
-	public ReclamoView reclamoToReclamoView() {
+	public ReclamoView toView() {
 		ReclamoView reclamoV = new ReclamoView(this.numeroReclamo, this.fecha, this.descripcion, this.estado.toString(), this.tipo.toString(), String.valueOf(this.clienteDniCuit), this.empleadoNombreUsr);
 		return reclamoV;
 	}
