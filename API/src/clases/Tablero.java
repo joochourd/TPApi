@@ -96,7 +96,7 @@ public class Tablero  extends ObservableTablero {
 
 	public String realizarConsultaReclamo(int idReclamo) throws ConexionException, AccesoException{
 		Reclamo reclamo = ReclamoDAO.getInstancia().obtenerReclamo(idReclamo);
-		return  " Estado: " + reclamo.getEstado() + "Descripcion: " + reclamo.getDescripcion();
+		return  "Estado: " + reclamo.getEstado() + "\n" + "Descripcion: " + reclamo.getDescripcion();
 	}
 	
 	

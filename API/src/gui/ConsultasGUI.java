@@ -6,19 +6,32 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import clases.Sistema;
+import excepciones.AccesoException;
+import excepciones.ConexionException;
+
 import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JSeparator;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
+import java.util.concurrent.SynchronousQueue;
 import java.awt.event.ActionEvent;
 
 public class ConsultasGUI extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtIdReclamo;
+	private JRadioButton rdbtnClientesReclamos, rdbtnReclamosTratadosPor, rdbtnTiempoPromedioDe;
+	private ButtonGroup btg;
+	private JComboBox comboBoxResponsable;
+	private JButton btnConsultar, btnCancelar, btnGenerarReporte;
+	private JLabel lblReportes, lblConsultarEstadoReclamo, lblIngreseIdReclamo;
+	private JSeparator separator;
 
 	/**
 	 * Launch the application.
@@ -48,39 +61,48 @@ public class ConsultasGUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JRadioButton rdbtnK = new JRadioButton("Cliente con mas reclamos por mes");
-		rdbtnK.setBounds(26, 55, 241, 25);
-		contentPane.add(rdbtnK);
+		rdbtnClientesReclamos = new JRadioButton("Cliente con mas reclamos por mes");
+		rdbtnClientesReclamos.setBounds(26, 55, 241, 25);
+		contentPane.add(rdbtnClientesReclamos);
 		
-		JRadioButton rdbtnReclamosTratadosPor = new JRadioButton("Reclamos tratados por mes");
+		rdbtnReclamosTratadosPor = new JRadioButton("Reclamos tratados por mes");
 		rdbtnReclamosTratadosPor.setBounds(26, 109, 196, 25);
 		contentPane.add(rdbtnReclamosTratadosPor);
 		
-		JRadioButton rdbtnTiempoPromedioDe = new JRadioButton("Tiempo promedio de respuesta de reclamos por responsable");
+		rdbtnTiempoPromedioDe = new JRadioButton("Tiempo promedio de respuesta de reclamos por responsable");
 		rdbtnTiempoPromedioDe.setBounds(26, 162, 377, 25);
 		contentPane.add(rdbtnTiempoPromedioDe);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(26, 213, 210, 22);
-		contentPane.add(comboBox);
+		btg = new ButtonGroup();
+		btg.add(rdbtnClientesReclamos);
+		btg.add(rdbtnReclamosTratadosPor);
+		btg.add(rdbtnTiempoPromedioDe);
 		
-		JButton btnGenerarReporte = new JButton("Generar reporte");
-		btnGenerarReporte.setBounds(412, 92, 125, 25);
-		contentPane.add(btnGenerarReporte);
+		RadioListener mr = new RadioListener();
+		rdbtnClientesReclamos.addActionListener(mr);
+		rdbtnReclamosTratadosPor.addActionListener(mr);
+		rdbtnTiempoPromedioDe.addActionListener(mr);
 		
-		JSeparator separator = new JSeparator();
+		
+		
+		comboBoxResponsable = new JComboBox();
+		comboBoxResponsable.setBounds(26, 213, 210, 22);
+		comboBoxResponsable.setVisible(false);
+		contentPane.add(comboBoxResponsable);
+		
+		separator = new JSeparator();
 		separator.setBounds(43, 275, 480, 25);
 		contentPane.add(separator);
 		
-		JLabel lblReportes = new JLabel("Reportes...");
+		lblReportes = new JLabel("Reportes...");
 		lblReportes.setBounds(26, 13, 68, 16);
 		contentPane.add(lblReportes);
 		
-		JLabel lblConsultarEstadoReclamo = new JLabel("Consultar estado reclamo...");
+		lblConsultarEstadoReclamo = new JLabel("Consultar estado reclamo...");
 		lblConsultarEstadoReclamo.setBounds(12, 303, 173, 16);
 		contentPane.add(lblConsultarEstadoReclamo);
 		
-		JLabel lblIngreseIdReclamo = new JLabel("Ingrese ID reclamo...");
+		lblIngreseIdReclamo = new JLabel("Ingrese ID reclamo...");
 		lblIngreseIdReclamo.setBounds(26, 352, 125, 16);
 		contentPane.add(lblIngreseIdReclamo);
 		
@@ -89,16 +111,63 @@ public class ConsultasGUI extends JFrame {
 		contentPane.add(txtIdReclamo);
 		txtIdReclamo.setColumns(10);
 		
-		JButton btnConsultar = new JButton("Consultar");
+		ManejoBoton mb = new ManejoBoton(this);
+		
+		btnGenerarReporte = new JButton("Generar reporte");
+		btnGenerarReporte.setBounds(412, 92, 125, 25);
+		btnGenerarReporte.addActionListener(mb);
+		contentPane.add(btnGenerarReporte);
+		
+		btnConsultar = new JButton("Consultar");
 		btnConsultar.setBounds(426, 348, 97, 25);
+		btnConsultar.addActionListener(mb);
 		contentPane.add(btnConsultar);
 		
-		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(mb);
 		btnCancelar.setBounds(192, 442, 186, 22);
 		contentPane.add(btnCancelar);
 	}
+	
+	class ManejoBoton implements ActionListener {
+
+		ConsultasGUI ventana;
+
+		public ManejoBoton(ConsultasGUI ventana)
+		{
+			this.ventana = ventana;
+		}
+		public void actionPerformed(ActionEvent btn) {
+			if(btn.getSource().equals(btnGenerarReporte)){
+				
+			}
+			if(btn.getSource().equals(btnConsultar)){
+				try {
+					System.out.println(Sistema.getInstance().getTablero().realizarConsultaReclamo(Integer.parseInt(ventana.txtIdReclamo.getText())));
+				} catch (NumberFormatException | ConexionException | AccesoException e) {
+					System.out.println("No se pudo obtener el reclamo");
+					e.printStackTrace();
+				}
+			}
+			if(btn.getSource().equals(btnCancelar)){
+				System.exit(0);
+			}
+
+		}
+	}
+	
+	class RadioListener implements ActionListener{
+		 public void actionPerformed(ActionEvent e) {
+			 if(e.getSource().equals(rdbtnClientesReclamos)){
+				 comboBoxResponsable.setVisible(false);
+			 }
+			 if(e.getSource().equals(rdbtnReclamosTratadosPor)){
+				 comboBoxResponsable.setVisible(false);
+			 }
+			 if(e.getSource().equals(rdbtnTiempoPromedioDe)){
+				 comboBoxResponsable.setVisible(true);
+			 }
+		 }
+	}
+	
 }

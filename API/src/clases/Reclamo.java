@@ -14,6 +14,16 @@ import view.ReclamoView;
 
 public abstract class Reclamo{
 	
+	protected int numeroReclamo ; 
+	protected LocalDate fecha;
+	protected String descripcion;
+	protected Enum <Estados> estado;
+	protected Enum <TipoReclamo> tipo;
+	protected int clienteDniCuit;
+	protected String empleadoNombreUsr;
+
+	protected List <ActualizacionEstado> historial;
+	
 	public Reclamo(int numeroReclamo, LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr) {
 		super();
 		this.fecha = fecha;
@@ -37,15 +47,6 @@ public abstract class Reclamo{
 		this.historial = new ArrayList<ActualizacionEstado>();
 	} //no borrar
 	
-	protected int numeroReclamo ; 
-	protected LocalDate fecha;
-	protected String descripcion;
-	protected Enum <Estados> estado;
-	protected Enum <TipoReclamo> tipo;
-	protected int clienteDniCuit;
-	protected String empleadoNombreUsr;
-
-	protected List <ActualizacionEstado> historial;
 	
 	
 	//ACA COMIENZAN LOS SETTERS GETTERS

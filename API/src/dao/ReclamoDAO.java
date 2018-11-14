@@ -32,7 +32,6 @@ public class ReclamoDAO {
 		return instancia;
 	}
 
-	// Mar
 	public void grabarReclamo(Reclamo reclamo) throws ConexionException, AccesoException {
 		Connection con = null;
 		Statement stmt = null;
@@ -138,7 +137,7 @@ public class ReclamoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("SELECT * FROM reclamos WHERE numero =('" + numeroReclamo + "');");
+		String SQL = ("SELECT * FROM reclamos WHERE idReclamo = " + numeroReclamo + ";");
 		try {
 			resultSet = stmt.executeQuery(SQL);
 			while (resultSet.next()) {
@@ -148,7 +147,7 @@ public class ReclamoDAO {
 				String auxDescripcion = resultSet.getString("descripcion");
 				String auxEstados = resultSet.getString("estados");
 				int auxCliente = resultSet.getInt("clienteDniCuit");
-				String auxEmpleadoNumUsr = resultSet.getString("empleadoNumUsr");
+				String auxEmpleadoNumUsr = resultSet.getString("empleadoNomUsr");
 				String auxTipo = resultSet.getString("tipo");
 
 				if (auxTipo.equals("zona")) {
@@ -158,7 +157,7 @@ public class ReclamoDAO {
 					return reclamoZona;
 
 				}
-				if (auxTipo.equals("Facturacion")) {
+				if (auxTipo.equals("facturacion")) {
 					Date fecha = resultSet.getDate("fechaFacturacion");
 					int numFactura = resultSet.getInt("nroFactura");
 					Facturacion reclamoFacturacion = new Facturacion(auxId, auxFecha.toLocalDate(), auxDescripcion,
@@ -167,7 +166,7 @@ public class ReclamoDAO {
 					return reclamoFacturacion;
 				}
 
-				if (auxTipo.equals("CantYProdYFalta")) {
+				if (auxTipo.equals("cantidad") || auxTipo.equals("producto") || auxTipo.equals("falta")) {
 					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(),
 							auxDescripcion, TipoReclamo.valueOf(auxTipo), auxCliente, auxEmpleadoNumUsr);
 					return reclamoDeCantidadProductoYfalta;
