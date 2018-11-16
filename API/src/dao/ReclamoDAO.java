@@ -46,18 +46,66 @@ public class ReclamoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = "INSERT INTO reclamos  (" + "fecha," + "descripcion," + "tipo," + "estados," + "clienteDniCuit," + "empleadoNomUsr,"
+		
+		String SQL = "INSERT INTO reclamos  (" + "fecha," + "descripcion," + "tipo," + "estados," + "clienteDniCuit," + "empleadoNomUsr"
 				+ getSpecificColunmForType((TipoReclamo) reclamo.getTipo(), reclamo) + ") "
 				+ "values ('" + reclamo.getFecha() + "','" + reclamo.getDescripcion() + "','"
 				+ reclamo.getTipo().toString() + "','" + reclamo.getEstado().toString() + "','" 
-				+ reclamo.getClienteDniCuit() + "','" + reclamo.getEmpleadoNombreUsr() + "'," 
+				+ reclamo.getClienteDniCuit() + "','" + reclamo.getEmpleadoNombreUsr() + "'" 
 				+ getSpecificColunmValueForType((TipoReclamo) reclamo.getTipo(), reclamo) + ");";
-
+		
 		try {
 			stmt.execute(SQL);
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
 			throw new AccesoException("Error de escritura");
+		}
+		if(reclamo.getTipo().equals(TipoReclamo.cantidad) || reclamo.getTipo().equals(TipoReclamo.producto) || reclamo.getTipo().equals(TipoReclamo.falta)){
+			crearProductosReclamos((CantYProdYFalta)reclamo);
+		}
+	}
+
+	private void crearProductosReclamos(CantYProdYFalta reclamo) throws ConexionException, AccesoException {
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet resultSet = null;
+		int id = 0;
+		try {
+			con = ConnectionFactory.getInstancia().getConection();
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new ConexionException("No esta disponible el acceso al Servidor");
+		}
+
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e1) {
+			throw new AccesoException("Error de acceso");
+		}
+
+		String obt = "select idReclamo from reclamos where fecha='" + reclamo.getFecha() + "' and descripcion='"
+				+ reclamo.getDescripcion() + "' and tipo='" + reclamo.getTipo() + "' and clienteDniCuit="
+				+ reclamo.getClienteDniCuit() + " and empleadoNomUsr='" + reclamo.getEmpleadoNombreUsr() + "';";
+
+		try {
+			resultSet = stmt.executeQuery(obt);
+			while (resultSet.next()) {
+				id = resultSet.getInt("idReclamo");
+			}
+		} catch (SQLException e1) {
+			System.out.println(e1.getMessage());
+			throw new AccesoException("No se pudo encontrar ID reclamo...");
+		}
+		
+		if (id != 0) {
+			String SQL = "insert into productosReclamos (idReclamo, productoCodigoPublicacion, Cantidad) " + "values ("
+					+ id + "," + reclamo.getProducto().getCodigoPublicacion() + "," + reclamo.getCantidad() + ");";
+
+			try {
+				stmt.execute(SQL);
+			} catch (SQLException e1) {
+				System.out.println(e1.getMessage());
+				throw new AccesoException("Error de escritura");
+			}
 		}
 	}
 
@@ -391,10 +439,10 @@ public class ReclamoDAO {
 	private String getSpecificColunmForType(TipoReclamo tipo, Reclamo reclamo) {
 		switch (tipo) {
 		case zona:
-			return "zona";
+			return ", zona";
 
 		case facturacion:
-			return ("fechaFacturacion, nroFactura");
+			return (", fechaFacturacion, nroFactura");
 
 		case cantidad:
 			return ("");
@@ -411,10 +459,10 @@ public class ReclamoDAO {
 
 		switch (tipo) {
 		case zona:
-			return "'" + ((Zona) reclamo).getZona() + "'";
+			return ", '" + ((Zona) reclamo).getZona() + "'";
 
 		case facturacion:
-			return "'" + ((Facturacion) reclamo).getFechaFacturacion().toString() + "'," + ((Facturacion) reclamo).getNroFactura();
+			return ", '" + ((Facturacion) reclamo).getFechaFacturacion().toString() + "'," + ((Facturacion) reclamo).getNroFactura();
 
 		case cantidad:
 		case producto:

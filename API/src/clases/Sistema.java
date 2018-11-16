@@ -1,11 +1,15 @@
 package clases;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dao.ClienteDAO;
 import dao.EmpleadoDAO;
 import dao.ProductoDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 import view.EmpleadoView;
+import view.ProductoView;
 
 public class Sistema {
 
@@ -68,6 +72,15 @@ public class Sistema {
 	
 	public Producto buscarProducto(String tituloProd, int codigo) throws ConexionException, AccesoException{
 		return ProductoDAO.getInstancia().buscarProducto(tituloProd, codigo);
+	}
+	
+	public List<ProductoView> getProductos() throws ConexionException, AccesoException{
+		List<Producto> productos = ProductoDAO.getInstancia().getProductos();
+		List<ProductoView> productosView = new ArrayList<>();
+		for(int i = 0; i<productos.size(); i++){
+			productosView.add(productos.get(i).toView());
+		}
+		return productosView;
 	}
 
 

@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import extensions.*;
+import view.ProductoView;
 
 import com.toedter.calendar.JCalendar;
 
@@ -26,6 +27,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JLayeredPane;
 
@@ -59,6 +61,8 @@ public class RegistrarReclamos {
 
 	private JButton btnCargar;
 	private JButton btnCancelar;
+	
+	private List<ProductoView> prods;
 
 	public void setVisible(boolean a) { // Porque es una aplicacion windows
 		this.frame.setVisible(a);
@@ -181,11 +185,20 @@ public class RegistrarReclamos {
 		panelCantidadProductoYFalta.add(lblProducto);
 
 		comboBox_Producto = new JComboBox();
-		comboBox_Producto.setBounds(248, 57, 129, 20);
-		panelCantidadProductoYFalta.add(comboBox_Producto);
+		comboBox_Producto.setBounds(248, 57, 299, 20);
+		try {
+			prods = Sistema.getInstance().getProductos();
+			for(ProductoView objeto : prods)
+				comboBox_Producto.addItem(objeto);
+			panelCantidadProductoYFalta.add(comboBox_Producto);
+		} catch (ConexionException | AccesoException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 
 		txtFieldCantidad = new JTextField();
-		txtFieldCantidad.setBounds(248, 184, 129, 20);
+		txtFieldCantidad.setBounds(248, 184, 105, 20);
 		panelCantidadProductoYFalta.add(txtFieldCantidad);
 		txtFieldCantidad.setColumns(10);
 
@@ -270,8 +283,9 @@ public class RegistrarReclamos {
 				try {
 					sistema.getTablero().registrarReclamoCantProdFalta(LocalDate.now(), textFieldDescripcion.getText(),
 							TipoReclamo.cantidad, Integer.parseInt(textFieldNumerocliente.getText()),
-							ExtensionHelper.dateToLocalDate(calendar.getDate()),
-							Integer.parseInt(textFieldNumeroFactura.getText()));
+							prods.get(this.comboBox_Producto.getSelectedIndex()),
+							Integer.parseInt(txtFieldCantidad.getText()));
+							
 				} catch (NumberFormatException | ConexionException | AccesoException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -281,8 +295,8 @@ public class RegistrarReclamos {
 				try {
 					sistema.getTablero().registrarReclamoCantProdFalta(LocalDate.now(), textFieldDescripcion.getText(),
 							TipoReclamo.producto, Integer.parseInt(textFieldNumerocliente.getText()),
-							ExtensionHelper.dateToLocalDate(calendar.getDate()),
-							Integer.parseInt(textFieldNumeroFactura.getText()));
+							prods.get(this.comboBox_Producto.getSelectedIndex()),
+							Integer.parseInt(txtFieldCantidad.getText()));
 				} catch (NumberFormatException | ConexionException | AccesoException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -292,8 +306,8 @@ public class RegistrarReclamos {
 				try {
 					sistema.getTablero().registrarReclamoCantProdFalta(LocalDate.now(), textFieldDescripcion.getText(),
 							TipoReclamo.falta, Integer.parseInt(textFieldNumerocliente.getText()),
-							ExtensionHelper.dateToLocalDate(calendar.getDate()),
-							Integer.parseInt(textFieldNumeroFactura.getText()));
+							prods.get(this.comboBox_Producto.getSelectedIndex()),
+							Integer.parseInt(txtFieldCantidad.getText()));
 				} catch (NumberFormatException | ConexionException | AccesoException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

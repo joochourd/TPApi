@@ -13,21 +13,21 @@ import strategy.EstrategiaAbstracta;
 
 public class CantYProdYFalta extends Simple {
 
-	private List<Producto> productos;
-	private List<Integer> cantidades;
+	private Producto producto;
+	private int cantidad;
 	private EstrategiaAbstracta strategy;
 	
-	public CantYProdYFalta(int numeroReclamo,LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr) {
+	public CantYProdYFalta(int numeroReclamo,LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr, Producto prod, int cant) {
 		super(numeroReclamo, fecha, descripcion, tipo, clienteDniCuit, empleadoNombreUsr);
-		this.productos = new ArrayList<Producto>();
-		this.cantidades = new ArrayList<Integer>();
+		this.producto = prod;
+		this.cantidad = cant;
 		// TODO Auto-generated constructor stub
 	}
 	
-	public CantYProdYFalta(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr) {
+	public CantYProdYFalta(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr, Producto prod, int cant) {
 		super(fecha, descripcion, tipo, clienteDniCuit, empleadoNombreUsr);
-		this.productos = new ArrayList<Producto>();
-		this.cantidades = new ArrayList<Integer>();
+		this.producto = prod;
+		this.cantidad = cant;
 	}
 
 	
@@ -42,7 +42,17 @@ public class CantYProdYFalta extends Simple {
 		this.strategy = strategy;
 	}
 
+	
 
+	public Producto getProducto() {
+		return producto;
+	}
+
+	
+	
+	public int getCantidad() {
+		return cantidad;
+	}
 
 	@Override
 	protected void guardate() throws ConexionException, AccesoException {

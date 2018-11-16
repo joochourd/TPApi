@@ -11,6 +11,7 @@ import dao.ReportesDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 import observador.ObservableTablero;
+import view.ProductoView;
 import view.ReclamoView;
 
 //
@@ -40,9 +41,11 @@ public class Tablero  extends ObservableTablero {
 		this.updateObserver(reclamo);
 	}
 	
-	public void registrarReclamoCantProdFalta(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, LocalDate fechaFacturacion, int nroFactura) throws ConexionException, AccesoException{
-		CantYProdYFalta reclamo = new CantYProdYFalta(fecha, descripcion, tipo, clienteDniCuit, empleado.getNomUsr());
+	public void registrarReclamoCantProdFalta(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, ProductoView prod, int cant) throws ConexionException, AccesoException{
+		Producto p = new Producto(prod.getCodigoPublicacion(), prod.getTitulo(), prod.getDescripcion(), prod.getPrecio());
+		CantYProdYFalta reclamo = new CantYProdYFalta(fecha, descripcion, tipo, clienteDniCuit, empleado.getNomUsr(), p, cant);
 		reclamo.guardate();
+		
 		this.reclamos.add(reclamo);
 		this.updateObserver(reclamo);
 	}	

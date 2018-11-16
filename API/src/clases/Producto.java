@@ -3,6 +3,8 @@ package clases;
 import dao.ProductoDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
+import view.ProductoView;
+import view.ReclamoView;
 
 public class Producto {
 	
@@ -13,6 +15,13 @@ public class Producto {
 	
 	
 	public Producto(String titulo, String descripcion, float precio){
+		this.titulo = titulo;
+		this.descripcion = descripcion;
+		this.precio = precio;
+	}
+	
+	public Producto(int codigoPublicacion, String titulo, String descripcion, float precio){
+		this.codigoPublicacion = codigoPublicacion;
 		this.titulo = titulo;
 		this.descripcion = descripcion;
 		this.precio = precio;
@@ -58,6 +67,9 @@ public class Producto {
 		this.precio = precio;
 	}
 	
-	
+	public ProductoView toView() {
+		ProductoView productoV = new ProductoView(this.codigoPublicacion, this.titulo, this.descripcion, this.precio);
+		return productoV;
+	}
 	
 }
