@@ -1,6 +1,7 @@
 package clases;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ public class Tablero  extends ObservableTablero {
 	
 	
 	Tablero(Empleado empleado) throws ConexionException, AccesoException{ //cuando usr se loguea, se traen los reclamos correspondietes a su rolTemporal
+		this.reclamos = new ArrayList<>();
 		this.empleado = empleado;
 		if (empleado.getRolTemporal().getTipoReclamo() != null)
 			this.reclamos = this.getReclamostipo(empleado.getRolTemporal().getTipoReclamo());
@@ -29,7 +31,7 @@ public class Tablero  extends ObservableTablero {
 
 	public void registrarReclamoZona(LocalDate fecha, String descripcion, int clienteDniCuit, String zona) throws ConexionException, AccesoException{
 		Zona reclamo = new Zona(fecha, descripcion, TipoReclamo.zona, clienteDniCuit, empleado.getNomUsr(), zona);
-		reclamo.guardate();
+		//reclamo.guardate();
 		this.reclamos.add(reclamo);
 		this.updateObserver(reclamo);
 	}
