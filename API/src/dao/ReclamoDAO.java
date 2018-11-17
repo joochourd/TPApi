@@ -10,6 +10,7 @@ import java.util.List;
 
 import clases.CantYProdYFalta;
 import clases.Facturacion;
+import clases.Producto;
 import clases.Reclamo;
 import clases.TipoReclamo;
 import clases.Zona;
@@ -245,14 +246,17 @@ public class ReclamoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		if (tipoReclamo == TipoReclamo.cantYProdYFalta) {
-			SQL = "SELECT * FROM reclamos WHERE  tipo = 'falta' and tipo = 'producto' and tipo = 'cantidad';";
-		} else {
-			SQL = "SELECT * FROM reclamos WHERE  tipo = ('" + tipoReclamo.toString() + "');";
+		
+		if(tipoReclamo.equals(TipoReclamo.cantYProdYFalta)){
+			SQL = "SELECT * FROM reclamos WHERE  tipo in ('cantidad', 'producto', 'falta');";
 		}
+		else{
+		SQL = "SELECT * FROM reclamos WHERE  tipo = '" + tipoReclamo.toString() + "';";
+		}
+	
 		try {
-			
 			resultSet = stmt.executeQuery(SQL);
+			
 			while (resultSet.next()) {
 				int auxId = resultSet.getInt("idReclamo");
 				Date auxFecha = resultSet.getDate("fecha"); // Change this to
@@ -260,8 +264,8 @@ public class ReclamoDAO {
 				String auxDescripcion = resultSet.getString("descripcion");
 				String auxEstados = resultSet.getString("estados");
 				int auxCliente = resultSet.getInt("clienteDniCuit");
-				String auxEmpleadoNumUsr = resultSet.getString("empleadoNumUsr");
-				String auxTipo = resultSet.getString("tipo");
+				String auxEmpleadoNumUsr = resultSet.getString("empleadoNomUsr");
+				String tipoAux = resultSet.getString("tipo");
 
 				if (tipoReclamo.toString().equals("zona")) {
 					String zona = resultSet.getString("zona");
@@ -278,11 +282,13 @@ public class ReclamoDAO {
 					reclamos.add(reclamoFacturacion);
 				}
 
-				if (tipoReclamo.toString().equals("cantYProdYFalta")) {
-					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(),
-							auxDescripcion, tipoReclamo, auxCliente, auxEmpleadoNumUsr);
+				if (tipoAux.equals("cantidad") || tipoAux.equals("producto") || tipoAux.equals("falta")) {
+					Producto productoAux = obtenerProducto(auxId);
+					int cantAux = obtenerCantidad(auxId);
+					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(), auxDescripcion, TipoReclamo.valueOf(tipoAux), auxCliente, auxEmpleadoNumUsr, productoAux, cantAux);
 					reclamos.add(reclamoDeCantidadProductoYfalta);
 				}
+				if(tipoReclamo.toString().equals("compuesto")){}
 
 			}
 			return reclamos;
@@ -293,10 +299,70 @@ public class ReclamoDAO {
 		}
 	}
 
-	public ReclamoView reclamoToReclamoView(Reclamo r) {
+	private int obtenerCantidad(int auxId) throws AccesoException, ConexionException {
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet resultSet = null;
+		int cantidad = 0;
+		try {
+			con = ConnectionFactory.getInstancia().getConection();
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new ConexionException("No esta disponible el acceso al Servidor");
+		}
 
-		return null;
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e1) {
+			throw new AccesoException("Error de acceso");
+		}
+		String SQL = "select cantidad from productosReclamos where idReclamo = " +auxId+ ";";
+		try {
+			resultSet = stmt.executeQuery(SQL);
+			while (resultSet.next()) {
+				cantidad = resultSet.getInt("cantidad");
+				}
+			return cantidad;
+		}
+		catch (SQLException e1) {
+			System.out.println(e1.getMessage());
+			throw new AccesoException("No se pudo obtener la cantidad");
+		}
+	}
+			
 
+	private Producto obtenerProducto(int auxId) throws ConexionException, AccesoException {
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet resultSet = null;
+		Producto prod = null;
+		try {
+			con = ConnectionFactory.getInstancia().getConection();
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new ConexionException("No esta disponible el acceso al Servidor");
+		}
+
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e1) {
+			throw new AccesoException("Error de acceso");
+		}
+		String SQL = "select * from productos where codigoPublicacion = "
+				+ "(select productoCodigoPublicacion from productosReclamos " + "where idReclamo = " + auxId + ");";
+		try {
+			resultSet = stmt.executeQuery(SQL);
+			while (resultSet.next()) {
+				int codPublicacion = resultSet.getInt("codigoPublicacion");
+				String titulo = resultSet.getString("titulo");
+				String descripcion = resultSet.getString("descripcion");
+				float precio = resultSet.getFloat("precio");
+				prod = new Producto(codPublicacion, titulo, descripcion, precio);
+
+			}
+			return prod;
+		} catch (SQLException e1) {
+			System.out.println(e1.getMessage());
+			throw new AccesoException("No se pudo crear el producto");
+		}
 	}
 
 	public List<Reclamo> obtenerReclamoXEmpleado(String nomUsr) throws ConexionException, AccesoException {
