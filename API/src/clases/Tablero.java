@@ -60,15 +60,19 @@ public class Tablero  extends ObservableTablero {
 
 
 	public void tratarReclamo(int idReclamo, Estados estado, String descripcion) throws ConexionException, AccesoException{
-		
-		Reclamo reclamo = ReclamoDAO.getInstancia().obtenerReclamo(idReclamo);
-		if(reclamo != null){
-			reclamo.guardarActuralizacionEstado();
-			reclamo.setEstado(estado);
-			reclamo.setDescripcion(descripcion);
-			//reclamo.setFecha(LocalDate.now());
-			reclamo.modificate();
-			this.updateObserver(reclamo);
+		Reclamo rec = null;
+		for(int i=0; i<this.reclamos.size(); i++){
+			if(this.reclamos.get(i).getNumeroReclamo() == idReclamo)
+				rec = this.reclamos.get(i);
+				break;
+		}
+		if(rec != null){
+			//rec.guardarActuralizacionEstado();
+			rec.setEstado(estado);
+			rec.setDescripcion(descripcion);
+			rec.setEmpleadoNombreUsr(this.empleado.getNomUsr());;
+			rec.modificate();
+			this.updateObserver(rec);
 		}
 		else{
 			System.out.println("Reclamo not found 404...");

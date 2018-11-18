@@ -45,7 +45,7 @@ public abstract class Reclamo{
 		this.clienteDniCuit = clienteDniCuit;
 		this.empleadoNombreUsr = empleadoNombreUsr;
 		this.historial = new ArrayList<ActualizacionEstado>();
-	} //no borrar
+	} 
 	
 	
 	

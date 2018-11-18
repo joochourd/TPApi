@@ -59,12 +59,12 @@ private static ActualizacionEstadoDAO instancia;
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = "INSERT INTO actualizacionEstado values ('" +
-				actEstado.getFecha() +"','" 
+		String SQL = "INSERT INTO actualizacionEstado (idReclamo, fecha, descripcion, estado, empleadoNombreUsr) values ('" +
+				actEstado.getIdReclamo() +"','" 
+				+ actEstado.getFecha() + "','" 
 				+ actEstado.getDescripcion() + "','" 
 				+ actEstado.getEstado() + "','" 
-				+ actEstado.getNombreUsrEmpleado() + "','" 
-				+ actEstado.getIdReclamo() + 
+				+ actEstado.getNombreUsrEmpleado() + 
 				"');";
 		try{
 			stmt.execute(SQL);

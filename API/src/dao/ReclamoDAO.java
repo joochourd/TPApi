@@ -147,21 +147,10 @@ public class ReclamoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("UPDATE reclamos SET " + "idReclamo = ('" + reclamo.getNumeroReclamo() + "')," + " fecha = ('"
-				+ reclamo.getFecha() + "')," + " descripcion = ('" + reclamo.getDescripcion() + "')" + // despues
-																										// del
-																										// parentesis
-																										// y
-																										// adentro
-																										// de
-																										// las
-																										// comillas,
-																										// va
-																										// una
-																										// coma?
-				" estados= ('" + reclamo.getEstado() + "')" + " tipo = ('" + reclamo.getTipo().toString() + "')"
-				+ getSpecificQueryForType((TipoReclamo) reclamo.getTipo(), reclamo) + " WHERE idReclamo = ('"
-				+ reclamo.getNumeroReclamo() + "');");
+		String SQL = ("UPDATE reclamos SET " + " fecha = ('" + reclamo.getFecha() + "')," + " descripcion = ('"
+				+ reclamo.getDescripcion() + "')," + " estados= ('" + reclamo.getEstado() + "')," 
+				+ " empleadoNomUsr = '" + reclamo.getEmpleadoNombreUsr() + "' "
+				+ " WHERE idReclamo = " + reclamo.getNumeroReclamo() + ";");
 
 		try {
 			stmt.execute(SQL);

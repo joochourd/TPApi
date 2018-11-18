@@ -87,6 +87,11 @@ public class AdministrarCantProdFaltGUI extends JFrame {
 		
 		btnTratar = new JButton("Tratar");
 		btnTratar.setBounds(127, 294, 91, 23);
+		btnTratar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tratar(e);
+			}
+		});
 		contentPane.add(btnTratar);
 		
 		comboBoxReclamos = new JComboBox();
@@ -126,5 +131,19 @@ public class AdministrarCantProdFaltGUI extends JFrame {
 		}
 
 		
+	}
+	
+	protected void tratar(ActionEvent e) {
+		if(txtDescripcion.getText().length() > 0 && comboBoxEstado.getSelectedIndex() != 0){
+			try {
+				Sistema.getInstance().getTablero().tratarReclamo(this.reclamosV.get(this.comboBoxReclamos.getSelectedIndex()).getNumeroReclamo(), Estados.valueOf(this.comboBoxEstado.getSelectedItem().toString()), this.txtDescripcion.getText());
+			} catch (ConexionException | AccesoException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		else{
+			System.out.println("Agregar una descripccion y seleccionar un estado...");
+		}
 	}
 }

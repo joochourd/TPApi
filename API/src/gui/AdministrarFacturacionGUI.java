@@ -9,12 +9,14 @@ import javax.swing.border.EmptyBorder;
 
 import clases.ActualizacionEstado;
 import clases.Estados;
+import clases.Facturacion;
 import clases.Reclamo;
 import clases.Sistema;
 import clases.TipoReclamo;
 import dao.ReclamoDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
+import gui.ConsultasGUI.ManejoBoton;
 import view.ProductoView;
 import view.ReclamoView;
 
@@ -46,8 +48,6 @@ public class AdministrarFacturacionGUI extends JFrame {
 	private JButton btnCancelar;
 	
 	private List<ReclamoView> reclamosV;
-	
-	
 
 	/**
 	 * Launch the application.
@@ -92,6 +92,11 @@ public class AdministrarFacturacionGUI extends JFrame {
 		
 		btnTratar = new JButton("Tratar");
 		btnTratar.setBounds(127, 294, 91, 23);
+		btnTratar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tratar(e);
+			}
+		});
 		contentPane.add(btnTratar);
 		
 		comboBoxReclamos = new JComboBox();
@@ -116,9 +121,10 @@ public class AdministrarFacturacionGUI extends JFrame {
 		
 		comboBoxEstado = new JComboBox();
 		comboBoxEstado.setBounds(206, 207, 285, 22);
-		comboBoxEstado.addItem("En tratamiento");
+		comboBoxEstado.addItem("--select--");
+		comboBoxEstado.addItem("EnTratamiento");
 		comboBoxEstado.addItem("Cerrado");
-		comboBoxEstado.addItem("Solucionado");
+		comboBoxEstado.addItem("Resuelto");
 		contentPane.add(comboBoxEstado);
 		
 		try {
@@ -129,7 +135,22 @@ public class AdministrarFacturacionGUI extends JFrame {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
+		
 		
 	}
+
+	protected void tratar(ActionEvent e) {
+		if(txtDescripcion.getText().length() > 0 && comboBoxEstado.getSelectedIndex() != 0){
+			try {
+				Sistema.getInstance().getTablero().tratarReclamo(this.reclamosV.get(this.comboBoxReclamos.getSelectedIndex()).getNumeroReclamo(), Estados.valueOf(this.comboBoxEstado.getSelectedItem().toString()), this.txtDescripcion.getText());
+			} catch (ConexionException | AccesoException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		else{
+			System.out.println("Agregar una descripccion y seleccionar un estado...");
+		}
+	}
+
 }
