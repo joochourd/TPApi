@@ -175,7 +175,7 @@ public class ReclamoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("SELECT * FROM reclamos WHERE idReclamo = " + numeroReclamo + ";");
+		String SQL = ("SELECT * FROM (reclamos JOIN  prudctosReclamos on recamosl.idReclamo = prductosReclamos.idReclamo)Join productos on productosReclamos.productoCodigoPublicacion = productos.codigoPublicacion WHERE idReclamo = " + numeroReclamo + ";");
 		try {
 			resultSet = stmt.executeQuery(SQL);
 			while (resultSet.next()) {
@@ -205,8 +205,14 @@ public class ReclamoDAO {
 				}
 
 				if (auxTipo.equals("cantidad") || auxTipo.equals("producto") || auxTipo.equals("falta")) {
+					String titulo = resultSet.getString("titulo");
+					String descripcion = resultSet.getString("descripcion");
+					float precio = resultSet.getInt("precio");
+					int cantidad = resultSet.getInt("cantidad");
+					Producto producto = new Producto(titulo, descripcion, precio);
 					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(),
-							auxDescripcion, TipoReclamo.valueOf(auxTipo), auxCliente, auxEmpleadoNumUsr);
+							auxDescripcion, TipoReclamo.valueOf(auxTipo), auxCliente, auxEmpleadoNumUsr, producto, cantidad);
+					
 					return reclamoDeCantidadProductoYfalta;
 				}
 			}
@@ -370,7 +376,10 @@ public class ReclamoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("SELECT * FROM reclamos WHERE empleadoNomUsr =('" + nomUsr + "');");
+		
+		
+		
+		String SQL = ("SELECT * FROM (reclamos JOIN  prudctosReclamos on recamosl.idReclamo = prductosReclamos.idReclamo)Join productos on productosReclamos.productoCodigoPublicacion = productos.codigoPublicacion WHERE empleadoNomUsr =('" + nomUsr + "');");
 		try {
 			resultSet = stmt.executeQuery(SQL);
 			while (resultSet.next()) {
@@ -399,11 +408,18 @@ public class ReclamoDAO {
 				}
 
 				if (auxTipo.equals("CantYProdYFalta")) {
+					String titulo = resultSet.getString("titulo");
+					String descripcion = resultSet.getString("descripcion");
+					float precio = resultSet.getInt("precio");
+					Producto producto = new Producto(titulo, descripcion, precio);
+					int cantidad = resultSet.getInt("cantidad");
 					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(),
-							auxDescripcion, TipoReclamo.valueOf(auxTipo), auxCliente, auxEmpleadoNumUsr);
+							auxDescripcion, TipoReclamo.valueOf(auxTipo), auxCliente, auxEmpleadoNumUsr, producto, cantidad);
 					reclamos.add(reclamoDeCantidadProductoYfalta);
 				}
 			}
+			
+
 			return reclamos;
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
@@ -427,7 +443,7 @@ public class ReclamoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("SELECT * FROM reclamos WHERE  clienteDniCuit = ('" + numeroCliente + "');");
+		String SQL = ("SELECT * FROM (reclamos JOIN  prudctosReclamos on recamosl.idReclamo = prductosReclamos.idReclamo)Join productos on productosReclamos.productoCodigoPublicacion = productos.codigoPublicacion WHERE  clienteDniCuit = ('" + numeroCliente + "');");
 		try {
 			resultSet = stmt.executeQuery(SQL);
 			while (resultSet.next()) {
@@ -457,8 +473,13 @@ public class ReclamoDAO {
 				}
 
 				if (auxTipo.equals("CantYProdYFalta")) {
+					String titulo = resultSet.getString("titulo");
+					String descripcion = resultSet.getString("descripcion");
+					float precio = resultSet.getInt("precio");
+					Producto producto = new Producto(titulo, descripcion, precio);
+					int cantidad = resultSet.getInt("cantidad");
 					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(),
-							auxDescripcion, TipoReclamo.valueOf(auxTipo), auxCliente, auxEmpleadoNumUsr);
+							auxDescripcion, TipoReclamo.valueOf(auxTipo), auxCliente, auxEmpleadoNumUsr, producto, cantidad);
 					reclamos.add(reclamoDeCantidadProductoYfalta);
 				}
 			}
