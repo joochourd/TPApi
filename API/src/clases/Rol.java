@@ -5,17 +5,10 @@ import java.util.List;
 public class Rol {
 
 	private int id;
-	//private Enum<TipoRol> descripcion;
-	String descripcion;
+	private String descripcion;
 	private Enum<TipoReclamo> tipoReclamo;
-	
-	
-	
-	/*public Rol(Enum<TipoRol> rol, Enum<TipoReclamo>tipoReclamo) {
-		super();
-		this.descripcion = rol;
-		this.tipoReclamo = tipoReclamo;
-	}*/
+	private List<Empleado> usr;
+
 	public Rol (int id, String descripcion){
 		this.id = id;
 		this.descripcion = descripcion;
@@ -30,13 +23,9 @@ public class Rol {
 			this.tipoReclamo = TipoReclamo.zona;
 			break;
 		case "callCenter":
-			this.tipoReclamo = null;
-			break;
 		case "administrador":
-			this.tipoReclamo = null;
-			break;
 		case "consulta":
-			this.tipoReclamo = null; //cambiar
+			this.tipoReclamo = null; //cambiar solo consulta, los otros tienen que seguir siendo null
 			break;
 		default:
 			break;
@@ -61,28 +50,12 @@ public class Rol {
 	public void setUsr(List<Empleado> usr) {
 		this.usr = usr;
 	}
-	public List<Enum> getPermisos() {
-		return permisos;
-	}
-	public void setPermisos(List<Enum> permisos) {
-		this.permisos = permisos;
-	}
-	private List<Empleado> usr;
-	private List<Enum> permisos;
+
 	
-	public void eliminarUsr(int nroLu){
-		int i=0;
-		for(; i<usr.size(); i++){
-			if(nroLu == usr.get(i).getNroLU()){
-				break;
-			}
-		}
-		usr.remove(i);
-		
-		
-		/*for(Empleado empleado : usr) {
+	public void eliminarUsr(int nroLu){		
+		for(Empleado empleado : usr) {
 			if (empleado.getNroLU() == nroLu)  usr.remove(empleado);
-		}*/
+		}
 	}
 	public void agregarUsr(Empleado usuario){
 		usr.add(usuario);

@@ -1,23 +1,33 @@
 package clases;
 
 public enum TipoRol {
-	/**administra todos los reclamos referidos a facturación
+	/**administra todos los reclamos referidos a facturaciï¿½n
 	 * id 1*/
 	responsableFacturacion, 
-	/**administra todos los reclamos referidos a distribución, faltante  y entrega de productos
+	/**administra todos los reclamos referidos a distribuciï¿½n, faltante  y entrega de productos
 	 * id 2*/
 	responsableDistribucion, 
 	/**administra los reclamos de zona
 	 * id 3*/
 	responsableZonas,
-	/**son los encargados de ingresar los reclamos y resolver consultas por teléfono
+	/**son los encargados de ingresar los reclamos y resolver consultas por telï¿½fono
 	 * id 4*/
 	callCenter,
-	/**administra la configuración de la aplicación
+	/**administra la configuraciï¿½n de la aplicaciï¿½n
 	 * id 5*/
 	administrador,
 	/**usuario que solo puede realizar consultas sobre el sistema (reportes, estado de reclamos, etc.)
 	 * id 6*/
-	consulta
+	consulta;
+	
+	public int  getIDRol() {
+		int count = 0;
+		for(TipoRol rol1 :  TipoRol.values()) {
+			if (this.equals(rol1)) return count;
+			count++;
+		}
+		return 0;
+		
+	}
 
 }

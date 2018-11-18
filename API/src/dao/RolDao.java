@@ -44,7 +44,7 @@ public class RolDao {
 				String auxDescripcion = resultSet.getString("descripcion");
 				String auxTipoReclamo = resultSet.getString("tipoReclamo");
 				
-					Rol rol = new Rol(TipoRol.valueOf(auxDescripcion), TipoReclamo.valueOf(auxTipoReclamo));
+					Rol rol = new Rol(TipoRol.valueOf(auxDescripcion).getIDRol(), TipoReclamo.valueOf(auxTipoReclamo).name());
 					return rol;
 				}
 			}
