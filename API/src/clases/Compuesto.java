@@ -38,11 +38,35 @@ public class Compuesto extends Reclamo {
 	}
 	
 	public String chequearEstado(){
+		Enum<Estados> e; 
+		String rta = null;
+//		String aux = null;
 		for (Simple simple : simples) {
-			//simple.getEstado()
+			e = simple.getEstado();
+			switch (e.toString()) {
+			case "Registrado":
+				rta = "Registrado";
+				return rta;
+			case "En Tratamiento":
+				if (!rta.equalsIgnoreCase("Registrado")) {
+					rta = "En Tratamiento";
+				}
+				
+				break;
+			case "Solucionado":
+				if (!rta.equalsIgnoreCase("Registrado") && !rta.equalsIgnoreCase("en tratamiento")) {
+					rta = "Solucionado";
+				}
+				break;
+			case "Cerrado":
+				if (!rta.equalsIgnoreCase("Registrado") && !rta.equalsIgnoreCase("en tratamiento")) {
+					rta = "Cerrado";
+				}
+				break;
+			}
 		}
-		
-		return ;}
+		return rta;
+	}
 	
 	public void removeReclamo(int idReclamo) throws ConexionException, AccesoException{
 		Reclamo reclamo = ReclamoDAO.getInstancia().obtenerReclamo(idReclamo);
