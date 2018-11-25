@@ -2,6 +2,9 @@ package clases;
 
 import java.util.List;
 
+import view.ReclamoView;
+import view.RolView;
+
 public class Rol {
 
 	private int id;
@@ -67,5 +70,10 @@ public class Rol {
 	
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public RolView toView() {
+		RolView rolV = new RolView(this.id, this.descripcion, this.tipoReclamo, this.usr);
+		return rolV;
 	}
 }

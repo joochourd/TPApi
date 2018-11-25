@@ -8,13 +8,14 @@ import clases.TipoRol;
 public class EmpleadoView {
 	private String nombre;
 	private Date fechaNac;
+	private String password;
 	private String nomUsr;
 	private int nroLU;
-	private int rolOriginal;
-	private int rolTemporal;
+	private Rol rolOriginal;
+	private Rol rolTemporal;
 	//
 
-	public EmpleadoView(String nombre, Date fechaNac, String nomUsr, int nroLU, int rolOriginal, int rolTemporal){
+	public EmpleadoView(String nombre, Date fechaNac, String password, String nomUsr, int nroLU, Rol rolOriginal, Rol rolTemporal){
 		this.nombre = nombre;
 		this.fechaNac = fechaNac;
 		this.nomUsr = nomUsr;
@@ -48,17 +49,31 @@ public class EmpleadoView {
 	public void setNroLU(int nroLU) {
 		this.nroLU = nroLU;
 	}
-	public int getRolOriginal() {
+	public Rol getRolOriginal() {
 		return rolOriginal;
 	}
-	public void setRolOriginal(int rolOriginal) {
+	public void setRolOriginal(Rol rolOriginal) {
 		this.rolOriginal = rolOriginal;
 	}
-	public int getRolTemporal() {
+	public Rol getRolTemporal() {
 		return rolTemporal;
 	}
-	public void setRolTemporal(int rolTemporal) {
+	public void setRolTemporal(Rol rolTemporal) {
 		this.rolTemporal = rolTemporal;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@Override
+	public String toString() {
+		return "nombre: " + nombre + ", nomUsr: " + nomUsr + ", nroLU: " + nroLU + ", rolOriginal: "
+				+ rolOriginal + ", rolTemporal: " + rolTemporal;
 	}
 
 	

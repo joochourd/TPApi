@@ -106,7 +106,7 @@ public class AdministrarReclamosGUI extends JFrame {
 			panelZona.setVisible(false);
 			try {
 			//Consigo todos los reclamos de facturacion
-				reclamos = ReclamoDAO.getInstancia().obtenerReclamosPorTipo(TipoReclamo.Facturacion);
+				reclamos = ReclamoDAO.getInstancia().obtenerReclamosPorTipo(TipoReclamo.facturacion);
 			//Paso los reclamos a ReclamosView
 				
 				for (int i = 0; i < reclamos.size(); i++) {
@@ -169,9 +169,9 @@ public class AdministrarReclamosGUI extends JFrame {
 			panelZona.setVisible(false);
 			try {
 			//Consigo todos los reclamos de Cantidad/Producto/Falta
-				reclamosC = ReclamoDAO.getInstancia().obtenerReclamosPorTipo(TipoReclamo.Cantidad);
-				reclamosP = ReclamoDAO.getInstancia().obtenerReclamosPorTipo(TipoReclamo.Producto);
-				reclamosF = ReclamoDAO.getInstancia().obtenerReclamosPorTipo(TipoReclamo.Falta);
+				reclamosC = ReclamoDAO.getInstancia().obtenerReclamosPorTipo(TipoReclamo.cantidad);
+				reclamosP = ReclamoDAO.getInstancia().obtenerReclamosPorTipo(TipoReclamo.producto);
+				reclamosF = ReclamoDAO.getInstancia().obtenerReclamosPorTipo(TipoReclamo.falta);
 				reclamos.addAll(reclamosC);
 				reclamos.addAll(reclamosP);
 				reclamos.addAll(reclamosF);

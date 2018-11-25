@@ -4,7 +4,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import clases.Rol;
 import clases.TipoReclamo;
@@ -42,18 +43,50 @@ public class RolDao {
 			resultSet = stmt.executeQuery(SQL);
 			while (resultSet.next()) {
 				String auxDescripcion = resultSet.getString("descripcion");
-				String auxTipoReclamo = resultSet.getString("tipoReclamo");
-				
-					Rol rol = new Rol(id, TipoReclamo.valueOf(auxTipoReclamo).name());
-					return rol;
-				}
+
+				Rol rol = new Rol(id, auxDescripcion);
+				return rol;
 			}
-		catch (SQLException e1) {
+		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
 			throw new AccesoException("No se pudo crear el Rol");
 		}
-		return null;	
-		} 
+		return null;
+	}
+
+	public List<Rol> obtenerTodosLosRoles() throws AccesoException, ConexionException {
+
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet resultSet = null;
+		List<Rol> roles = new ArrayList<>();
+		try {
+			con = ConnectionFactory.getInstancia().getConection();
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new ConexionException("No esta disponible el acceso al Servidor");
+		}
+
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e1) {
+			throw new AccesoException("Error de acceso");
+		}
+		String SQL = ("SELECT * FROM roles;");
+		try {
+			resultSet = stmt.executeQuery(SQL);
+			while (resultSet.next()) {
+				int auxId = resultSet.getInt("idRoles");
+				String auxDescripcion = resultSet.getString("descripcion");
+
+				Rol rol = new Rol(auxId, auxDescripcion);
+
+				roles.add(rol);
+			}
+			return roles;
+		} catch (SQLException e1) {
+			System.out.println(e1.getMessage());
+			throw new AccesoException("No se pudo crear el Rol");
+		}
+
+	}
 }
-
-

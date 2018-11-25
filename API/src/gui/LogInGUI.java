@@ -47,6 +47,7 @@ public class LogInGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public LogInGUI() {
+		setTitle("Log In");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -84,7 +85,7 @@ public class LogInGUI extends JFrame {
 					EmpleadoView emp = Sistema.getInstance().login(txtNomUsr.getText(), txtContr.getText());
 					if (emp != null) {
 						emp.getRolTemporal();
-						switch (emp.getRolTemporal()) {
+						switch (emp.getRolTemporal().getId()) {
 						case 1://responsableFacturacion
 							AdministrarFacturacionGUI admFact = new AdministrarFacturacionGUI();
 							admFact.setVisible(true);
