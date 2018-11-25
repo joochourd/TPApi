@@ -1,5 +1,6 @@
 package clases;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,21 +10,19 @@ import excepciones.AccesoException;
 import excepciones.ConexionException;
 
 public class Compuesto extends Reclamo {
-	private static int ids = 0;
-	private int idCompuesto;
+	private String idCompuesto;
 	private List <Simple>simples;
 
-	public Compuesto(int numeroReclamo, LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr) {
-		super(numeroReclamo, fecha, descripcion, tipo, clienteDniCuit, empleadoNombreUsr);
-		simples = new ArrayList<Simple>();
-		this.idCompuesto = ids ++;
+	public Compuesto(int numeroReclamo, LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, Enum<Estados> estado, int clienteDniCuit, String empleadoNombreUsr, String idCompuesto) {
+		super(numeroReclamo, fecha, descripcion, tipo, estado, clienteDniCuit, empleadoNombreUsr, idCompuesto);
+		this.idCompuesto = idCompuesto;
+		simples = new ArrayList<>();
 		// TODO Auto-generated constructor stub
 	}
 	
 	public Compuesto(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr) {
 		super(fecha, descripcion, tipo, clienteDniCuit, empleadoNombreUsr);
-		simples = new ArrayList<Simple>();
-		this.idCompuesto = ids ++;
+		simples = new ArrayList<>();
 	}
 
 	@Override
@@ -40,8 +39,7 @@ public class Compuesto extends Reclamo {
 	public String chequearEstado(){
 		Enum<Estados> e; 
 		String rta = null;
-//		String aux = null;
-		for (Simple simple : simples) {
+		for (Simple simple : this.simples) {
 			e = simple.getEstado();
 			switch (e.toString()) {
 			case "Registrado":
@@ -72,9 +70,27 @@ public class Compuesto extends Reclamo {
 		Reclamo reclamo = ReclamoDAO.getInstancia().obtenerReclamo(idReclamo);
 		this.simples.remove(reclamo);
 	}
+	
+	
+
+	public String getIdCompuesto() {
+		return idCompuesto;
+	}
+
+	public void setIdCompuesto(String idCompuesto) {
+		this.idCompuesto = idCompuesto;
+	}
+
+	public List<Simple> getSimples() {
+		return simples;
+	}
+
+	public void setSimples(List<Simple> simples) {
+		this.simples = simples;
+	}
 
 	@Override
-	protected void guardate() throws ConexionException, AccesoException {
+	protected void guardate() throws ConexionException, AccesoException, SQLException {
 		ReclamoDAO.getInstancia().grabarReclamo(this);
 		
 	}

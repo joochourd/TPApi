@@ -3,9 +3,9 @@ package clases;
 import java.time.LocalDate;
 
 public abstract class Simple extends Reclamo {
-protected String idCompuesto = null;
-	public Simple(int numeroReclamo,LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr) {
-		super(numeroReclamo, fecha, descripcion, tipo, clienteDniCuit, empleadoNombreUsr);
+	
+	public Simple(int numeroReclamo,LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, Enum<Estados> estado, int clienteDniCuit, String empleadoNombreUsr, String idCompuesto) {
+		super(numeroReclamo, fecha, descripcion, tipo, estado, clienteDniCuit, empleadoNombreUsr, idCompuesto);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -19,13 +19,6 @@ protected String idCompuesto = null;
 
 	}
 	
-	public String getIdCompuesto() {
-		return idCompuesto;
-	}
-
-	public void setIdCompuesto(String idCompuesto) {
-		this.idCompuesto = idCompuesto;
-	}
 
 	public void cambiarEstado(){}
 

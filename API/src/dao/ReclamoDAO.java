@@ -9,9 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import clases.CantYProdYFalta;
+import clases.Compuesto;
+import clases.Estados;
 import clases.Facturacion;
 import clases.Producto;
 import clases.Reclamo;
+import clases.Simple;
 import clases.TipoReclamo;
 import clases.Zona;
 import excepciones.AccesoException;
@@ -33,7 +36,7 @@ public class ReclamoDAO {
 		return instancia;
 	}
 
-	public void grabarReclamo(Reclamo reclamo) throws ConexionException, AccesoException {
+	public void grabarReclamo(Reclamo reclamo) throws ConexionException, AccesoException, SQLException {
 		Connection con = null;
 		Statement stmt = null;
 		try {
@@ -47,23 +50,76 @@ public class ReclamoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		
-		String SQL = "INSERT INTO reclamos  (" + "fecha," + "descripcion," + "tipo," + "estados," + "clienteDniCuit," + "empleadoNomUsr"
-				+ getSpecificColunmForType((TipoReclamo) reclamo.getTipo(), reclamo) + ") "
-				+ "values ('" + reclamo.getFecha() + "','" + reclamo.getDescripcion() + "','"
-				+ reclamo.getTipo().toString() + "','" + reclamo.getEstado().toString() + "','" 
-				+ reclamo.getClienteDniCuit() + "','" + reclamo.getEmpleadoNombreUsr() + "'" 
-				+ getSpecificColunmValueForType((TipoReclamo) reclamo.getTipo(), reclamo) + ");";
-		
+
+		if(reclamo.getTipo().equals(TipoReclamo.compuesto)){
+			List<Simple> compuestos = ((Compuesto) reclamo).getSimples();
+			String SQL = "update reclamos set compuesto = NEWID() where idReclamo = " + compuestos.get(0).getNumeroReclamo() + ";";
+			try {
+				stmt.execute(SQL);
+			} catch (SQLException e1) {
+				System.out.println(e1.getMessage());
+				throw new AccesoException("Error de escritura");
+			}
+			int id = getClaveCompuesto(compuestos.get(0).getNumeroReclamo());
+			for(int i = 1 ; i<compuestos.size() ; i++){
+				String SQL2 = "update reclamos set compuesto = " + id + " where idReclamo = " + compuestos.get(i).getNumeroReclamo() + ";";
+				stmt.execute(SQL2);
+				}
+			
+		}
+		else{
+
+			String SQL = "INSERT INTO reclamos  (" + "fecha," + "descripcion," + "tipo," + "estados," + "clienteDniCuit," + "empleadoNomUsr"
+					+ getSpecificColunmForType((TipoReclamo) reclamo.getTipo(), reclamo) + ") "
+					+ "values ('" + reclamo.getFecha() + "','" + reclamo.getDescripcion() + "','"
+					+ reclamo.getTipo().toString() + "','" + reclamo.getEstado().toString() + "','" 
+					+ reclamo.getClienteDniCuit() + "','" + reclamo.getEmpleadoNombreUsr() + "'" 
+					+ getSpecificColunmValueForType((TipoReclamo) reclamo.getTipo(), reclamo) + ");";
+
+			try {
+				stmt.execute(SQL);
+			} catch (SQLException e1) {
+				System.out.println(e1.getMessage());
+				throw new AccesoException("Error de escritura");
+			}
+			if(reclamo.getTipo().equals(TipoReclamo.cantidad) || reclamo.getTipo().equals(TipoReclamo.producto) || reclamo.getTipo().equals(TipoReclamo.falta)){
+				crearProductosReclamos((CantYProdYFalta)reclamo);
+			}
+
+		}
+	}
+
+	private int getClaveCompuesto(int numeroReclamo) throws ConexionException, AccesoException {
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet resultSet = null;
+		int id = 0;
 		try {
-			stmt.execute(SQL);
+			con = ConnectionFactory.getInstancia().getConection();
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new ConexionException("No esta disponible el acceso al Servidor");
+		}
+
+		try {
+			stmt = con.createStatement();
 		} catch (SQLException e1) {
+			throw new AccesoException("Error de acceso");
+		}
+		
+		
+		String SQL = "SELECT compuesto FROM reclamos WHERE idReclamo = " + numeroReclamo + ";";
+		try {
+			resultSet = stmt.executeQuery(SQL);
+			while (resultSet.next()) {
+				id = resultSet.getInt("compuesto");
+			}
+			return id;
+		}
+		catch (SQLException e1) {
 			System.out.println(e1.getMessage());
-			throw new AccesoException("Error de escritura");
+			throw new AccesoException("No se pudo conseguir la clave");
 		}
-		if(reclamo.getTipo().equals(TipoReclamo.cantidad) || reclamo.getTipo().equals(TipoReclamo.producto) || reclamo.getTipo().equals(TipoReclamo.falta)){
-			crearProductosReclamos((CantYProdYFalta)reclamo);
-		}
+		
 	}
 
 	private void crearProductosReclamos(CantYProdYFalta reclamo) throws ConexionException, AccesoException {
@@ -175,7 +231,7 @@ public class ReclamoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("SELECT * FROM (reclamos JOIN  prudctosReclamos on recamosl.idReclamo = prductosReclamos.idReclamo)Join productos on productosReclamos.productoCodigoPublicacion = productos.codigoPublicacion WHERE idReclamo = " + numeroReclamo + ";");
+		String SQL = ("SELECT * FROM reclamos WHERE idReclamo = " + numeroReclamo + ";");
 		try {
 			resultSet = stmt.executeQuery(SQL);
 			while (resultSet.next()) {
@@ -185,13 +241,14 @@ public class ReclamoDAO {
 				String auxDescripcion = resultSet.getString("descripcion");
 				String auxEstados = resultSet.getString("estados");
 				int auxCliente = resultSet.getInt("clienteDniCuit");
-				String auxEmpleadoNumUsr = resultSet.getString("empleadoNomUsr");
+				String auxempleadoNomUsr = resultSet.getString("empleadoNomUsr");
 				String auxTipo = resultSet.getString("tipo");
+				String compuesto = resultSet.getString("compuesto");
 
 				if (auxTipo.equals("zona")) {
 					String zona = resultSet.getString("zona");
 					Zona reclamoZona = new Zona(auxId, auxFecha.toLocalDate(), auxDescripcion,
-							TipoReclamo.valueOf(auxTipo), auxCliente, auxEmpleadoNumUsr, zona);
+							TipoReclamo.valueOf(auxTipo), Estados.valueOf(auxEstados), auxCliente, auxempleadoNomUsr, zona, compuesto);
 					return reclamoZona;
 
 				}
@@ -199,24 +256,20 @@ public class ReclamoDAO {
 					Date fecha = resultSet.getDate("fechaFacturacion");
 					int numFactura = resultSet.getInt("nroFactura");
 					Facturacion reclamoFacturacion = new Facturacion(auxId, auxFecha.toLocalDate(), auxDescripcion,
-							TipoReclamo.valueOf(auxTipo), auxCliente, auxEmpleadoNumUsr, fecha.toLocalDate(),
-							numFactura);
+							TipoReclamo.valueOf(auxTipo), Estados.valueOf(auxEstados), auxCliente, auxempleadoNomUsr, fecha.toLocalDate(),
+							numFactura, compuesto);
 					return reclamoFacturacion;
 				}
 
 				if (auxTipo.equals("cantidad") || auxTipo.equals("producto") || auxTipo.equals("falta")) {
-					String titulo = resultSet.getString("titulo");
-					String descripcion = resultSet.getString("descripcion");
-					float precio = resultSet.getInt("precio");
-					int cantidad = resultSet.getInt("cantidad");
-					Producto producto = new Producto(titulo, descripcion, precio);
 					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(),
-							auxDescripcion, TipoReclamo.valueOf(auxTipo), auxCliente, auxEmpleadoNumUsr, producto, cantidad);
+							auxDescripcion, TipoReclamo.valueOf(auxTipo), Estados.valueOf(auxEstados), auxCliente, auxempleadoNomUsr, obtenerProducto(numeroReclamo), obtenerCantidad(numeroReclamo), compuesto);
 					
 					return reclamoDeCantidadProductoYfalta;
 				}
 			}
-			return null;
+			throw new AccesoException("No existe el reclamo");
+			//return null;
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
 			throw new AccesoException("No se pudo crear el reclamo");
@@ -259,13 +312,14 @@ public class ReclamoDAO {
 				String auxDescripcion = resultSet.getString("descripcion");
 				String auxEstados = resultSet.getString("estados");
 				int auxCliente = resultSet.getInt("clienteDniCuit");
-				String auxEmpleadoNumUsr = resultSet.getString("empleadoNomUsr");
+				String auxempleadoNomUsr = resultSet.getString("empleadoNomUsr");
 				String tipoAux = resultSet.getString("tipo");
+				String compuesto = resultSet.getString("compuesto");
 
 				if (tipoReclamo.toString().equals("zona")) {
 					String zona = resultSet.getString("zona");
-					Zona reclamoZona = new Zona(auxId, auxFecha.toLocalDate(), auxDescripcion, tipoReclamo, auxCliente,
-							auxEmpleadoNumUsr, zona);
+					Zona reclamoZona = new Zona(auxId, auxFecha.toLocalDate(), auxDescripcion, tipoReclamo, Estados.valueOf(auxEstados), auxCliente,
+							auxempleadoNomUsr, zona, compuesto);
 					reclamos.add(reclamoZona);
 
 				}
@@ -273,14 +327,14 @@ public class ReclamoDAO {
 					Date fecha = resultSet.getDate("fechaFacturacion");
 					int numFactura = resultSet.getInt("nroFactura");
 					Facturacion reclamoFacturacion = new Facturacion(auxId, auxFecha.toLocalDate(), auxDescripcion,
-							tipoReclamo, auxCliente, auxEmpleadoNumUsr, fecha.toLocalDate(), numFactura);
+							tipoReclamo, Estados.valueOf(auxEstados), auxCliente, auxempleadoNomUsr, fecha.toLocalDate(), numFactura, compuesto);
 					reclamos.add(reclamoFacturacion);
 				}
 
 				if (tipoAux.equals("cantidad") || tipoAux.equals("producto") || tipoAux.equals("falta")) {
 					Producto productoAux = obtenerProducto(auxId);
 					int cantAux = obtenerCantidad(auxId);
-					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(), auxDescripcion, TipoReclamo.valueOf(tipoAux), auxCliente, auxEmpleadoNumUsr, productoAux, cantAux);
+					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(), auxDescripcion, TipoReclamo.valueOf(tipoAux), Estados.valueOf(auxEstados), auxCliente, auxempleadoNomUsr, productoAux, cantAux, compuesto);
 					reclamos.add(reclamoDeCantidadProductoYfalta);
 				}
 				if(tipoReclamo.toString().equals("compuesto")){}
@@ -378,8 +432,7 @@ public class ReclamoDAO {
 		}
 		
 		
-		
-		String SQL = ("SELECT * FROM (reclamos JOIN  prudctosReclamos on recamosl.idReclamo = prductosReclamos.idReclamo)Join productos on productosReclamos.productoCodigoPublicacion = productos.codigoPublicacion WHERE empleadoNomUsr =('" + nomUsr + "');");
+		String SQL = ("SELECT * FROM reclamos WHERE empleadoNomUsr =('" + nomUsr + "');");
 		try {
 			resultSet = stmt.executeQuery(SQL);
 			while (resultSet.next()) {
@@ -388,13 +441,14 @@ public class ReclamoDAO {
 				String auxDescripcion = resultSet.getString("descripcion");
 				String auxEstados = resultSet.getString("estados");
 				int auxCliente = resultSet.getInt("clienteDniCuit");
-				String auxEmpleadoNumUsr = resultSet.getString("empleadoNumUsr");
+				String auxempleadoNomUsr = resultSet.getString("empleadoNomUsr");
 				String auxTipo = resultSet.getString("tipo");
+				String compuesto = resultSet.getString("compuesto");
 
 				if (auxTipo.equals("zona")) {
 					String zona = resultSet.getString("zona");
 					Zona reclamoZona = new Zona(auxId, auxFecha.toLocalDate(), auxDescripcion,
-							TipoReclamo.valueOf(auxTipo), auxCliente, auxEmpleadoNumUsr, zona);
+							TipoReclamo.valueOf(auxTipo), Estados.valueOf(auxEstados), auxCliente, auxempleadoNomUsr, zona, compuesto);
 					reclamos.add(reclamoZona);
 
 				}
@@ -402,19 +456,14 @@ public class ReclamoDAO {
 					Date fecha = resultSet.getDate("fechaFacturacion");
 					int numFactura = resultSet.getInt("nroFactura");
 					Facturacion reclamoFacturacion = new Facturacion(auxId, auxFecha.toLocalDate(), auxDescripcion,
-							TipoReclamo.valueOf(auxTipo), auxCliente, auxEmpleadoNumUsr, fecha.toLocalDate(),
-							numFactura);
+							TipoReclamo.valueOf(auxTipo), Estados.valueOf(auxEstados), auxCliente, auxempleadoNomUsr, fecha.toLocalDate(),
+							numFactura, compuesto);
 					reclamos.add(reclamoFacturacion);
 				}
 
-				if (auxTipo.equals("CantYProdYFalta")) {
-					String titulo = resultSet.getString("titulo");
-					String descripcion = resultSet.getString("descripcion");
-					float precio = resultSet.getInt("precio");
-					Producto producto = new Producto(titulo, descripcion, precio);
-					int cantidad = resultSet.getInt("cantidad");
+				if (auxTipo.equals("cantidad") || auxTipo.equals("producto") || auxTipo.equals("falta")) {
 					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(),
-							auxDescripcion, TipoReclamo.valueOf(auxTipo), auxCliente, auxEmpleadoNumUsr, producto, cantidad);
+							auxDescripcion, TipoReclamo.valueOf(auxTipo), Estados.valueOf(auxEstados), auxCliente, auxempleadoNomUsr, obtenerProducto(auxId), obtenerCantidad(auxId), compuesto);
 					reclamos.add(reclamoDeCantidadProductoYfalta);
 				}
 			}
@@ -443,7 +492,7 @@ public class ReclamoDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("SELECT * FROM (reclamos JOIN  prudctosReclamos on recamosl.idReclamo = prductosReclamos.idReclamo)Join productos on productosReclamos.productoCodigoPublicacion = productos.codigoPublicacion WHERE  clienteDniCuit = ('" + numeroCliente + "');");
+		String SQL = ("SELECT * FROM reclamos WHERE  clienteDniCuit = " + numeroCliente + ";");
 		try {
 			resultSet = stmt.executeQuery(SQL);
 			while (resultSet.next()) {
@@ -453,33 +502,29 @@ public class ReclamoDAO {
 				String auxDescripcion = resultSet.getString("descripcion");
 				String auxEstados = resultSet.getString("estados");
 				int auxCliente = resultSet.getInt("clienteDniCuit");
-				String auxEmpleadoNumUsr = resultSet.getString("empleadoNumUsr");
+				String auxempleadoNomUsr = resultSet.getString("empleadoNomUsr");
 				String auxTipo = resultSet.getString("tipo");
+				String compuesto = resultSet.getString("compuesto");
 
 				if (auxTipo.equals("zona")) {
 					String zona = resultSet.getString("zona");
 					Zona reclamoZona = new Zona(auxId, auxFecha.toLocalDate(), auxDescripcion,
-							TipoReclamo.valueOf(auxTipo), auxCliente, auxEmpleadoNumUsr, zona);
+							TipoReclamo.valueOf(auxTipo), Estados.valueOf(auxEstados), auxCliente, auxempleadoNomUsr, zona, compuesto);
 					reclamos.add(reclamoZona);
 
 				}
-				if (auxTipo.equals("Facturacion")) {
+				if (auxTipo.equals("facturacion")) {
 					Date fecha = resultSet.getDate("fechaFacturacion");
 					int numFactura = resultSet.getInt("nroFactura");
 					Facturacion reclamoFacturacion = new Facturacion(auxId, auxFecha.toLocalDate(), auxDescripcion,
-							TipoReclamo.valueOf(auxTipo), auxCliente, auxEmpleadoNumUsr, fecha.toLocalDate(),
-							numFactura);
+							TipoReclamo.valueOf(auxTipo), Estados.valueOf(auxEstados), auxCliente, auxempleadoNomUsr, fecha.toLocalDate(),
+							numFactura, compuesto);
 					reclamos.add(reclamoFacturacion);
 				}
 
-				if (auxTipo.equals("CantYProdYFalta")) {
-					String titulo = resultSet.getString("titulo");
-					String descripcion = resultSet.getString("descripcion");
-					float precio = resultSet.getInt("precio");
-					Producto producto = new Producto(titulo, descripcion, precio);
-					int cantidad = resultSet.getInt("cantidad");
+				if (auxTipo.equals("cantidad") || auxTipo.equals("producto") || auxTipo.equals("falta")) {
 					CantYProdYFalta reclamoDeCantidadProductoYfalta = new CantYProdYFalta(auxId, auxFecha.toLocalDate(),
-							auxDescripcion, TipoReclamo.valueOf(auxTipo), auxCliente, auxEmpleadoNumUsr, producto, cantidad);
+							auxDescripcion, TipoReclamo.valueOf(auxTipo), Estados.valueOf(auxEstados), auxCliente, auxempleadoNomUsr, obtenerProducto(auxId), obtenerCantidad(auxId), compuesto);
 					reclamos.add(reclamoDeCantidadProductoYfalta);
 				}
 			}
@@ -496,12 +541,12 @@ public class ReclamoDAO {
 		switch (tipo) {
 		case zona:
 			return ("zona = " + ((Zona) reclamo).getZona() + "idCompuesto="
-					+ ((Zona) reclamo).getIdCompuesto().toString() + "");
+					+ ((Zona) reclamo).getIdCompuesto() + "");
 
 		case facturacion:
 			return ("fechaFacturacion = " + ((Facturacion) reclamo).getFecha().toString() + ", nroFactura = "
 					+ ((Facturacion) reclamo).getNroFactura() + "idCompuesto ="
-					+ ((Facturacion) reclamo).getIdCompuesto().toString());
+					+ ((Facturacion) reclamo).getIdCompuesto());
 
 		case cantidad:
 		case producto:

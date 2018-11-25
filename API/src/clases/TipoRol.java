@@ -21,7 +21,7 @@ public enum TipoRol {
 	consulta;
 	
 	public int  getIDRol() {
-		int count = 0;
+		int count = 1;
 		for(TipoRol rol1 :  TipoRol.values()) {
 			if (this.equals(rol1)) return count;
 			count++;

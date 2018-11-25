@@ -1,5 +1,6 @@
 package clases;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,21 +29,21 @@ public class Tablero  extends ObservableTablero {
 	}
 	
 
-	public void registrarReclamoZona(LocalDate fecha, String descripcion, int clienteDniCuit, String zona) throws ConexionException, AccesoException{
+	public void registrarReclamoZona(LocalDate fecha, String descripcion, int clienteDniCuit, String zona) throws ConexionException, AccesoException, SQLException{
 		Zona reclamo = new Zona(fecha, descripcion, TipoReclamo.zona, clienteDniCuit, empleado.getNomUsr(), zona);
 		reclamo.guardate();
 		this.reclamos.add(reclamo);
 		this.updateObserver(reclamo);
 	}
 
-	public void registrarReclamoFacturacion(LocalDate fecha, String descripcion, int clienteDniCuit, LocalDate fechaFacturacion, int nroFactura) throws ConexionException, AccesoException{
+	public void registrarReclamoFacturacion(LocalDate fecha, String descripcion, int clienteDniCuit, LocalDate fechaFacturacion, int nroFactura) throws ConexionException, AccesoException, SQLException{
 		Facturacion reclamo = new Facturacion(fecha, descripcion, TipoReclamo.facturacion, clienteDniCuit, empleado.getNomUsr(), fechaFacturacion, nroFactura);
 		reclamo.guardate();
 		this.reclamos.add(reclamo);
 		this.updateObserver(reclamo);
 	}
 	
-	public void registrarReclamoCantProdFalta(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, ProductoView prod, int cant) throws ConexionException, AccesoException{
+	public void registrarReclamoCantProdFalta(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, ProductoView prod, int cant) throws ConexionException, AccesoException, SQLException{
 		Producto p = new Producto(prod.getCodigoPublicacion(), prod.getTitulo(), prod.getDescripcion(), prod.getPrecio());
 		CantYProdYFalta reclamo = new CantYProdYFalta(fecha, descripcion, tipo, clienteDniCuit, empleado.getNomUsr(), p, cant);
 		reclamo.guardate();
@@ -51,8 +52,19 @@ public class Tablero  extends ObservableTablero {
 		this.updateObserver(reclamo);
 	}	
 
-	public void registrarReclamoCompuesto(LocalDate fecha, String descripcion, int clienteDniCuit) throws ConexionException, AccesoException{
+	public void registrarReclamoCompuesto(LocalDate fecha, String descripcion, int clienteDniCuit, List <ReclamoView> reclamos) throws ConexionException, AccesoException, SQLException{
+		
+		//List<Simple> reclamosConvertidos = new ArrayList<Simple>();
 		Compuesto reclamo = new Compuesto(fecha, descripcion, TipoReclamo.compuesto, clienteDniCuit, empleado.getNomUsr());
+		for(int i = 0 ; i<reclamos.size() ; i++){
+			ReclamoView v = reclamos.get(i);
+			for(int j = 0 ; j<this.reclamos.size() ; j++){
+				if(this.reclamos.get(j).getNumeroReclamo() == v.getNumeroReclamo()){
+					reclamo.addReclamo((Simple) this.reclamos.get(j));
+				}
+			}
+		}
+		
 		reclamo.guardate();
 		this.reclamos.add(reclamo);
 		this.updateObserver(reclamo);
@@ -82,6 +94,9 @@ public class Tablero  extends ObservableTablero {
 
 	public List<ReclamoView> getReclamosCliente(int numeroCliente) throws AccesoException, ConexionException{
 		List<Reclamo> rec = ReclamoDAO.getInstancia().obtenerReclamosDeCliente(numeroCliente);
+		for(Reclamo r : rec){
+			this.reclamos.add(r);
+		}
 		List<ReclamoView> recV = new ArrayList<>();
 		for(int i = 0; i<rec.size(); i++){
 			recV.add(rec.get(i).toView());
@@ -94,10 +109,13 @@ public class Tablero  extends ObservableTablero {
 	}
 	
 	public List<ReclamoView>getReclamostipo(Enum<TipoReclamo> tipo) throws ConexionException, AccesoException{
-		this.reclamos = ReclamoDAO.getInstancia().obtenerReclamosPorTipo(tipo);
+		List<Reclamo> rec = ReclamoDAO.getInstancia().obtenerReclamosPorTipo(tipo);
+		for(Reclamo r : rec){
+			this.reclamos.add(r);
+		}
 		List<ReclamoView> recV = new ArrayList<>();
-		for(int i = 0; i<this.reclamos.size(); i++){
-			recV.add(this.reclamos.get(i).toView());
+		for(int i = 0; i<rec.size(); i++){
+			recV.add(rec.get(i).toView());
 		}
 		return recV;
 	}

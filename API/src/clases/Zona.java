@@ -1,5 +1,6 @@
 package clases;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 import dao.ReclamoDAO;
@@ -10,8 +11,8 @@ public class Zona extends Simple {
 
 	private String zona; 
 
-	public Zona(int numeroReclamo,LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr, String zona) {
-		super(numeroReclamo,fecha, descripcion, tipo, clienteDniCuit, empleadoNombreUsr);
+	public Zona(int numeroReclamo,LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, Enum<Estados> estado, int clienteDniCuit, String empleadoNombreUsr, String zona, String idCompuesto) {
+		super(numeroReclamo,fecha, descripcion, tipo, estado, clienteDniCuit, empleadoNombreUsr, idCompuesto);
 		this.zona = zona;
 		// TODO Auto-generated constructor stub
 	}
@@ -36,7 +37,7 @@ public class Zona extends Simple {
 	}
 
 	@Override
-	protected void guardate() throws ConexionException, AccesoException {
+	protected void guardate() throws ConexionException, AccesoException, SQLException {
 		ReclamoDAO.getInstancia().grabarReclamo(this);		
 	}
 

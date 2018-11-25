@@ -145,8 +145,8 @@ public class ConsultasGUI extends JFrame {
 				try {
 					System.out.println(Sistema.getInstance().getTablero().realizarConsultaReclamo(Integer.parseInt(ventana.txtIdReclamo.getText())));
 				} catch (NumberFormatException | ConexionException | AccesoException e) {
-					System.out.println("No se pudo obtener el reclamo");
-					e.printStackTrace();
+					System.out.println(e);
+					//e.printStackTrace();
 				}
 			}
 			if(btn.getSource().equals(btnCancelar)){

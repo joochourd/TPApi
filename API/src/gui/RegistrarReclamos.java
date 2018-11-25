@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import extensions.*;
 import view.ProductoView;
+import view.ReclamoView;
 
 import com.toedter.calendar.JCalendar;
 
@@ -23,6 +24,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -30,6 +32,12 @@ import java.util.Date;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JLayeredPane;
+import javax.swing.AbstractListModel;
+import javax.swing.DefaultListModel;
+
+import java.awt.Color;
+import javax.swing.border.LineBorder;
+import javax.swing.JScrollPane;
 
 public class RegistrarReclamos {
 
@@ -54,15 +62,23 @@ public class RegistrarReclamos {
 	private JLabel lblNumeroFactura;
 	private JLabel lblProducto;
 
-	private JPanel panelZona = new JPanel();
-	private JPanel panelFacturacion = new JPanel();
-	private JPanel panelCantidadProductoYFalta = new JPanel();
-	private JLayeredPane layeredPane = new JLayeredPane();
+	private JPanel panelZona;
+	private JPanel panelFacturacion;
+	private JPanel panelCantidadProductoYFalta;
+	private JLayeredPane layeredPane;
+	private JPanel panelCompuesto;
 
 	private JButton btnCargar;
 	private JButton btnCancelar;
 	
+	
+	private JScrollPane scrollPane;
+	private DefaultListModel listModel;
+	private JList listReclamos;
+	
 	private List<ProductoView> prods;
+	
+	private List<ReclamoView> reclamosV;
 
 	public void setVisible(boolean a) { // Porque es una aplicacion windows
 		this.frame.setVisible(a);
@@ -88,7 +104,16 @@ public class RegistrarReclamos {
 	 * Create the application.
 	 */
 	public RegistrarReclamos() {
+		initializePaneles();
 		initialize();
+	}
+	
+	private void initializePaneles(){
+		panelZona = new JPanel();
+		panelFacturacion = new JPanel();
+		panelCantidadProductoYFalta = new JPanel();
+		layeredPane = new JLayeredPane();
+		panelCompuesto = new JPanel();
 	}
 
 	/**
@@ -106,11 +131,13 @@ public class RegistrarReclamos {
 
 		comboBox_TipoReclamo = new JComboBox();
 		comboBox_TipoReclamo.setBounds(222, 10, 117, 20);
+		comboBox_TipoReclamo.addItem("--Seleccion--");
 		comboBox_TipoReclamo.addItem("Cantidades");
 		comboBox_TipoReclamo.addItem("Producto");
 		comboBox_TipoReclamo.addItem("Faltantes");
 		comboBox_TipoReclamo.addItem("Zona");
 		comboBox_TipoReclamo.addItem("Facturacion");
+		comboBox_TipoReclamo.addItem("Compuesto");
 		comboBox_TipoReclamo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				seleccion(evt);
@@ -210,14 +237,29 @@ public class RegistrarReclamos {
 		});
 		btnCargar.setBounds(112, 587, 89, 23);
 		frame.getContentPane().add(btnCargar);
+
+		
 		layeredPane.setLayout(null);
 
-		/*
-		 * layeredPane.add(panelCantidadProductoYFalta); No borrar!
-		 * layeredPane.add(panelFacturacion); layeredPane.add(panelZona);
-		 */
+		/*layeredPane.add(panelCantidadProductoYFalta);          
+		layeredPane.add(panelFacturacion);
+		layeredPane.add(panelZona);
+		layeredPane.add(panelCompuesto);*/
+		
 		layeredPane.setBounds(10, 119, 573, 455);
 		frame.getContentPane().add(layeredPane);
+		
+	
+		layeredPane.setLayer(panelCompuesto, 0);
+		panelCompuesto.setBounds(0, 0, 651, 455);
+		panelCompuesto.setLayout(null);
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(90, 75, 500, 300);
+		panelCompuesto.add(scrollPane);
+		panelCompuesto.setVisible(true);
+		
+		
 
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
@@ -225,8 +267,17 @@ public class RegistrarReclamos {
 				System.exit(0);
 			}
 		});
-		btnCancelar.setBounds(389, 586, 97, 25);
+		btnCancelar.setBounds(465, 586, 97, 25);
 		frame.getContentPane().add(btnCancelar);
+		
+		JButton btnNewButton = new JButton("New button");
+		btnNewButton.setBounds(465, 24, 97, 25);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(listReclamos.getSelectedValuesList().size());
+			}
+		});
+		frame.getContentPane().add(btnNewButton);
 
 	}
 
@@ -236,12 +287,6 @@ public class RegistrarReclamos {
 		if (this.comboBox_TipoReclamo.getSelectedItem() != null) {
 			// switch (cb.getSelectedIndex()) {
 			switch (this.comboBox_TipoReclamo.getSelectedIndex()) {
-			case 0:
-				layeredPane.removeAll();
-				layeredPane.add(panelCantidadProductoYFalta);
-				layeredPane.repaint();
-				layeredPane.revalidate();
-				break;
 			case 1:
 				layeredPane.removeAll();
 				layeredPane.add(panelCantidadProductoYFalta);
@@ -256,15 +301,45 @@ public class RegistrarReclamos {
 				break;
 			case 3:
 				layeredPane.removeAll();
-				layeredPane.add(panelZona);
+				layeredPane.add(panelCantidadProductoYFalta);
 				layeredPane.repaint();
 				layeredPane.revalidate();
 				break;
 			case 4:
 				layeredPane.removeAll();
+				layeredPane.add(panelZona);
+				layeredPane.repaint();
+				layeredPane.revalidate();
+				break;
+			case 5:
+				layeredPane.removeAll();
 				layeredPane.add(panelFacturacion);
 				layeredPane.repaint();
 				layeredPane.revalidate();
+				break;
+			case 6:
+				if (!textFieldNumerocliente.getText().isEmpty()) {
+					layeredPane.removeAll();
+					layeredPane.add(panelCompuesto);
+					layeredPane.repaint();
+					layeredPane.revalidate();
+
+					listModel = new DefaultListModel();
+					try {
+						reclamosV = Sistema.getInstance().getTablero()
+								.getReclamosCliente(Integer.parseInt(textFieldNumerocliente.getText()));
+						for (ReclamoView objeto : reclamosV)
+							listModel.addElement(objeto);
+						listReclamos = new JList(listModel);
+						scrollPane.setViewportView(listReclamos);
+						listReclamos.setBackground(Color.WHITE);
+					} catch (ConexionException | AccesoException e1) {
+						e1.printStackTrace();
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Ingrese DNI/Cuit cliente", "Aviso",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
 				break;
 			default:
 				break;
@@ -279,25 +354,14 @@ public class RegistrarReclamos {
 		
 		if (this.textFieldDescripcion.getText().length() > 0 && this.textFieldNumerocliente.getText().length() > 0) {
 			switch (this.comboBox_TipoReclamo.getSelectedIndex()) {
-			case 0:
+			case 1:
 				try {
 					sistema.getTablero().registrarReclamoCantProdFalta(LocalDate.now(), textFieldDescripcion.getText(),
 							TipoReclamo.cantidad, Integer.parseInt(textFieldNumerocliente.getText()),
 							prods.get(this.comboBox_Producto.getSelectedIndex()),
 							Integer.parseInt(txtFieldCantidad.getText()));
 							
-				} catch (NumberFormatException | ConexionException | AccesoException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				break;
-			case 1:
-				try {
-					sistema.getTablero().registrarReclamoCantProdFalta(LocalDate.now(), textFieldDescripcion.getText(),
-							TipoReclamo.producto, Integer.parseInt(textFieldNumerocliente.getText()),
-							prods.get(this.comboBox_Producto.getSelectedIndex()),
-							Integer.parseInt(txtFieldCantidad.getText()));
-				} catch (NumberFormatException | ConexionException | AccesoException e) {
+				} catch (NumberFormatException | ConexionException | AccesoException | SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -305,36 +369,54 @@ public class RegistrarReclamos {
 			case 2:
 				try {
 					sistema.getTablero().registrarReclamoCantProdFalta(LocalDate.now(), textFieldDescripcion.getText(),
-							TipoReclamo.falta, Integer.parseInt(textFieldNumerocliente.getText()),
+							TipoReclamo.producto, Integer.parseInt(textFieldNumerocliente.getText()),
 							prods.get(this.comboBox_Producto.getSelectedIndex()),
 							Integer.parseInt(txtFieldCantidad.getText()));
-				} catch (NumberFormatException | ConexionException | AccesoException e) {
+				} catch (NumberFormatException | ConexionException | AccesoException | SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
 			case 3:
 				try {
+					sistema.getTablero().registrarReclamoCantProdFalta(LocalDate.now(), textFieldDescripcion.getText(),
+							TipoReclamo.falta, Integer.parseInt(textFieldNumerocliente.getText()),
+							prods.get(this.comboBox_Producto.getSelectedIndex()),
+							Integer.parseInt(txtFieldCantidad.getText()));
+				} catch (NumberFormatException | ConexionException | AccesoException | SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			case 4:
+				try {
 					sistema.getTablero().registrarReclamoZona(LocalDate.now(), this.textFieldDescripcion.getText(), Integer.parseInt(this.textFieldNumerocliente.getText()), this.textFieldZona.getText());
-				} catch (NumberFormatException | ConexionException | AccesoException e) {
+				} catch (NumberFormatException | ConexionException | AccesoException | SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					System.out.println("Crashed trying to parse String to int");
 				}
 				break;
-			case 4:
+			case 5:
 				// Change to local Date
 				try {
 					sistema.getTablero().registrarReclamoFacturacion(LocalDate.now(), textFieldDescripcion.getText(),
 							Integer.parseInt(textFieldNumerocliente.getText()),
 							ExtensionHelper.dateToLocalDate(calendar.getDate()),
 							Integer.parseInt(textFieldNumeroFactura.getText()));
-				} catch (NumberFormatException | ConexionException | AccesoException e1) {
+				} catch (NumberFormatException | ConexionException | AccesoException | SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				break;
-
+			case 6:
+				try {
+					sistema.getTablero().registrarReclamoCompuesto(LocalDate.now(), textFieldDescripcion.getText(), Integer.parseInt(textFieldNumerocliente.getText()), this.listReclamos.getSelectedValuesList());
+				} catch (NumberFormatException | ConexionException | AccesoException | SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
 			default:
 				break;
 			}

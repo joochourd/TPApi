@@ -1,5 +1,6 @@
 package clases;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,18 +22,20 @@ public abstract class Reclamo{
 	protected Enum <TipoReclamo> tipo;
 	protected int clienteDniCuit;
 	protected String empleadoNombreUsr;
+	protected String idCompuesto;
 
 	protected List <ActualizacionEstado> historial;
 	
-	public Reclamo(int numeroReclamo, LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr) {
+	public Reclamo(int numeroReclamo, LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, Enum<Estados> estado, int clienteDniCuit, String empleadoNombreUsr, String idCompuesto) {
 		super();
 		this.fecha = fecha;
 		this.numeroReclamo = numeroReclamo;
 		this.descripcion = descripcion;
 		this.tipo = tipo;
-		this.estado = Estados.Registrado;
+		this.estado = estado;
 		this.clienteDniCuit = clienteDniCuit;
 		this.empleadoNombreUsr = empleadoNombreUsr;
+		this.idCompuesto = idCompuesto;
 		this.historial = new ArrayList<ActualizacionEstado>();
 	}
 	
@@ -92,6 +95,14 @@ public abstract class Reclamo{
 		return clienteDniCuit;
 	}
 	
+	public String getIdCompuesto() {
+		return idCompuesto;
+	}
+
+	public void setIdCompuesto(String idCompuesto) {
+		this.idCompuesto = idCompuesto;
+	}
+	
 	// ACA TERMIAN LOS SETTERS / GETTERS
 	
 	
@@ -126,7 +137,7 @@ public abstract class Reclamo{
 		ReclamoDAO.getInstancia().modificarReclamo(this);
 	}
 	
-	protected abstract void guardate() throws ConexionException, AccesoException;
+	protected abstract void guardate() throws ConexionException, AccesoException, SQLException;
 	
 	public void guardarActuralizacionEstado() throws ConexionException, AccesoException{
 		ActualizacionEstado actEst = new ActualizacionEstado(this.getNumeroReclamo(), LocalDate.now(),  this.getDescripcion(),  this.getEstado(), this.getEmpleadoNombreUsr());
@@ -135,7 +146,7 @@ public abstract class Reclamo{
 	}
 	
 	public ReclamoView toView() {
-		ReclamoView reclamoV = new ReclamoView(this.numeroReclamo, this.fecha, this.descripcion, this.estado.toString(), this.tipo.toString(), String.valueOf(this.clienteDniCuit), this.empleadoNombreUsr);
+		ReclamoView reclamoV = new ReclamoView(this.numeroReclamo, this.fecha, this.descripcion, this.estado.toString(), this.tipo.toString(), String.valueOf(this.clienteDniCuit), this.empleadoNombreUsr, this.idCompuesto);
 		return reclamoV;
 	}
 }

@@ -1,5 +1,6 @@
 package clases;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 import dao.ReclamoDAO;
@@ -12,8 +13,8 @@ public class Facturacion extends Simple {
 	private int nroFactura;
 
 
-	public Facturacion(int numeroReclamo,LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr, LocalDate fechaFacturacion, int nroFactura) {
-		super(numeroReclamo, fecha, descripcion, tipo, clienteDniCuit, empleadoNombreUsr);
+	public Facturacion(int numeroReclamo,LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, Enum<Estados> estado, int clienteDniCuit, String empleadoNombreUsr, LocalDate fechaFacturacion, int nroFactura, String idCompuesto) {
+		super(numeroReclamo, fecha, descripcion, tipo, estado, clienteDniCuit, empleadoNombreUsr, idCompuesto);
 		this.fechaFacturacion = fechaFacturacion;
 		this.nroFactura = nroFactura;
 		// TODO Auto-generated constructor stub
@@ -56,7 +57,7 @@ public class Facturacion extends Simple {
 
 
 	@Override
-	protected void guardate() throws ConexionException, AccesoException {
+	protected void guardate() throws ConexionException, AccesoException, SQLException {
 		ReclamoDAO.getInstancia().grabarReclamo(this);
 		
 	}

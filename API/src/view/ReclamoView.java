@@ -14,19 +14,21 @@ public class ReclamoView {
 	protected String tipo;
 	protected String Nombre;
 	protected String empleadoNombreUsr;
+	protected String idCompuesto;
 	
 	public ReclamoView(){}
 
 	public ReclamoView(int numeroReclamo, LocalDate fecha, String descripcion, String estado, String tipo,
-			String nombre, String empleadoNombreUsr) {
+			String nombre, String empleadoNombreUsr, String idCompuesto) {
 		super();
 		this.numeroReclamo = numeroReclamo;
 		this.fecha = fecha;
 		this.descripcion = descripcion;
 		this.estado = estado;
 		this.tipo = tipo;
-		Nombre = nombre;
+		this.Nombre = nombre;
 		this.empleadoNombreUsr = empleadoNombreUsr;
+		this.idCompuesto = idCompuesto;
 	}
 
 	public int getNumeroReclamo() {
@@ -85,7 +87,8 @@ public class ReclamoView {
 		this.empleadoNombreUsr = empleadoNombreUsr;
 	}
 	
-	public String toString(){
-		return this.numeroReclamo + " - " + this.descripcion + " - " + this.estado;
+	public String toString() {
+		return "nro: " + numeroReclamo + ", fecha: " + fecha + ", descripcion: " + descripcion
+				+ ", estado: " + estado + ", tipo: " + tipo;
 	}
 }
