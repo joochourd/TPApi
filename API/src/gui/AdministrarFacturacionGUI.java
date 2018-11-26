@@ -1,37 +1,28 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import clases.ActualizacionEstado;
 import clases.Estados;
-import clases.Facturacion;
 import clases.Reclamo;
 import clases.Sistema;
 import clases.TipoReclamo;
-import dao.ReclamoDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
-import gui.ConsultasGUI.ManejoBoton;
-import view.ProductoView;
+import observador.Observer;
 import view.ReclamoView;
 
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.awt.event.ActionEvent;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-
-public class AdministrarFacturacionGUI extends JFrame {
+public class AdministrarFacturacionGUI extends JFrame implements Observer {
 
 	private JPanel contentPane;
 	
@@ -52,18 +43,19 @@ public class AdministrarFacturacionGUI extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					AdministrarFacturacionGUI frame = new AdministrarFacturacionGUI();
+					Sistema.getInstance().getTablero().addObserver(frame);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
@@ -136,7 +128,7 @@ public class AdministrarFacturacionGUI extends JFrame {
 			e1.printStackTrace();
 		}
 		
-		
+		Sistema.getInstance().getTablero().addObserver(this);
 	}
 
 	protected void tratar(ActionEvent e) {
@@ -151,6 +143,13 @@ public class AdministrarFacturacionGUI extends JFrame {
 		else{
 			System.out.println("Agregar una descripccion y seleccionar un estado...");
 		}
+	}
+
+	@Override
+	public void update(Reclamo reclamo) {
+		// TODO Auto-generated method stub
+		System.out.println("llamo al update " + reclamo.numeroReclamo());
+		comboBoxReclamos.addItem(reclamo);
 	}
 
 }

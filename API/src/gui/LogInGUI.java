@@ -14,10 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import clases.Empleado;
-import clases.Rol;
 import clases.Sistema;
-import dao.EmpleadoDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 import view.EmpleadoView;
@@ -86,6 +83,7 @@ public class LogInGUI extends JFrame {
 					EmpleadoView emp = Sistema.getInstance().login(txtNomUsr.getText(), txtContr.getText());
 					if (emp != null) {
 						emp.getRolTemporal();
+						
 						switch (emp.getRolTemporal().getId()) {
 						case 1://responsableFacturacion
 							AdministrarFacturacionGUI admFact = new AdministrarFacturacionGUI();

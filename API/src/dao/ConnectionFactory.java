@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class ConnectionFactory {
 	
 	private static ConnectionFactory instancia;
-	String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=api;user=sa;password=123456";
+	String connectionUrl = "jdbc:sqlserver://bd;databaseName=AI_4034m_03;user=AI_4034m_03;password=AI_4034m_03";
 	
 	private ConnectionFactory() throws ClassNotFoundException{
 		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
