@@ -11,6 +11,7 @@ import clases.Sistema;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 import view.ClienteView;
+import view.EmpleadoView;
 
 import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
@@ -28,6 +29,9 @@ import java.awt.event.ActionEvent;
 public class ConsultasGUI extends JFrame {
 
 	private JPanel contentPane;
+	
+	private List<EmpleadoView> empleadosV;
+	
 	private JTextField txtIdReclamo;
 	private JRadioButton rdbtnClientesReclamos, rdbtnReclamosTratadosPor, rdbtnTiempoPromedioDe;
 	private ButtonGroup btg;
@@ -93,6 +97,16 @@ public class ConsultasGUI extends JFrame {
 		comboBoxResponsable = new JComboBox();
 		comboBoxResponsable.setBounds(26, 213, 210, 22);
 		comboBoxResponsable.setVisible(false);
+		try {
+			empleadosV = Sistema.getInstance().getEmpleados();
+			for(EmpleadoView e : empleadosV){
+				comboBoxResponsable.addItem(e.getNombre());
+			}
+		} catch (AccesoException | ConexionException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		contentPane.add(comboBoxResponsable);
 		
 		separator = new JSeparator();
@@ -183,12 +197,19 @@ public class ConsultasGUI extends JFrame {
 					}
 				}
 				if(rdbtnTiempoPromedioDe.isSelected()){
+					try {
+						System.out.println(Sistema.getInstance().getTablero().tiempoPromedioRespuestaReclamosPorResponsable(comboBoxResponsable.getSelectedItem().toString()));
+					} catch (ConexionException | AccesoException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					
 				}
 			}
 			if(btn.getSource().equals(btnConsultar)){
 				try {
-					System.out.println(Sistema.getInstance().getTablero().realizarConsultaReclamo(Integer.parseInt(ventana.txtIdReclamo.getText())));
+					String r = Sistema.getInstance().getTablero().realizarConsultaReclamo(Integer.parseInt(ventana.txtIdReclamo.getText()));
+					JOptionPane.showMessageDialog(null, r, "Promedio", JOptionPane.INFORMATION_MESSAGE);
 				} catch (NumberFormatException | ConexionException | AccesoException e) {
 					System.out.println(e);
 					//e.printStackTrace();

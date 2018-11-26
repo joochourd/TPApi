@@ -143,6 +143,7 @@ public class AdministrarFacturacionGUI extends JFrame {
 		if(txtDescripcion.getText().length() > 0 && comboBoxEstado.getSelectedIndex() != 0){
 			try {
 				Sistema.getInstance().getTablero().tratarReclamo(this.reclamosV.get(this.comboBoxReclamos.getSelectedIndex()).getNumeroReclamo(), Estados.valueOf(this.comboBoxEstado.getSelectedItem().toString()), this.txtDescripcion.getText());
+				System.out.println("Operacion exitosa");
 			} catch (ConexionException | AccesoException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
