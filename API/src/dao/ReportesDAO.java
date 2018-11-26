@@ -55,7 +55,7 @@ public class ReportesDAO {
 				String nombre = resultSet.getString("nombre");
 				String domicilio= resultSet.getString("domicilio");
 				String telefono= resultSet.getString("telefono");
-				String mail= resultSet.getString("mail");
+				String mail= resultSet.getString("email");
 				int dniCuit= resultSet.getInt("dniCuit");
 				Cliente cliente = new Cliente(dniCuit, nombre, domicilio, telefono, mail);
 				clientes.add(cliente);
