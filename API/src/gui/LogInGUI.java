@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -25,7 +26,7 @@ public class LogInGUI extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtNomUsr;
-	private JTextField txtContr;
+	private JPasswordField txtContr;
 
 	/**
 	 * Launch the application.
@@ -73,7 +74,7 @@ public class LogInGUI extends JFrame {
 		contentPane.add(txtNomUsr);
 		txtNomUsr.setColumns(10);
 		
-		txtContr = new JTextField();
+		txtContr = new JPasswordField();
 		txtContr.setBounds(243, 99, 132, 20);
 		contentPane.add(txtContr);
 		txtContr.setColumns(10);

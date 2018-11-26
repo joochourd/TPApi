@@ -13,6 +13,7 @@ import dao.ReportesDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 import observador.ObservableTablero;
+import view.ClienteView;
 import view.ProductoView;
 import view.ReclamoView;
 
@@ -143,8 +144,13 @@ public class Tablero  extends ObservableTablero {
 	 
 	/* Reportes*/
 	
-	public List<Cliente> clientesConMasReclamosPorMes(int mes) throws ConexionException, AccesoException{
-		return ReportesDAO.getInstancia().clientesConMasReclamosPorMes(mes);
+	public List<ClienteView> clientesConMasReclamosPorMes(int mes) throws ConexionException, AccesoException{
+		List<Cliente> clientes = ReportesDAO.getInstancia().clientesConMasReclamosPorMes(mes);
+		List<ClienteView> cliV = new ArrayList<>();
+		for(Cliente c : clientes){
+			cliV.add(c.toView());
+		}
+		return cliV;
 	}
 	
 	public int cantidadReclamosTratadosPorMes(int numeroMes) throws ConexionException, AccesoException{

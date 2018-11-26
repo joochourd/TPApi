@@ -43,11 +43,9 @@ public class ReportesDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = "SELECT TOP 5 c.nombre, c.dniCuit, COUNT(r.idReclamo) AS cantidadReclamos" +
-		"FROM" +
-		"    clientes c LEFT JOIN" +
-		"    reclamos r ON r.clienteDniCuit = c.dniCuit WHERE MONTH (r.fecha = " + mes +")" +
-		"GROUP BY c.dniCuit, c.nombre ORDER BY cantidadReclamos ;";
+		String SQL = "SELECT TOP 5 c.nombre, c.domicilio, c.telefono, c.dniCuit, c.email, COUNT(r.idReclamo) AS cantidadReclamos "
+				+ "FROM clientes c LEFT JOINreclamos r ON r.clienteDniCuit = c.dniCuit WHERE MONTH(r.fecha) = " 
+				+ mes + " GROUP BY c.nombre, c.domicilio, c.telefono, c.dniCuit, c.email ORDER BY cantidadReclamos;";
 		
 		
 		try {
@@ -84,12 +82,12 @@ public class ReportesDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("SELECT COUNT(r.idReclamo) as cantidadReclamo FROM reclamos r WHERE MONTH(r.fecha) = " + numeroMes + "AND ESTADOS = 'cerrado'"+
+		String SQL = ("SELECT COUNT(r.idReclamo) as cantidadReclamo FROM reclamos r WHERE MONTH(r.fecha) = " + numeroMes + " AND not ESTADOS = 'cerrado'"+
 		";");
 		try {
 			ResultSet resultSet = stmt.executeQuery(SQL);
 			while (resultSet.next()) {
-				return resultSet.getInt(0);
+				return resultSet.getInt("cantidadReclamo");
 			}
 			
 		} catch (SQLException e1) {

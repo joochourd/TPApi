@@ -5,6 +5,7 @@ import java.util.List;
 import dao.ClienteDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
+import view.ClienteView;
 
 public class Cliente {
 	//
@@ -70,5 +71,8 @@ public class Cliente {
 		ClienteDAO.getInstancia().grabarCliente(this);
 	}
 	
+	public ClienteView toView(){
+		return new ClienteView(this.nombre, this.domicilio, this.telefono, this.mail, this.dniCuit);
+	}
 
 }
