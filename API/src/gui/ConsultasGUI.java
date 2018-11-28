@@ -25,6 +25,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.concurrent.SynchronousQueue;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
 
 public class ConsultasGUI extends JFrame {
 
@@ -42,44 +43,28 @@ public class ConsultasGUI extends JFrame {
 	private JTextField txtMes;
 	private JTextField txtMes2;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ConsultasGUI frame = new ConsultasGUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
-	public ConsultasGUI() {
+		public ConsultasGUI() {
 		setTitle("Consultas");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 602, 524);
+		setBounds(100, 100, 792, 597);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		rdbtnClientesReclamos = new JRadioButton("Cliente con mas reclamos por mes");
-		rdbtnClientesReclamos.setBounds(26, 55, 241, 25);
+		rdbtnClientesReclamos.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		rdbtnClientesReclamos.setBounds(26, 55, 293, 25);
 		contentPane.add(rdbtnClientesReclamos);
 		
 		rdbtnReclamosTratadosPor = new JRadioButton("Reclamos tratados por mes");
-		rdbtnReclamosTratadosPor.setBounds(26, 109, 196, 25);
+		rdbtnReclamosTratadosPor.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		rdbtnReclamosTratadosPor.setBounds(26, 110, 271, 24);
 		contentPane.add(rdbtnReclamosTratadosPor);
 		
 		rdbtnTiempoPromedioDe = new JRadioButton("Tiempo promedio de respuesta de reclamos por responsable");
-		rdbtnTiempoPromedioDe.setBounds(26, 162, 377, 25);
+		rdbtnTiempoPromedioDe.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		rdbtnTiempoPromedioDe.setBounds(26, 162, 497, 25);
 		contentPane.add(rdbtnTiempoPromedioDe);
 		
 		btg = new ButtonGroup();
@@ -95,7 +80,7 @@ public class ConsultasGUI extends JFrame {
 		
 		
 		comboBoxResponsable = new JComboBox();
-		comboBoxResponsable.setBounds(26, 213, 210, 22);
+		comboBoxResponsable.setBounds(26, 213, 455, 22);
 		comboBoxResponsable.setVisible(false);
 		try {
 			empleadosV = Sistema.getInstance().getEmpleados();
@@ -110,53 +95,62 @@ public class ConsultasGUI extends JFrame {
 		contentPane.add(comboBoxResponsable);
 		
 		separator = new JSeparator();
-		separator.setBounds(43, 275, 480, 25);
+		separator.setBounds(43, 275, 697, 25);
 		contentPane.add(separator);
 		
-		lblReportes = new JLabel("Reportes...");
-		lblReportes.setBounds(26, 13, 68, 16);
+		lblReportes = new JLabel("Reportes");
+		lblReportes.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblReportes.setBounds(26, 13, 102, 22);
 		contentPane.add(lblReportes);
 		
-		lblConsultarEstadoReclamo = new JLabel("Consultar estado reclamo...");
-		lblConsultarEstadoReclamo.setBounds(12, 303, 173, 16);
+		lblConsultarEstadoReclamo = new JLabel("Consultar estado reclamo");
+		lblConsultarEstadoReclamo.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblConsultarEstadoReclamo.setBounds(12, 303, 229, 25);
 		contentPane.add(lblConsultarEstadoReclamo);
 		
-		lblIngreseIdReclamo = new JLabel("Ingrese ID reclamo...");
-		lblIngreseIdReclamo.setBounds(26, 352, 125, 16);
+		lblIngreseIdReclamo = new JLabel("Ingrese ID reclamo");
+		lblIngreseIdReclamo.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblIngreseIdReclamo.setBounds(26, 382, 159, 21);
 		contentPane.add(lblIngreseIdReclamo);
 		
 		txtIdReclamo = new JTextField();
-		txtIdReclamo.setBounds(236, 349, 116, 22);
+		txtIdReclamo.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtIdReclamo.setBounds(220, 378, 176, 25);
 		contentPane.add(txtIdReclamo);
 		txtIdReclamo.setColumns(10);
 		
 		ManejoBoton mb = new ManejoBoton(this);
 		
 		btnGenerarReporte = new JButton("Generar reporte");
-		btnGenerarReporte.setBounds(412, 92, 125, 25);
+		btnGenerarReporte.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnGenerarReporte.setBounds(553, 89, 159, 29);
 		btnGenerarReporte.addActionListener(mb);
 		contentPane.add(btnGenerarReporte);
 		
 		btnConsultar = new JButton("Consultar");
-		btnConsultar.setBounds(426, 348, 97, 25);
+		btnConsultar.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnConsultar.setBounds(553, 380, 125, 25);
 		btnConsultar.addActionListener(mb);
 		contentPane.add(btnConsultar);
 		
 		btnCancelar = new JButton("Cancelar");
+		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnCancelar.addActionListener(mb);
-		btnCancelar.setBounds(192, 442, 186, 22);
+		btnCancelar.setBounds(295, 488, 186, 22);
 		contentPane.add(btnCancelar);
 		
 		txtMes = new JTextField();
+		txtMes.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		txtMes.setText("\u00BAn mes");
-		txtMes.setBounds(275, 56, 52, 22);
+		txtMes.setBounds(376, 55, 62, 24);
 		contentPane.add(txtMes);
 		txtMes.setColumns(10);
 		txtMes.setVisible(false);
 		
 		txtMes2 = new JTextField();
+		txtMes2.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		txtMes2.setText("n\u00BA mes");
-		txtMes2.setBounds(236, 110, 52, 22);
+		txtMes2.setBounds(376, 110, 62, 24);
 		contentPane.add(txtMes2);
 		txtMes2.setColumns(10);
 		txtMes2.setVisible(false);

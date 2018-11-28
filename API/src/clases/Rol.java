@@ -76,4 +76,9 @@ public class Rol {
 		RolView rolV = new RolView(this.id, this.descripcion, this.tipoReclamo, this.usr);
 		return rolV;
 	}
+	
+	@Override
+	public String toString() {
+		return descripcion;
+	}
 }

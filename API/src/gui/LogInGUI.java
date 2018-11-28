@@ -21,6 +21,7 @@ import dao.EmpleadoDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 import view.EmpleadoView;
+import java.awt.Font;
 
 public class LogInGUI extends JFrame {
 
@@ -28,25 +29,6 @@ public class LogInGUI extends JFrame {
 	private JTextField txtNomUsr;
 	private JPasswordField txtContr;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LogInGUI frame = new LogInGUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public LogInGUI() {
 		setTitle("Log In");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,30 +38,35 @@ public class LogInGUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblLogIn = new JLabel("Log In");
-		lblLogIn.setHorizontalAlignment(SwingConstants.CENTER);
-		lblLogIn.setBounds(169, 23, 82, 24);
-		contentPane.add(lblLogIn);
+		JLabel lblcontraseña = new JLabel("\uD83D\uDD12");
+		lblcontraseña.setHorizontalAlignment(SwingConstants.CENTER);
+		lblcontraseña.setBounds(209, 97, 34, 24);
+		contentPane.add(lblcontraseña);
 		
 		JLabel lblNombreDe = new JLabel("Nombre de Usuario:");
-		lblNombreDe.setBounds(50, 60, 132, 24);
+		lblNombreDe.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblNombreDe.setBounds(50, 60, 155, 24);
 		contentPane.add(lblNombreDe);
 		
 		JLabel lblContrasenia = new JLabel("Contrase\u00F1a:");
+		lblContrasenia.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblContrasenia.setBounds(50, 97, 118, 24);
 		contentPane.add(lblContrasenia);
 		
 		txtNomUsr = new JTextField();
+		txtNomUsr.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		txtNomUsr.setBounds(243, 62, 132, 20);
 		contentPane.add(txtNomUsr);
 		txtNomUsr.setColumns(10);
 		
 		txtContr = new JPasswordField();
+		txtContr.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		txtContr.setBounds(243, 99, 132, 20);
 		contentPane.add(txtContr);
 		txtContr.setColumns(10);
 		
 		JButton btnIniciarSesion = new JButton("Iniciar Sesi\u00F3n");
+		btnIniciarSesion.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnIniciarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -129,6 +116,7 @@ public class LogInGUI extends JFrame {
 		contentPane.add(btnIniciarSesion);
 		
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
@@ -136,6 +124,10 @@ public class LogInGUI extends JFrame {
 		});
 		btnCancelar.setBounds(243, 185, 132, 24);
 		contentPane.add(btnCancelar);
+		
+		JLabel lblUsr = new JLabel("\uD83D\uDC71");
+		lblUsr.setBounds(220, 60, 20, 24);
+		contentPane.add(lblUsr);
 		
 	}
 }
