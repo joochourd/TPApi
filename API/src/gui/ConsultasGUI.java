@@ -216,7 +216,8 @@ public class ConsultasGUI extends JFrame {
 					String result = Sistema.getInstance().getTablero().realizarConsultaReclamo(Integer.parseInt(ventana.txtIdReclamo.getText()));
 					JOptionPane.showMessageDialog(null, result, "Estado de reclamo", JOptionPane.INFORMATION_MESSAGE);
 				} catch (NumberFormatException | ConexionException | AccesoException e) {
-					System.out.println(e);
+					JOptionPane.showMessageDialog(null, e.getMessage(), "Estado de reclamo", JOptionPane.INFORMATION_MESSAGE);
+					//System.out.println(e);
 					//e.printStackTrace();
 				}
 			}
