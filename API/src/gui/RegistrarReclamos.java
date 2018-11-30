@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 
 import extensions.*;
 
+import com.jgoodies.common.format.EmptyFormat;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
@@ -53,7 +54,6 @@ public class RegistrarReclamos extends JFrame{
 	 */
 	private static final long serialVersionUID = 1L;
 	private JFrame frame;
-	private JFrame fecha;
 	private JTextField textFieldZona;
 	private JTextField textFieldDescripcion;
 	private JTextField textFieldNumerocliente;
@@ -114,10 +114,10 @@ public class RegistrarReclamos extends JFrame{
 		frame.getContentPane().add(textFieldDescripcion);
 		textFieldDescripcion.setColumns(10);
 		
-		textFieldDescripcion = new JTextField();
-		textFieldDescripcion.setBounds(214, 206, 136, 20);
-		frame.getContentPane().add(textFieldDescripcion);
-		textFieldDescripcion.setColumns(10);
+		textFieldNumerocliente = new JTextField();
+		textFieldNumerocliente.setBounds(214, 206, 136, 20);
+		frame.getContentPane().add(textFieldNumerocliente);
+		textFieldNumerocliente.setColumns(10);
 		frame.getContentPane().setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblRegistrarReclamo, lblTipoDeReclamo, lblDescripcion, lblNumeroDeCliente, comboBox_TipoReclamo}));
 	
 		comboBox_TipoReclamo.addItem("Cantidades");
@@ -143,7 +143,6 @@ public class RegistrarReclamos extends JFrame{
 		panelZona.add(lblNombreZona);
 		
 		textFieldZona = new JTextField();
-		textFieldZona.setText("Nombre de la Zona");
 		textFieldZona.setBounds(214, 260, 136, 20);
 		panelZona.add(textFieldZona);
 		textFieldZona.setColumns(10);
@@ -161,7 +160,7 @@ public class RegistrarReclamos extends JFrame{
 		JLabel lblNumeroFactura = new JLabel("Numero de factura:");
 		lblNumeroFactura.setBounds(30, 265, 167,15);
 		panelFacturacion.add(lblNumeroFactura);
-		JDateChooser chooseDate = new JDateChooser();
+		final JDateChooser chooseDate = new JDateChooser();
 		chooseDate.setBounds(214, 310, 136, 20);
 		panelFacturacion.add(chooseDate);
 						
@@ -182,7 +181,7 @@ public class RegistrarReclamos extends JFrame{
 		lblNewLabel_1.setBounds(30, 190, 87, 155);
 		panelCantidadProductoYFalta.add(lblNewLabel_1);
 		
-		JComboBox comboBox_Producto = new JComboBox();
+		final JComboBox comboBox_Producto = new JComboBox();
 		comboBox_Producto.setBounds(214, 260, 136, 20);
 		panelCantidadProductoYFalta.add(comboBox_Producto);
 		
@@ -243,6 +242,14 @@ public class RegistrarReclamos extends JFrame{
 				frame.setBounds(100, 100, 400, 308);
 				frame.setLocationRelativeTo(null);
 				frame.setVisible(true);
+				textFieldDescripcion.setText(null);
+				txtFieldCantidad.setText(null);
+				textFieldNumerocliente.setText(null);
+				textFieldZona.setText(null);
+				textFieldNumeroFactura.setText(null);
+				comboBox_TipoReclamo.setSelectedItem(null);
+				comboBox_Producto.setSelectedItem(null);
+				chooseDate.setDate(null);
 			}
 		});
 		btnCancelar.setBounds(215, 370, 143, 30);
@@ -266,6 +273,8 @@ public class RegistrarReclamos extends JFrame{
 				layeredPane.revalidate();
 				frame.setBounds(100, 100, 400, 450);
 				frame.setLocationRelativeTo(null);
+				
+				
 				break;
 			case 1:
 				layeredPane.removeAll();
@@ -305,4 +314,5 @@ public class RegistrarReclamos extends JFrame{
 		}
 			//System.out.println(cb.getSelectedItem().toString());
 			System.out.println(cb.getSelectedIndex());
-}}
+	}
+}
