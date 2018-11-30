@@ -1,4 +1,4 @@
-Aclaraciones:
+Aclaraciones :
 *Los numero identificadores de producto y reclamo los genera la BD
 *tablero(controlador de reclamos)
 *Un listener por cada reclamo simple y que avise al compuesto

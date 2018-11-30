@@ -1,11 +1,13 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -20,126 +22,145 @@ import clases.TipoReclamo;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 import view.ReclamoView;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import java.awt.Font;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.UIManager;
 
 public class AdministrarZonaGUI extends JFrame {
 
-private JPanel contentPane;
-	
+	private JPanel contentPane;
+
 	private JTextField txtDescripcion;
-	
-	private JComboBox comboBoxReclamos;
 	private JComboBox comboBoxEstado;
-	
+
 	private JLabel lblIngreseElNuevo;
 	private JLabel lblIngreseLaDescripcion;
 	private JLabel lblSeleccioneReclamo;
-	
+
 	private JButton btnTratar;
 	private JButton btnCancelar;
-	
+
 	private List<ReclamoView> reclamosV;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AdministrarZonaGUI frame = new AdministrarZonaGUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private JScrollPane scrollPane;
+	private DefaultListModel listModel;
+	private JList list;
 
-	/**
-	 * Create the frame.
-	 */
+
 	public AdministrarZonaGUI() {
 		setTitle("Administrar reclamos de zona");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 567, 395);
+		setBounds(100, 100, 792, 597);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		lblSeleccioneReclamo = new JLabel("Seleccione Reclamo:");
-		lblSeleccioneReclamo.setBounds(10, 29, 126, 14);
+
+		lblSeleccioneReclamo = new JLabel("Seleccione un Reclamo:");
+		lblSeleccioneReclamo.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblSeleccioneReclamo.setBounds(31, 44, 169, 23);
 		contentPane.add(lblSeleccioneReclamo);
-		
+
 		btnCancelar = new JButton("Cancelar");
+		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
 		});
-		btnCancelar.setBounds(327, 294, 91, 23);
+		btnCancelar.setBounds(445, 487, 111, 23);
 		contentPane.add(btnCancelar);
-		
+
 		btnTratar = new JButton("Tratar");
-		btnTratar.setBounds(127, 294, 91, 23);
+		btnTratar.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnTratar.setBounds(217, 487, 111, 23);
 		btnTratar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tratar(e);
 			}
 		});
 		contentPane.add(btnTratar);
-		
-		comboBoxReclamos = new JComboBox();
-		comboBoxReclamos.setBounds(148, 25, 389, 22);
-		contentPane.add(comboBoxReclamos);
-		
-		lblIngreseLaDescripcion = new JLabel("Ingrese la descripcion:");
-		lblIngreseLaDescripcion.setBounds(31, 116, 141, 39);
-		contentPane.add(lblIngreseLaDescripcion);
-		
 
-		
+		lblIngreseLaDescripcion = new JLabel("Ingrese la descripcion:");
+		lblIngreseLaDescripcion.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblIngreseLaDescripcion.setBounds(31, 215, 169, 39);
+		contentPane.add(lblIngreseLaDescripcion);
+
+
+
 		txtDescripcion = new JTextField();
-		txtDescripcion.setBounds(206, 106, 285, 54);
+		txtDescripcion.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtDescripcion.setBounds(85, 268, 581, 54);
 		contentPane.add(txtDescripcion);
 		txtDescripcion.setText("");
 		txtDescripcion.setColumns(10);
-		
+
 		lblIngreseElNuevo = new JLabel("Ingrese el nuevo estado:");
-		lblIngreseElNuevo.setBounds(31, 211, 151, 14);
+		lblIngreseElNuevo.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblIngreseElNuevo.setBounds(31, 400, 195, 22);
 		contentPane.add(lblIngreseElNuevo);
-		
+
 		comboBoxEstado = new JComboBox();
-		comboBoxEstado.setBounds(206, 207, 285, 22);
+		comboBoxEstado.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		comboBoxEstado.setBounds(251, 401, 285, 22);
 		comboBoxEstado.addItem("En tratamiento");
 		comboBoxEstado.addItem("Cerrado");
-		comboBoxEstado.addItem("Solucionado");
+		comboBoxEstado.addItem("Resuelto");
 		contentPane.add(comboBoxEstado);
-		
+
+		listModel = new DefaultListModel();
+
+
+
 		try {
 			reclamosV = Sistema.getInstance().getTablero().getReclamostipo(TipoReclamo.zona);
-			for(ReclamoView objeto : reclamosV)
-				comboBoxReclamos.addItem(objeto);
+			for(ReclamoView objeto : reclamosV){
+				listModel.addElement(objeto);
+			}
+			list = new JList(listModel);
+			list.setBorder(UIManager.getBorder("TextField.border"));
+			list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			list.setBackground(Color.WHITE);
+			list.setBounds(85, 80, 581, 93);
+			scrollPane = new JScrollPane();
+			scrollPane.setBounds(85, 80, 581, 93);
+			scrollPane.setViewportView(list);
+			contentPane.add(scrollPane);
 		} catch (ConexionException | AccesoException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
-		
+
 	}
-	
+
 	protected void tratar(ActionEvent e) {
-		if(txtDescripcion.getText().length() > 0 && comboBoxEstado.getSelectedIndex() != 0){
+		if(txtDescripcion.getText().length() > 0 && comboBoxEstado.getSelectedIndex() != -1){
 			try {
-				Sistema.getInstance().getTablero().tratarReclamo(this.reclamosV.get(this.comboBoxReclamos.getSelectedIndex()).getNumeroReclamo(), Estados.valueOf(this.comboBoxEstado.getSelectedItem().toString()), this.txtDescripcion.getText());
-			} catch (ConexionException | AccesoException e1) {
+				if(this.comboBoxEstado.getSelectedItem().toString() == "En tratamiento"){
+					Sistema.getInstance().getTablero().tratarReclamo(this.reclamosV.get(this.list.getSelectedIndex()).getNumeroReclamo(), Estados.EnTratamiento, this.txtDescripcion.getText());
+				}
+				else{
+					Sistema.getInstance().getTablero().tratarReclamo(this.reclamosV.get(this.list.getSelectedIndex()).getNumeroReclamo(), Estados.valueOf(this.comboBoxEstado.getSelectedItem().toString()), this.txtDescripcion.getText());
+				}
+				JOptionPane.showMessageDialog(null, "El reclamo se trato correctamente", "Operacion exitosa", JOptionPane.INFORMATION_MESSAGE);
+
+			}
+
+			catch (ConexionException | AccesoException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
 		else{
-			System.out.println("Agregar una descripccion y seleccionar un estado...");
+			JOptionPane.showMessageDialog(null, "Agregar una descripccion y seleccionar un estado", "Cuidado", JOptionPane.WARNING_MESSAGE);
 		}
 	}
-
 }

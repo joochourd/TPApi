@@ -73,7 +73,7 @@ public class EmpleadoView {
 	@Override
 	public String toString() {
 		return "nombre: " + nombre + ", nomUsr: " + nomUsr + ", nroLU: " + nroLU + ", rolOriginal: "
-				+ rolOriginal + ", rolTemporal: " + rolTemporal;
+				+ rolOriginal.toString() + ", rolTemporal: " + rolTemporal.toString();
 	}
 
 	

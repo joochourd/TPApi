@@ -44,7 +44,7 @@ public class ReportesDAO {
 			throw new AccesoException("Error de acceso");
 		}
 		String SQL = "SELECT TOP 5 c.nombre, c.domicilio, c.telefono, c.dniCuit, c.email, COUNT(r.idReclamo) AS cantidadReclamos "
-				+ "FROM clientes c LEFT JOINreclamos r ON r.clienteDniCuit = c.dniCuit WHERE MONTH(r.fecha) = " 
+				+ "FROM clientes c LEFT JOIN reclamos r ON r.clienteDniCuit = c.dniCuit WHERE MONTH(r.fecha) = " 
 				+ mes + " GROUP BY c.nombre, c.domicilio, c.telefono, c.dniCuit, c.email ORDER BY cantidadReclamos;";
 		
 		
@@ -55,7 +55,7 @@ public class ReportesDAO {
 				String nombre = resultSet.getString("nombre");
 				String domicilio= resultSet.getString("domicilio");
 				String telefono= resultSet.getString("telefono");
-				String mail= resultSet.getString("mail");
+				String mail= resultSet.getString("email");
 				int dniCuit= resultSet.getInt("dniCuit");
 				Cliente cliente = new Cliente(dniCuit, nombre, domicilio, telefono, mail);
 				clientes.add(cliente);
@@ -97,7 +97,7 @@ public class ReportesDAO {
 		return 0;
 	}
 
-	public Map tiempoPromedioRespuestaReclamosPorResponsable(Empleado empl) throws ConexionException, AccesoException {
+	public float tiempoPromedioRespuestaReclamosPorResponsable(String nombreEmpleado) throws ConexionException, AccesoException {
 		Connection con = null;
 		Statement stmt = null;
 		try {
@@ -111,27 +111,23 @@ public class ReportesDAO {
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = "SELECT e.empleados, avg ( DATEDIFF(month, r.fecha, r.fechaFinalizacion)) AS Promedio;" +  //ese r.fecha me genera dudas 
-				"From" + 
-				" 	empleados e LEFT JOIN" + 
-				"    reclamos r ON r.empleadoNomUsr = e.nombreUsr" + 
-				"GROUP BY e.empleados;";
+		String SQL = "select avg(y.diferencia) as promedio from " +
+				"(select datediff(day, x.fechaCierre, x.fechaInicio) as diferencia from "+
+						"(select a.fechaInicio, reclamos.fecha as fechaCierre from "+
+							"reclamos inner join (select idReclamo, fecha as fechaInicio from "+
+								"actualizacionEstado as fechaInicio where estado = 'registrado')a on reclamos.idReclamo = a.idReclamo where reclamos.estados in ('cerrado', 'resuelto') and reclamos.empleadoNomUsr = '" + nombreEmpleado +"')x)y";
+
+
 		try {
 			ResultSet resultSet = stmt.executeQuery(SQL);
-			Date fecha = null;
-			String empleadoNomUsr = null;
-			Map <String, Date> tiemposProm = new HashMap <String, Date>();
 			while (resultSet.next()) {
-				fecha = resultSet.getDate("Promedio");
-				empleadoNomUsr = resultSet.getString("empleadoNomUsr");
-				tiemposProm.put(empleadoNomUsr, fecha);
+				return resultSet.getFloat("promedio");
 			}
-			
-			return tiemposProm;
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
-			throw new AccesoException("Error de escritura");
+			throw new AccesoException("no se puedo obtener el promedio");
 		}
+		return -1;
 	}
 
 }

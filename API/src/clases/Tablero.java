@@ -21,14 +21,14 @@ import view.ReclamoView;
 public class Tablero  extends ObservableTablero {
 	private List <Reclamo> reclamos;
 	private Empleado empleado;
-	
-	
+
+
 	Tablero(Empleado empleado) throws ConexionException, AccesoException{ 
 		this.reclamos = new ArrayList<>();
 		this.empleado = empleado;
-		
+
 	}
-	
+
 
 	public void registrarReclamoZona(LocalDate fecha, String descripcion, int clienteDniCuit, String zona) throws ConexionException, AccesoException, SQLException{
 		Zona reclamo = new Zona(fecha, descripcion, TipoReclamo.zona, clienteDniCuit, empleado.getNomUsr(), zona);
@@ -43,18 +43,18 @@ public class Tablero  extends ObservableTablero {
 		this.reclamos.add(reclamo);
 		this.updateObserver(reclamo);
 	}
-	
+
 	public void registrarReclamoCantProdFalta(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, ProductoView prod, int cant) throws ConexionException, AccesoException, SQLException{
 		Producto p = new Producto(prod.getCodigoPublicacion(), prod.getTitulo(), prod.getDescripcion(), prod.getPrecio());
 		CantYProdYFalta reclamo = new CantYProdYFalta(fecha, descripcion, tipo, clienteDniCuit, empleado.getNomUsr(), p, cant);
 		reclamo.guardate();
-		
+
 		this.reclamos.add(reclamo);
 		this.updateObserver(reclamo);
 	}	
 
 	public void registrarReclamoCompuesto(LocalDate fecha, String descripcion, int clienteDniCuit, List <ReclamoView> reclamos) throws ConexionException, AccesoException, SQLException{
-		
+
 		//List<Simple> reclamosConvertidos = new ArrayList<Simple>();
 		Compuesto reclamo = new Compuesto(fecha, descripcion, TipoReclamo.compuesto, clienteDniCuit, empleado.getNomUsr());
 		for(int i = 0 ; i<reclamos.size() ; i++){
@@ -65,7 +65,7 @@ public class Tablero  extends ObservableTablero {
 				}
 			}
 		}
-		
+
 		reclamo.guardate();
 		this.reclamos.add(reclamo);
 		this.updateObserver(reclamo);
@@ -75,12 +75,13 @@ public class Tablero  extends ObservableTablero {
 	public void tratarReclamo(int idReclamo, Estados estado, String descripcion) throws ConexionException, AccesoException{
 		Reclamo rec = null;
 		for(int i=0; i<this.reclamos.size(); i++){
-			if(this.reclamos.get(i).getNumeroReclamo() == idReclamo)
+			if(this.reclamos.get(i).getNumeroReclamo() == idReclamo){
 				rec = this.reclamos.get(i);
 				break;
+			}
 		}
 		if(rec != null){
-			//rec.guardarActuralizacionEstado();
+			rec.guardarActuralizacionEstado();
 			rec.setEstado(estado);
 			rec.setDescripcion(descripcion);
 			rec.setEmpleadoNombreUsr(this.empleado.getNomUsr());;
@@ -88,10 +89,10 @@ public class Tablero  extends ObservableTablero {
 			this.updateObserver(rec);
 		}
 		else{
-			System.out.println("Reclamo not found 404...");
+			System.out.println("Reclamo not found ...");
 		}
 	}
-	
+
 
 	public List<ReclamoView> getReclamosCliente(int numeroCliente) throws AccesoException, ConexionException{
 		List<Reclamo> rec = ReclamoDAO.getInstancia().obtenerReclamosDeCliente(numeroCliente);
@@ -104,27 +105,26 @@ public class Tablero  extends ObservableTablero {
 		}
 		return recV;
 	}
-	
+
 	public Reclamo getReclamo(int nroReclamo) throws ConexionException, AccesoException {//Ver Si se necesita pasar a View
 		return ReclamoDAO.getInstancia().obtenerReclamo(nroReclamo);
 	}
-	
+
 	public List<ReclamoView>getReclamostipo(Enum<TipoReclamo> tipo) throws ConexionException, AccesoException{
 		List<Reclamo> rec = ReclamoDAO.getInstancia().obtenerReclamosPorTipo(tipo);
+		List<ReclamoView> recV = new ArrayList<>();
 		for(Reclamo r : rec){
 			this.reclamos.add(r);
+			recV.add(r.toView());
 		}
-		List<ReclamoView> recV = new ArrayList<>();
-		for(int i = 0; i<rec.size(); i++){
-			recV.add(rec.get(i).toView());
-		}
+
 		return recV;
 	}
 
-	
+
 	public void reclamosEmpleadoLogueado() throws ConexionException, AccesoException{//NO se usa parece!
 		this.reclamos = ReclamoDAO.getInstancia().obtenerReclamoXEmpleado(this.empleado.getNomUsr());
-		
+
 	}
 
 
@@ -132,8 +132,8 @@ public class Tablero  extends ObservableTablero {
 		Reclamo reclamo = ReclamoDAO.getInstancia().obtenerReclamo(idReclamo);
 		return  "Estado: " + reclamo.getEstado() + "\n" + "Descripcion: " + reclamo.getDescripcion();
 	}
-	
-	
+
+
 	public List<ReclamoView> getReclamosView(){
 		List<ReclamoView> views = null;
 		for (Reclamo reclamo : this.reclamos){
@@ -141,9 +141,9 @@ public class Tablero  extends ObservableTablero {
 		}
 		return views;
 	}
-	 
+
 	/* Reportes*/
-	
+
 	public List<ClienteView> clientesConMasReclamosPorMes(int mes) throws ConexionException, AccesoException{
 		List<Cliente> clientes = ReportesDAO.getInstancia().clientesConMasReclamosPorMes(mes);
 		List<ClienteView> cliV = new ArrayList<>();
@@ -152,13 +152,13 @@ public class Tablero  extends ObservableTablero {
 		}
 		return cliV;
 	}
-	
+
 	public int cantidadReclamosTratadosPorMes(int numeroMes) throws ConexionException, AccesoException{
 		return ReportesDAO.getInstancia().cantidadReclamosTratadosPorMes(numeroMes);
 	}
-	
-	public Map tiempoPromedioRespuestaReclamosPorResponsable(Empleado empl) throws ConexionException, AccesoException{
+
+	public float tiempoPromedioRespuestaReclamosPorResponsable(String empl) throws ConexionException, AccesoException{
 		return ReportesDAO.getInstancia().tiempoPromedioRespuestaReclamosPorResponsable(empl);
 	}
-	
+
 }
