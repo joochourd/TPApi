@@ -1,14 +1,11 @@
 package gui;
 
 
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 
 
@@ -33,20 +30,12 @@ import excepciones.ConexionException;
 import observador.Observer;
 import view.ReclamoView;
 
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.awt.event.ActionEvent;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
-import javax.swing.JComboBox;
+
 public class AdministrarFacturacionGUI extends JFrame implements Observer {
 
 
@@ -54,7 +43,6 @@ public class AdministrarFacturacionGUI extends JFrame implements Observer {
 	
 	private JTextField txtDescripcion;
 	
-	private JComboBox comboBoxReclamos;
 	private JComboBox comboBoxEstado;
 	
 	private JLabel lblIngreseElNuevo;
@@ -181,7 +169,7 @@ public class AdministrarFacturacionGUI extends JFrame implements Observer {
 	public void update(Reclamo reclamo) {
 		// TODO Auto-generated method stub
 		System.out.println("llamo al update " + reclamo.numeroReclamo());
-		comboBoxReclamos.addItem(reclamo);
+		listModel.addElement(reclamo);
 	}
 
 }

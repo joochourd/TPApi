@@ -74,7 +74,7 @@ public class AdministradorAppGUI extends JFrame {
 			list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			list.setBackground(Color.WHITE);
 			list.setBounds(53, 174, 647, 102);
-			contentPane.add(list);
+			//contentPane.add(list);
 			scrollPane = new JScrollPane();
 			scrollPane.setBounds(53, 174, 647, 102);
 			scrollPane.setViewportView(list);

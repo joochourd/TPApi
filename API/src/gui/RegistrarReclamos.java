@@ -1,11 +1,8 @@
 package gui;
 
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import java.awt.Label;
 import javax.swing.JComboBox;
-import java.awt.Panel;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -25,18 +22,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JLayeredPane;
-import javax.swing.AbstractListModel;
 import javax.swing.DefaultListModel;
 
 import java.awt.Color;
-import javax.swing.border.LineBorder;
 import javax.swing.JScrollPane;
 import java.awt.Font;
 

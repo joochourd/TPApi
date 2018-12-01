@@ -1,8 +1,6 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -17,23 +15,21 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import clases.Estados;
+import clases.Reclamo;
 import clases.Sistema;
 import clases.TipoReclamo;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
+import observador.Observer;
 import view.ReclamoView;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import java.awt.Font;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.UIManager;
 
-public class AdministrarZonaGUI extends JFrame {
+public class AdministrarZonaGUI extends JFrame implements Observer {
 
 	private JPanel contentPane;
 
@@ -162,5 +158,12 @@ public class AdministrarZonaGUI extends JFrame {
 		else{
 			JOptionPane.showMessageDialog(null, "Agregar una descripccion y seleccionar un estado", "Cuidado", JOptionPane.WARNING_MESSAGE);
 		}
+	}
+
+	@Override
+	public void update(Reclamo reclamo) {
+		// TODO Auto-generated method stub
+		System.out.println("llamo al update " + reclamo.numeroReclamo());
+		listModel.addElement(reclamo);
 	}
 }
