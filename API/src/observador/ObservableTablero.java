@@ -15,6 +15,7 @@ private List<Observer> observadores;
 	}
 	
 	public void addObserver(Observer instancia){
+		System.out.println(instancia.getClass().getName());
 		observadores.add(instancia);
 	}
 	

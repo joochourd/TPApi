@@ -1,10 +1,7 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -18,9 +15,9 @@ import clases.Estados;
 import clases.Reclamo;
 import clases.Sistema;
 import clases.TipoReclamo;
-import dao.ReclamoDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
+import observador.Observer;
 import view.ReclamoView;
 import javax.swing.JLabel;
 import javax.swing.DefaultListModel;
@@ -33,7 +30,7 @@ import javax.swing.UIManager;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class AdministrarCantProdFaltGUI extends JFrame {
+public class AdministrarCantProdFaltGUI extends JFrame implements Observer{
 
 
 	private JPanel contentPane;
@@ -162,5 +159,12 @@ public class AdministrarCantProdFaltGUI extends JFrame {
 		else{
 			JOptionPane.showMessageDialog(null, "Agregar una descripccion y seleccionar un estado", "Cuidado", JOptionPane.WARNING_MESSAGE);
 		}
+	}
+
+	@Override
+	public void update(Reclamo reclamo) {
+		// TODO Auto-generated method stub
+		System.out.println("llamo al update " + reclamo.numeroReclamo());
+		listModel.addElement(reclamo);
 	}
 }

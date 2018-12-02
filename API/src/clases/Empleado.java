@@ -86,7 +86,7 @@ public class Empleado {
 	}
 	
 	public EmpleadoView toView(){
-		return new EmpleadoView(this.nombre, this.fechaNac, this.password, this.nomUsr, this.nroLU, this.rolOriginal, this.rolTemporal);
+		return new EmpleadoView(this.nombre, this.fechaNac, this.password, this.nomUsr, this.nroLU, this.rolOriginal.toView(), this.rolTemporal.toView());
 	}
 	
 }

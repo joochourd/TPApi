@@ -1,50 +1,48 @@
 package gui;
 
-import java.awt.BorderLayout;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import javax.swing.JTextField;
+
 import javax.swing.JScrollPane;
+
 import javax.swing.border.EmptyBorder;
 
-import clases.ActualizacionEstado;
 import clases.Estados;
-import clases.Facturacion;
 import clases.Reclamo;
 import clases.Sistema;
 import clases.TipoReclamo;
-import dao.ReclamoDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
-import gui.ConsultasGUI.ManejoBoton;
-import view.ProductoView;
+import observador.Observer;
 import view.ReclamoView;
 
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.awt.event.ActionEvent;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
-import javax.swing.JComboBox;
 
-public class AdministrarFacturacionGUI extends JFrame {
+public class AdministrarFacturacionGUI extends JFrame implements Observer {
+
 
 	private JPanel contentPane;
 	
 	private JTextField txtDescripcion;
 	
-	private JComboBox comboBoxReclamos;
 	private JComboBox comboBoxEstado;
 	
 	private JLabel lblIngreseElNuevo;
@@ -55,7 +53,6 @@ public class AdministrarFacturacionGUI extends JFrame {
 	private JButton btnCancelar;
 	
 	private List<ReclamoView> reclamosV;
-
 	private JScrollPane scrollPane;
 	private DefaultListModel listModel;
 	private JList list;
@@ -142,7 +139,7 @@ public class AdministrarFacturacionGUI extends JFrame {
 			e1.printStackTrace();
 		}
 		
-		
+		Sistema.getInstance().getTablero().addObserver(this);
 	}
 
 	protected void tratar(ActionEvent e) {
@@ -166,6 +163,13 @@ public class AdministrarFacturacionGUI extends JFrame {
 		else{
 			JOptionPane.showMessageDialog(null, "Agregar una descripccion y seleccionar un estado", "Cuidado", JOptionPane.WARNING_MESSAGE);
 		}
+	}
+
+	@Override
+	public void update(Reclamo reclamo) {
+		// TODO Auto-generated method stub
+		System.out.println("llamo al update " + reclamo.numeroReclamo());
+		listModel.addElement(reclamo);
 	}
 
 }

@@ -78,7 +78,9 @@ public class Sistema {
 	}
 	
 	public void modificarEmpleado(EmpleadoView empleadoV, RolView rolV) throws ConexionException, AccesoException{
-		Empleado e = new Empleado(empleadoV.getNombre(), empleadoV.getFechaNac(), empleadoV.getPassword(), empleadoV.getNomUsr(), empleadoV.getNroLU(), empleadoV.getRolOriginal(), empleadoV.getRolTemporal());
+		Rol original = new Rol(empleadoV.getRolOriginal().getId(), empleadoV.getRolOriginal().getDescripcion());
+		Rol temporal = new Rol(empleadoV.getRolTemporal().getId(), empleadoV.getRolTemporal().getDescripcion());
+		Empleado e = new Empleado(empleadoV.getNombre(), empleadoV.getFechaNac(), empleadoV.getPassword(), empleadoV.getNomUsr(), empleadoV.getNroLU(), original, temporal);
 		e.setRolTemporal(new Rol(rolV.getId(), rolV.getDescripcion()));
 		EmpleadoDAO.getInstancia().modificarEmpleado(e);
 	}
