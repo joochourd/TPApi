@@ -11,11 +11,11 @@ public class EmpleadoView {
 	private String password;
 	private String nomUsr;
 	private int nroLU;
-	private Rol rolOriginal;
-	private Rol rolTemporal;
+	private RolView rolOriginal;
+	private RolView rolTemporal;
 	//
 
-	public EmpleadoView(String nombre, Date fechaNac, String password, String nomUsr, int nroLU, Rol rolOriginal, Rol rolTemporal){
+	public EmpleadoView(String nombre, Date fechaNac, String password, String nomUsr, int nroLU, RolView rolOriginal, RolView rolTemporal){
 		this.nombre = nombre;
 		this.fechaNac = fechaNac;
 		this.nomUsr = nomUsr;
@@ -49,16 +49,16 @@ public class EmpleadoView {
 	public void setNroLU(int nroLU) {
 		this.nroLU = nroLU;
 	}
-	public Rol getRolOriginal() {
+	public RolView getRolOriginal() {
 		return rolOriginal;
 	}
-	public void setRolOriginal(Rol rolOriginal) {
+	public void setRolOriginal(RolView rolOriginal) {
 		this.rolOriginal = rolOriginal;
 	}
-	public Rol getRolTemporal() {
+	public RolView getRolTemporal() {
 		return rolTemporal;
 	}
-	public void setRolTemporal(Rol rolTemporal) {
+	public void setRolTemporal(RolView rolTemporal) {
 		this.rolTemporal = rolTemporal;
 	}
 
