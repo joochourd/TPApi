@@ -257,7 +257,7 @@ public class ReclamoDAO {
 					int numFactura = resultSet.getInt("nroFactura");
 					Facturacion reclamoFacturacion = new Facturacion(auxId, auxFecha.toLocalDate(), auxDescripcion,
 							TipoReclamo.valueOf(auxTipo), Estados.valueOf(auxEstados), auxCliente, auxempleadoNomUsr, fecha.toLocalDate(),
-							numFactura, compuesto);
+							FacturaDAO.getInstancia().buscarFactura(numFactura), compuesto);
 					return reclamoFacturacion;
 				}
 
@@ -327,7 +327,7 @@ public class ReclamoDAO {
 					Date fecha = resultSet.getDate("fechaFacturacion");
 					int numFactura = resultSet.getInt("nroFactura");
 					Facturacion reclamoFacturacion = new Facturacion(auxId, auxFecha.toLocalDate(), auxDescripcion,
-							tipoReclamo, Estados.valueOf(auxEstados), auxCliente, auxempleadoNomUsr, fecha.toLocalDate(), numFactura, compuesto);
+							tipoReclamo, Estados.valueOf(auxEstados), auxCliente, auxempleadoNomUsr, fecha.toLocalDate(), FacturaDAO.getInstancia().buscarFactura(numFactura), compuesto);
 					reclamos.add(reclamoFacturacion);
 				}
 
@@ -457,7 +457,7 @@ public class ReclamoDAO {
 					int numFactura = resultSet.getInt("nroFactura");
 					Facturacion reclamoFacturacion = new Facturacion(auxId, auxFecha.toLocalDate(), auxDescripcion,
 							TipoReclamo.valueOf(auxTipo), Estados.valueOf(auxEstados), auxCliente, auxempleadoNomUsr, fecha.toLocalDate(),
-							numFactura, compuesto);
+							FacturaDAO.getInstancia().buscarFactura(numFactura), compuesto);
 					reclamos.add(reclamoFacturacion);
 				}
 
@@ -518,7 +518,7 @@ public class ReclamoDAO {
 					int numFactura = resultSet.getInt("nroFactura");
 					Facturacion reclamoFacturacion = new Facturacion(auxId, auxFecha.toLocalDate(), auxDescripcion,
 							TipoReclamo.valueOf(auxTipo), Estados.valueOf(auxEstados), auxCliente, auxempleadoNomUsr, fecha.toLocalDate(),
-							numFactura, compuesto);
+							FacturaDAO.getInstancia().buscarFactura(numFactura), compuesto);
 					reclamos.add(reclamoFacturacion);
 				}
 

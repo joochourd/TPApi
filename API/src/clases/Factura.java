@@ -5,6 +5,7 @@ import java.util.Date;
 import dao.FacturaDAO;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
+import view.FacturaView;
 
 public class Factura {
 
@@ -41,6 +42,8 @@ public class Factura {
 		return total;
 	}
 	
-	
+	public FacturaView toView() {
+		return new FacturaView(this.nro, this.tipo, this.fecha, this.total);
+	}
 	
 }

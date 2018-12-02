@@ -10,20 +10,20 @@ import excepciones.ConexionException;
 public class Facturacion extends Simple {
 	
 	private LocalDate fechaFacturacion;
-	private int nroFactura;
+	private Factura factura;
 
 
-	public Facturacion(int numeroReclamo,LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, Enum<Estados> estado, int clienteDniCuit, String empleadoNombreUsr, LocalDate fechaFacturacion, int nroFactura, String idCompuesto) {
+	public Facturacion(int numeroReclamo,LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, Enum<Estados> estado, int clienteDniCuit, String empleadoNombreUsr, LocalDate fechaFacturacion, Factura factura, String idCompuesto) {
 		super(numeroReclamo, fecha, descripcion, tipo, estado, clienteDniCuit, empleadoNombreUsr, idCompuesto);
 		this.fechaFacturacion = fechaFacturacion;
-		this.nroFactura = nroFactura;
+		this.factura = factura;
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Facturacion(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr, LocalDate fechaFacturacion, int nroFactura) {
+	public Facturacion(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, String empleadoNombreUsr, LocalDate fechaFacturacion, Factura factura) {
 		super(fecha, descripcion, tipo, clienteDniCuit, empleadoNombreUsr);
 		this.fechaFacturacion = fechaFacturacion;
-		this.nroFactura = nroFactura;
+		this.factura = factura;
 	}
 
 
@@ -46,13 +46,10 @@ public class Facturacion extends Simple {
 
 
 	public int getNroFactura() {
-		return nroFactura;
+		return factura.getNro();
 	}
 
 
-	public void setNroFactura(int nroFactura) {
-		this.nroFactura = nroFactura;
-	}
 
 
 

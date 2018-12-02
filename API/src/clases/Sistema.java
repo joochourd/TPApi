@@ -5,11 +5,13 @@ import java.util.List;
 
 import dao.ClienteDAO;
 import dao.EmpleadoDAO;
+import dao.FacturaDAO;
 import dao.ProductoDAO;
 import dao.RolDao;
 import excepciones.AccesoException;
 import excepciones.ConexionException;
 import view.EmpleadoView;
+import view.FacturaView;
 import view.ProductoView;
 import view.RolView;
 
@@ -77,14 +79,6 @@ public class Sistema {
 		return ProductoDAO.getInstancia().buscarProducto(tituloProd, codigo);
 	}
 	
-	public void modificarEmpleado(EmpleadoView empleadoV, RolView rolV) throws ConexionException, AccesoException{
-		Rol original = new Rol(empleadoV.getRolOriginal().getId(), empleadoV.getRolOriginal().getDescripcion());
-		Rol temporal = new Rol(empleadoV.getRolTemporal().getId(), empleadoV.getRolTemporal().getDescripcion());
-		Empleado e = new Empleado(empleadoV.getNombre(), empleadoV.getFechaNac(), empleadoV.getPassword(), empleadoV.getNomUsr(), empleadoV.getNroLU(), original, temporal);
-		e.setRolTemporal(new Rol(rolV.getId(), rolV.getDescripcion()));
-		EmpleadoDAO.getInstancia().modificarEmpleado(e);
-	}
-
 	public List<ProductoView> getProductos() throws ConexionException, AccesoException{
 		List<Producto> productos = ProductoDAO.getInstancia().getProductos();
 		List<ProductoView> productosView = new ArrayList<>();
@@ -93,6 +87,25 @@ public class Sistema {
 		}
 		return productosView;
 	}
+	
+	public List<FacturaView> buscarFacturaCliente(int dniCuitCliente) throws ConexionException, AccesoException{
+		List<Factura> facturas = FacturaDAO.getInstancia().buscarFacturaCliente(dniCuitCliente);
+		List<FacturaView> facturasV = new ArrayList<>();
+		for(Factura f : facturas){
+			facturasV.add(f.toView());
+		}
+		return facturasV;
+	}
+	
+	public void modificarEmpleado(EmpleadoView empleadoV, RolView rolV) throws ConexionException, AccesoException{
+		Rol original = new Rol(empleadoV.getRolOriginal().getId(), empleadoV.getRolOriginal().getDescripcion());
+		Rol temporal = new Rol(empleadoV.getRolTemporal().getId(), empleadoV.getRolTemporal().getDescripcion());
+		Empleado e = new Empleado(empleadoV.getNombre(), empleadoV.getFechaNac(), empleadoV.getPassword(), empleadoV.getNomUsr(), empleadoV.getNroLU(), original, temporal);
+		e.setRolTemporal(new Rol(rolV.getId(), rolV.getDescripcion()));
+		EmpleadoDAO.getInstancia().modificarEmpleado(e);
+	}
+
+	
 	
 	public List<RolView> getRoles() throws AccesoException, ConexionException{
 		List<Rol> roles = RolDao.getInstancia().obtenerTodosLosRoles();

@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import clases.Factura;
 import excepciones.AccesoException;
@@ -107,7 +109,7 @@ private static FacturaDAO instancia;
 		} catch (SQLException e1) {
 			throw new AccesoException("Error de acceso");
 		}
-		String SQL = ("SELECT * FROM facturas WHERE numero =('" + nro +"');");
+		String SQL = ("SELECT * FROM facturas WHERE numero = " + nro +";");
 		try{
 			rs = stmt.executeQuery(SQL);
 			String tipo = null;
@@ -123,8 +125,46 @@ private static FacturaDAO instancia;
 			return factura;
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
-			throw new AccesoException("No se pudo Crear la Factura");
+			throw new AccesoException("No se pudo encontrar la Factura");
 		}
 	}
+	
+	public List<Factura> buscarFacturaCliente(int dniCuitCliente) throws ConexionException, AccesoException{
 
+		Connection con = null;  
+		Statement stmt = null;  
+		ResultSet rs = null;
+		List<Factura> facturas = new ArrayList<>();
+		try {    
+			con = ConnectionFactory.getInstancia().getConection();
+		}
+		catch (ClassNotFoundException | SQLException e) {
+			throw new ConexionException("No esta disponible el acceso al Servidor");
+		}
+		
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e1) {
+			throw new AccesoException("Error de acceso");
+		}
+		String SQL = ("SELECT * FROM facturas WHERE dniCuitCliente = " + dniCuitCliente +";");
+		try{
+			rs = stmt.executeQuery(SQL);
+			
+			while (rs.next()) {
+				int numero = rs.getInt("numero");
+				String tipo = rs.getString("tipo");
+				Date fecha = rs.getDate("fecha");
+				float total = rs.getFloat("total");
+				facturas.add(new Factura(numero, tipo, fecha, total));
+				
+			}
+
+			return facturas;
+		} catch (SQLException e1) {
+			System.out.println(e1.getMessage());
+			throw new AccesoException("No se pudo encontrar la Factura");
+		}
+	
+	}
 }

@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import extensions.*;
+import view.FacturaView;
 import view.ProductoView;
 import view.ReclamoView;
 
@@ -39,21 +40,18 @@ public class RegistrarReclamos {
 	private JTextField textFieldZona;
 	private JTextField textFieldDescripcion;
 	private JTextField textFieldNumerocliente;
-	private JTextField textFieldNumeroFactura;
 	private JTextField txtFieldCantidad;
 
 	private JComboBox comboBox_TipoReclamo;
 	private JComboBox comboBox_Producto;
 
-	private JCalendar calendar;
-
 	private JLabel lblNombreZona;
 	private JLabel lblDescripcion;
 	private JLabel lblNumeroDeCliente;
 	private JLabel lblCantidad;
-	private JLabel lblFechaDeFacturacion;
-	private JLabel lblNumeroFactura;
+	private JLabel lblFacturas;
 	private JLabel lblProducto;
+	private JLabel lblNewLabel;
 
 	private JPanel panelZona;
 	private JPanel panelFacturacion;
@@ -64,15 +62,17 @@ public class RegistrarReclamos {
 	private JButton btnCargar;
 	private JButton btnCancelar;
 
-
-	private JScrollPane scrollPane;
-	private DefaultListModel listModel;
+	private JScrollPane scrollPaneReclamos;
+	private DefaultListModel listModelReclamos;
 	private JList listReclamos;
 
-	private List<ProductoView> prods;
+	private JScrollPane scrollPaneFacturas;
+	private DefaultListModel listModelFacturas;
+	private JList listFacturas;
 
+	private List<ProductoView> prods;
 	private List<ReclamoView> reclamosV;
-	private JLabel lblNewLabel;
+	private List<FacturaView> facturasV;
 
 	public void setVisible(boolean a) { // Porque es una aplicacion windows
 		this.frame.setVisible(a);
@@ -97,6 +97,7 @@ public class RegistrarReclamos {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setTitle("Registrar reclamos");
+		//frame.setBounds(100, 100, 812, 677);
 		frame.setBounds(100, 100, 812, 413);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -156,29 +157,15 @@ public class RegistrarReclamos {
 		frame.getContentPane().add(textFieldNumerocliente);
 		textFieldNumerocliente.setColumns(10);
 
-		layeredPane.setLayer(panelFacturacion, 1);
+		layeredPane.setLayer(panelFacturacion, 0);
 		panelFacturacion.setBounds(0, 0, 752, 418);
 		panelFacturacion.setLayout(null);
 		panelFacturacion.setVisible(true);
 
-		lblFechaDeFacturacion = new JLabel("Fecha de facturacion");
-		lblFechaDeFacturacion.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblFechaDeFacturacion.setBounds(32, 107, 151, 20);
-		panelFacturacion.add(lblFechaDeFacturacion);
-
-		lblNumeroFactura = new JLabel("Numero de factura");
-		lblNumeroFactura.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNumeroFactura.setBounds(32, 36, 151, 17);
-		panelFacturacion.add(lblNumeroFactura);
-
-		calendar = new JCalendar();
-		panelFacturacion.add(calendar);
-
-		textFieldNumeroFactura = new JTextField();
-		textFieldNumeroFactura.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textFieldNumeroFactura.setBounds(209, 36, 123, 20);
-		panelFacturacion.add(textFieldNumeroFactura);
-		textFieldNumeroFactura.setColumns(10);
+		lblFacturas = new JLabel("Seleccione la factura deseada");
+		lblFacturas.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblFacturas.setBounds(32, 36, 231, 33);
+		panelFacturacion.add(lblFacturas);
 		layeredPane.setLayer(panelCantidadProductoYFalta, 0);
 		panelCantidadProductoYFalta.setBounds(0, 0, 752, 168);
 		panelCantidadProductoYFalta.setLayout(null);
@@ -239,12 +226,15 @@ public class RegistrarReclamos {
 		panelCompuesto.setBounds(0, 0, 752, 418);
 		panelCompuesto.setLayout(null);
 
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(51, 30, 646, 345);
-		panelCompuesto.add(scrollPane);
+		scrollPaneReclamos = new JScrollPane();
+		scrollPaneReclamos.setBounds(51, 30, 646, 345);
+		panelCompuesto.add(scrollPaneReclamos);
 		panelCompuesto.setVisible(true);
 
-
+		scrollPaneFacturas = new JScrollPane();
+		scrollPaneFacturas.setBounds(209, 113, 486, 236);
+		panelFacturacion.add(scrollPaneFacturas);
+		panelFacturacion.setVisible(true);
 
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -310,15 +300,34 @@ public class RegistrarReclamos {
 				layeredPane.revalidate();
 				break;
 			case 5:
-				frame.setBounds(100, 100, 812, 677);
-				layeredPane.setBounds(10, 119, 752, 426);
-				btnCargar.setBounds(211, 587, 103, 23);
-				btnCancelar.setBounds(452, 586, 103, 25);
-				layeredPane.removeAll();
-				layeredPane.add(panelFacturacion);
-				layeredPane.repaint();
-				layeredPane.revalidate();
-				calendar.setBounds(209, 113, 486, 236);
+				if(textFieldNumerocliente.getText().isEmpty()){
+					JOptionPane.showMessageDialog(null, "Ingrese DNI/Cuit cliente", "Aviso",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+				else{
+					try{
+						frame.setBounds(100, 100, 812, 677);
+						layeredPane.setBounds(10, 119, 752, 426);
+						btnCargar.setBounds(211, 587, 103, 23);
+						btnCancelar.setBounds(452, 586, 103, 25);
+						layeredPane.removeAll();
+						layeredPane.add(panelFacturacion);
+						layeredPane.repaint();
+						layeredPane.revalidate();
+
+						listModelFacturas = new DefaultListModel();
+						
+						facturasV = Sistema.getInstance().buscarFacturaCliente(Integer.parseInt(textFieldNumerocliente.getText()));
+						for (FacturaView objeto : facturasV)
+							listModelFacturas.addElement(objeto);
+						listFacturas = new JList(listModelFacturas);
+						scrollPaneFacturas.setViewportView(listFacturas);
+						listFacturas.setBackground(Color.WHITE);
+					}
+					catch (ConexionException | AccesoException e){
+						e.printStackTrace();
+					}
+				}
 				break;
 			case 6:
 				if (!textFieldNumerocliente.getText().isEmpty()) {
@@ -331,14 +340,14 @@ public class RegistrarReclamos {
 					layeredPane.repaint();
 					layeredPane.revalidate();
 
-					listModel = new DefaultListModel();
+					listModelReclamos = new DefaultListModel();
 					try {
 						reclamosV = Sistema.getInstance().getTablero()
 								.getReclamosCliente(Integer.parseInt(textFieldNumerocliente.getText()));
 						for (ReclamoView objeto : reclamosV)
-							listModel.addElement(objeto);
-						listReclamos = new JList(listModel);
-						scrollPane.setViewportView(listReclamos);
+							listModelReclamos.addElement(objeto);
+						listReclamos = new JList(listModelReclamos);
+						scrollPaneReclamos.setViewportView(listReclamos);
 						listReclamos.setBackground(Color.WHITE);
 					} catch (ConexionException | AccesoException e1) {
 						e1.printStackTrace();
