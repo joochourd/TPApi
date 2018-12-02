@@ -12,7 +12,6 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import clases.Estados;
-import clases.Reclamo;
 import clases.Sistema;
 import clases.TipoReclamo;
 import excepciones.AccesoException;
@@ -135,6 +134,7 @@ public class AdministrarCantProdFaltGUI extends JFrame implements Observer{
 			e1.printStackTrace();
 		}
 
+		Sistema.getInstance().getTablero().addObserver(this);
 		
 	}
 	
@@ -162,9 +162,8 @@ public class AdministrarCantProdFaltGUI extends JFrame implements Observer{
 	}
 
 	@Override
-	public void update(Reclamo reclamo) {
+	public void update(ReclamoView reclamo) {
 		// TODO Auto-generated method stub
-		System.out.println("llamo al update " + reclamo.numeroReclamo());
 		listModel.addElement(reclamo);
 	}
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import clases.Estados;
-import clases.Reclamo;
+import view.ReclamoView;
 
 public class ObservableTablero {
 	
@@ -23,7 +23,7 @@ private List<Observer> observadores;
 		observadores.remove(instancia);
 	}
 	
-	public void updateObserver(Reclamo reclamo){
+	public void updateObserver(ReclamoView reclamo){
 		for(Observer observer : observadores)
 			observer.update(reclamo);
 	}

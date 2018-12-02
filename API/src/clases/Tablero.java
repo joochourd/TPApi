@@ -14,6 +14,7 @@ import excepciones.AccesoException;
 import excepciones.ConexionException;
 import observador.ObservableTablero;
 import view.ClienteView;
+import view.FacturaView;
 import view.ProductoView;
 import view.ReclamoView;
 
@@ -34,14 +35,15 @@ public class Tablero  extends ObservableTablero {
 		Zona reclamo = new Zona(fecha, descripcion, TipoReclamo.zona, clienteDniCuit, empleado.getNomUsr(), zona);
 		reclamo.guardate();
 		this.reclamos.add(reclamo);
-		this.updateObserver(reclamo);
+		this.updateObserver(reclamo.toView());
 	}
 
-	public void registrarReclamoFacturacion(LocalDate fecha, String descripcion, int clienteDniCuit, LocalDate fechaFacturacion, int nroFactura) throws ConexionException, AccesoException, SQLException{
-		Facturacion reclamo = new Facturacion(fecha, descripcion, TipoReclamo.facturacion, clienteDniCuit, empleado.getNomUsr(), fechaFacturacion, nroFactura);
+	public void registrarReclamoFacturacion(LocalDate fecha, String descripcion, int clienteDniCuit, LocalDate fechaFacturacion, FacturaView facturaV) throws ConexionException, AccesoException, SQLException{
+		Factura factura = new Factura(facturaV.getNro(), facturaV.getTipo(), facturaV.getFecha(), facturaV.getTotal());
+		Facturacion reclamo = new Facturacion(fecha, descripcion, TipoReclamo.facturacion, clienteDniCuit, empleado.getNomUsr(), fechaFacturacion, factura);
 		reclamo.guardate();
 		this.reclamos.add(reclamo);
-		this.updateObserver(reclamo);
+		this.updateObserver(reclamo.toView());
 	}
 
 	public void registrarReclamoCantProdFalta(LocalDate fecha, String descripcion, Enum<TipoReclamo> tipo, int clienteDniCuit, ProductoView prod, int cant) throws ConexionException, AccesoException, SQLException{
@@ -50,7 +52,7 @@ public class Tablero  extends ObservableTablero {
 		reclamo.guardate();
 
 		this.reclamos.add(reclamo);
-		this.updateObserver(reclamo);
+		this.updateObserver(reclamo.toView());
 	}	
 
 	public void registrarReclamoCompuesto(LocalDate fecha, String descripcion, int clienteDniCuit, List <ReclamoView> reclamos) throws ConexionException, AccesoException, SQLException{
@@ -68,7 +70,7 @@ public class Tablero  extends ObservableTablero {
 
 		reclamo.guardate();
 		this.reclamos.add(reclamo);
-		this.updateObserver(reclamo);
+		this.updateObserver(reclamo.toView());
 	}
 
 
@@ -86,7 +88,7 @@ public class Tablero  extends ObservableTablero {
 			rec.setDescripcion(descripcion);
 			rec.setEmpleadoNombreUsr(this.empleado.getNomUsr());;
 			rec.modificate();
-			this.updateObserver(rec);
+			this.updateObserver(rec.toView());
 		}
 		else{
 			System.out.println("Reclamo not found ...");

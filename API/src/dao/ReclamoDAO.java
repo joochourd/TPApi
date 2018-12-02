@@ -39,6 +39,7 @@ public class ReclamoDAO {
 	public void grabarReclamo(Reclamo reclamo) throws ConexionException, AccesoException, SQLException {
 		Connection con = null;
 		Statement stmt = null;
+		String clave = ""; // simpre termina con un -
 		try {
 			con = ConnectionFactory.getInstancia().getConection();
 		} catch (ClassNotFoundException | SQLException e) {
@@ -53,17 +54,13 @@ public class ReclamoDAO {
 
 		if(reclamo.getTipo().equals(TipoReclamo.compuesto)){
 			List<Simple> compuestos = ((Compuesto) reclamo).getSimples();
-			String SQL = "update reclamos set compuesto = NEWID() where idReclamo = " + compuestos.get(0).getNumeroReclamo() + ";";
-			try {
-				stmt.execute(SQL);
-			} catch (SQLException e1) {
-				System.out.println(e1.getMessage());
-				throw new AccesoException("Error de escritura");
+		
+			for(Simple c : compuestos){
+				clave = clave + c.getNumeroReclamo()+ "-";
 			}
-			int id = getClaveCompuesto(compuestos.get(0).getNumeroReclamo());
-			for(int i = 1 ; i<compuestos.size() ; i++){
-				String SQL2 = "update reclamos set compuesto = " + id + " where idReclamo = " + compuestos.get(i).getNumeroReclamo() + ";";
-				stmt.execute(SQL2);
+			for(int i = 0 ; i<compuestos.size() ; i++){
+				String SQL = "update reclamos set compuesto = " + "'" + clave + "'" + " where idReclamo = " + compuestos.get(i).getNumeroReclamo() + ";";
+				stmt.execute(SQL);
 				}
 			
 		}
@@ -269,7 +266,7 @@ public class ReclamoDAO {
 				}
 			}
 			throw new AccesoException("No existe el reclamo");
-			//return null;
+			
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
 			throw new AccesoException("No se pudo crear el reclamo");

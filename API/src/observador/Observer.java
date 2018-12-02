@@ -1,9 +1,9 @@
 package observador;
 
-import clases.Reclamo;
+import view.ReclamoView;
 
 public interface Observer {
 	
-	public void update(Reclamo reclamo);
+	public void update(ReclamoView reclamo);
 
 }

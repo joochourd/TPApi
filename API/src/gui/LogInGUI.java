@@ -76,7 +76,7 @@ public class LogInGUI extends JFrame {
 							AdministrarFacturacionGUI admFact = new AdministrarFacturacionGUI();
 							admFact.setVisible(true);
 							break;
-						case 2://responsableFacturacion
+						case 2://responsableCantProdFalta
 							AdministrarCantProdFaltGUI admCPF = new AdministrarCantProdFaltGUI();
 							admCPF.setVisible(true);
 							break;

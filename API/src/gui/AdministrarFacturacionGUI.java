@@ -22,7 +22,6 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import clases.Estados;
-import clases.Reclamo;
 import clases.Sistema;
 import clases.TipoReclamo;
 import excepciones.AccesoException;
@@ -166,9 +165,8 @@ public class AdministrarFacturacionGUI extends JFrame implements Observer {
 	}
 
 	@Override
-	public void update(Reclamo reclamo) {
+	public void update(ReclamoView reclamo) {
 		// TODO Auto-generated method stub
-		System.out.println("llamo al update " + reclamo.numeroReclamo());
 		listModel.addElement(reclamo);
 	}
 

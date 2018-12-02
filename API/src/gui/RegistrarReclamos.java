@@ -23,7 +23,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JLayeredPane;
@@ -426,13 +428,12 @@ public class RegistrarReclamos {
 				}
 				break;
 			case 5:
-				// Change to local Date
 				try {
+					LocalDate fecha = Instant.ofEpochMilli(facturasV.get(listFacturas.getSelectedIndex()).getFecha().getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
 					sistema.getTablero().registrarReclamoFacturacion(LocalDate.now(), textFieldDescripcion.getText(),
 							Integer.parseInt(textFieldNumerocliente.getText()),
-							ExtensionHelper.dateToLocalDate(calendar.getDate()),
-							Integer.parseInt(textFieldNumeroFactura.getText()));
-
+							fecha, facturasV.get(listFacturas.getSelectedIndex()));
+					
 					JOptionPane.showMessageDialog(null, "El reclamo se registro correctamente", "Operacion exitosa", JOptionPane.INFORMATION_MESSAGE);
 
 				} catch (NumberFormatException | ConexionException | AccesoException | SQLException e1) {

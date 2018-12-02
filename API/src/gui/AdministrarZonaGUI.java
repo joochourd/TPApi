@@ -134,7 +134,7 @@ public class AdministrarZonaGUI extends JFrame implements Observer {
 			e1.printStackTrace();
 		}
 
-
+		Sistema.getInstance().getTablero().addObserver(this);
 	}
 
 	protected void tratar(ActionEvent e) {
@@ -161,9 +161,9 @@ public class AdministrarZonaGUI extends JFrame implements Observer {
 	}
 
 	@Override
-	public void update(Reclamo reclamo) {
+	public void update(ReclamoView reclamo) {
 		// TODO Auto-generated method stub
-		System.out.println("llamo al update " + reclamo.numeroReclamo());
 		listModel.addElement(reclamo);
+		System.out.println("anda");
 	}
 }
